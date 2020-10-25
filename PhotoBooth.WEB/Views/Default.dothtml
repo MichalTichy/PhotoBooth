@@ -1,0 +1,6 @@
+﻿@viewModel PhotoBooth.WEB.ViewModels.DefaultViewModel, PhotoBooth.WEB
+@masterPage Views/MasterPage.dotmaster
+@import PhotoBooth.WEB.Resources
+<dot:Content ContentPlaceHolderID="MainContent">
+
+</dot:Content>

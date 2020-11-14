@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoBooth.DAL;
 
 namespace PhotoBooth.DAL.Migrations
 {
     [DbContext(typeof(PhotoBoothContext))]
-    partial class PhotoBoothContextModelSnapshot : ModelSnapshot
+    [Migration("20201114172129_added order confirmation date")]
+    partial class addedorderconfirmationdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,9 +259,6 @@ namespace PhotoBooth.DAL.Migrations
 
                     b.Property<string>("BannerUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CancellationDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("ConfirmationDate")
                         .HasColumnType("datetime2");

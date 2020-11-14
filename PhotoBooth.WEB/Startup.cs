@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using DotVVM.Framework.Hosting;
 using DotVVM.Framework.Routing;
 using PhotoBooth.BL;
+using PhotoBooth.BL.Facades;
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
 
@@ -59,7 +60,7 @@ namespace PhotoBooth.WEB
 
         private void Install(IServiceCollection services)
         {
-            services.AddTransient(typeof(UserService));
+            services.AddTransient(typeof(UserFacade));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

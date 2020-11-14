@@ -11,17 +11,18 @@ using DotVVM.Framework.Hosting;
 using DotVVM.Framework.ViewModel.Validation;
 using Microsoft.AspNetCore.Identity;
 using PhotoBooth.BL;
+using PhotoBooth.BL.Facades;
 
 namespace PhotoBooth.WEB.ViewModels.Authentication
 {
     public class SignInViewModel : MasterPageViewModel
     {
 
-        private readonly UserService userService;
+        private readonly UserFacade _userFacade;
 
-        public SignInViewModel(UserService userService)
+        public SignInViewModel(UserFacade userFacade)
         {
-            this.userService = userService;
+            this._userFacade = userFacade;
         }
 
         [Required]
@@ -30,7 +31,7 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
 
         public async Task SignIn()
         {
-            var identity = await userService.SignInAsync(UserName, Password);
+            var identity = await _userFacade.SignInAsync(UserName, Password);
             if (identity == null)
             {
                 Context.ModelState.Errors.Add(new ViewModelValidationError

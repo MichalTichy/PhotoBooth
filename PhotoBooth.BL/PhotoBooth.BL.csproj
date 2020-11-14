@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Riganti.Utils.Infrastructure.EntityFrameworkCore" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PhotoBooth.DAL\PhotoBooth.DAL.csproj" />
   </ItemGroup>
 

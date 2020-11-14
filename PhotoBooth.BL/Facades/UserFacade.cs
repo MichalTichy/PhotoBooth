@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using PhotoBooth.DAL.Entity;
 
-namespace PhotoBooth.BL
+namespace PhotoBooth.BL.Facades
 {
-    public class UserService
+    public class UserFacade
     {
         private readonly UserManager<ApplicationUser> userManager;
 		
-        public UserService(UserManager<ApplicationUser> userManager)
+        public UserFacade(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }

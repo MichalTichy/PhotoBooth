@@ -12,13 +12,14 @@ using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using PhotoBooth.BL;
+using PhotoBooth.BL.Facades;
 using PhotoBooth.WEB.Resources;
 
 namespace PhotoBooth.WEB.ViewModels.Authentication
 {
    public class RegisterViewModel : MasterPageViewModel, IValidatableObject
     {
-        private readonly UserService userService;
+        private readonly UserFacade _userFacade;
 
 
         [Required]
@@ -29,16 +30,16 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
         [Required]
         public string ConfirmPassword { get; set; }
 
-        public RegisterViewModel(UserService userService)
+        public RegisterViewModel(UserFacade userFacade)
         {
-            this.userService = userService;
+            this._userFacade = userFacade;
         }
 
 
         public async Task Register()
         {
 
-            var identityResult = await userService.RegisterAsync(UserName, Password);
+            var identityResult = await _userFacade.RegisterAsync(UserName, Password);
             if (identityResult.Succeeded)
             {
                 await SignIn();
@@ -63,7 +64,7 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
 
         private async Task SignIn()
         {
-            var claimsIdentity = await userService.SignInAsync(UserName, Password);
+            var claimsIdentity = await _userFacade.SignInAsync(UserName, Password);
 			await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity));
         }
 

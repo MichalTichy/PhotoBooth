@@ -19,6 +19,6 @@ namespace PhotoBooth.BL.Models.Order
         public ICollection<RentalItemModel> RentalItems { get; set; }
         public ICollection<ProductModel> OrderItems { get; set; }
         public string BannerUrl { get; set; }
-        public string FinalPrice { get; set; }
+        public double FinalPrice { get; set; }
     }
 }

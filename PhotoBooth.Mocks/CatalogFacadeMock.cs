@@ -11,11 +11,12 @@ namespace PhotoBooth.Mocks
 {
     public class CatalogFacadeMock : ICatalogFacade
     {
-        public ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType type)
+        public ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType? type=null)
         {
-            return GenerateRentalItems();
-        }
+            var availableRentalItems = GenerateRentalItems();
 
+            return type == null ? availableRentalItems : availableRentalItems.Where(t=>t.Type==type).ToList();
+        }
         public ICollection<ProductModel> GetAvailableProducts(DateTime since, DateTime till)
         {
             return GenerateProducts();
@@ -30,6 +31,8 @@ namespace PhotoBooth.Mocks
         {
             return GeneratePackages();
         }
+
+
         public static ICollection<ItemPackage> GeneratePackages()
         {
             var products = GenerateProducts();
@@ -39,24 +42,23 @@ namespace PhotoBooth.Mocks
                 new ItemPackage()
                 {
                     Name = "Balík 1",
-                    Products = products.Take(1).ToList(),
-                    RentalItems = new List<RentalItemModel>()
+                    ProductIds = products.Take(1).Select(t=>t.Id).ToList(),
+                    RentalItemTypes = new List<RentalItemType>()
                     {
-                        rentalItems.First(t=>t.Type==RentalItemType.Background),
-                        rentalItems.First(t=>t.Type==RentalItemType.Employe),
-                        rentalItems.First(t=>t.Type==RentalItemType.Prop),
+                        RentalItemType.Background,
+                        RentalItemType.PhotoBooth
                     }
                 },
 
                 new ItemPackage()
                 {
                     Name = "Balík 2",
-                    Products = products.Take(1).ToList(),
-                    RentalItems = new List<RentalItemModel>()
+                    ProductIds = products.Take(2).Select(t=>t.Id).ToList(),
+                    RentalItemTypes = new List<RentalItemType>()
                     {
-                        rentalItems.Where(t=>t.Type==RentalItemType.Background).Skip(1).First(),
-                        rentalItems.Where(t=>t.Type==RentalItemType.Employe).Skip(1).First(),
-                        rentalItems.Where(t=>t.Type==RentalItemType.Prop).Skip(1).First(),
+                        RentalItemType.Background,
+                        RentalItemType.Prop,
+                        RentalItemType.PhotoBooth
                     }
                 }
             };
@@ -82,7 +84,7 @@ namespace PhotoBooth.Mocks
                     PricePerHour = 900,
                     DescriptionHtml = "Desciption 2 <b> bold <b/>",
                     Name = "Photo booth 2",
-                    PictureUrl = @"https://picsum.photos/200",
+                    PictureUrl = @"https://picsum.photos/201",
                     Type = RentalItemType.PhotoBooth
                 },
 
@@ -92,7 +94,7 @@ namespace PhotoBooth.Mocks
                     PricePerHour = 1200,
                     DescriptionHtml = "Desciption 3 <b> bold <b/>",
                     Name = "Employe 1",
-                    PictureUrl = @"https://picsum.photos/200",
+                    PictureUrl = @"https://picsum.photos/202",
                     Type = RentalItemType.Employe
                 },
                 new RentalItemModel()
@@ -159,7 +161,7 @@ namespace PhotoBooth.Mocks
             {
                 new ProductModel()
                 {
-                    Id = Guid.Parse("d7aedab8-350b-4ec6-9337-dab07fb98ee6"),
+                    Id = Guid.Parse("6f2eddce-d4b1-4831-a485-c15f9764c656"),
                     DescriptionHtml = "Product description <b> test </b>",
                     Name = "Product 1",
                     PictureUrl = @"https://picsum.photos/200",
@@ -168,7 +170,7 @@ namespace PhotoBooth.Mocks
 
                 new ProductModel()
                 {
-                    Id = Guid.Parse("d7aedab8-350b-4ec6-9337-dab07fb98ee6"),
+                    Id = Guid.Parse("f7c0490f-c733-47b6-80ba-6f73f54d9ca1"),
                     DescriptionHtml = "Product 2 description <b> test </b>",
                     Name = "Product 2",
                     PictureUrl = @"https://picsum.photos/200",
@@ -177,7 +179,7 @@ namespace PhotoBooth.Mocks
 
                 new ProductModel()
                 {
-                    Id = Guid.Parse("d7aedab8-350b-4ec6-9337-dab07fb98ee6"),
+                    Id = Guid.Parse("d46d25c7-1ba5-4afc-82a4-9924e2321547"),
                     DescriptionHtml = "Product 3 description <b> test </b>",
                     Name = "Product 3",
                     PictureUrl = @"https://picsum.photos/200",

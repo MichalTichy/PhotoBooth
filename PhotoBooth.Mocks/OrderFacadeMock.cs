@@ -12,12 +12,18 @@ namespace PhotoBooth.Mocks
 {
     public class OrderFacadeMock : IOrderFacade
     {
-        public double CalculateOrderPrice(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
+        public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems,
+            ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
-            return 1234;
+            return GenerateOrderSummary(rentalItems, products, orderMatadata); 
         }
 
         public OrderSummaryModel SubmitOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
+        {
+            return GenerateOrderSummary(rentalItems, products, orderMatadata);
+        }
+
+        private static OrderSummaryModel GenerateOrderSummary(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
             return new OrderSummaryModel()
             {
@@ -71,8 +77,8 @@ namespace PhotoBooth.Mocks
             {
                 Id = Guid.Parse("119567d0-fab4-4e40-9c57-bfa9d8e80732"),
                 BannerUrl = @"https://picsum.photos/200",
-                RentalItems = CatalogFacadeMock.GeneratePackages().First().RentalItems,
-                OrderItems = CatalogFacadeMock.GeneratePackages().First().Products,
+                RentalItems = CatalogFacadeMock.GenerateRentalItems(),
+                OrderItems = CatalogFacadeMock.GenerateProducts(),
                 RentalSince = new DateTime(2020, 12, 3, 16, 0, 0),
                 RentalTill = new DateTime(2020, 12, 3, 23, 0, 0),
                 Created = new DateTime(2020, 10, 3, 16, 0, 0),

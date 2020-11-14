@@ -23,18 +23,9 @@
   <ItemGroup>
     <ProjectReference Include="..\PhotoBooth.BL\PhotoBooth.BL.csproj" />
     <ProjectReference Include="..\PhotoBooth.DAL\PhotoBooth.DAL.csproj" />
+    <ProjectReference Include="..\PhotoBooth.Mocks\PhotoBooth.Mocks.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Resources\Texts.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Texts.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\Texts.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Texts.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 </Project>

@@ -8,7 +8,7 @@ namespace PhotoBooth.BL.Facades
 {
     public interface ICatalogFacade
     {
-        ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till,RentalItemType type);
+        ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till,RentalItemType? type= null);
         ICollection<ProductModel> GetAvailableProducts(DateTime since, DateTime till);
         bool AreAllRentalItemsAvailable(ICollection<RentalItemModel> items, DateTime since, DateTime till);
         ICollection<ItemPackage> GetAllPackages();

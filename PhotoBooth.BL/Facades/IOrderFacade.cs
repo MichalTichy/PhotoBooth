@@ -8,7 +8,7 @@ namespace PhotoBooth.BL.Facades
 {
     public interface IOrderFacade
     {
-        double CalculateOrderPrice(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata);
+        OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata);
         OrderSummaryModel SubmitOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata);
         ICollection<OrderListModel> GetAllOrders();
         ICollection<OrderListModel> GetOrdersByUser(Guid userId);

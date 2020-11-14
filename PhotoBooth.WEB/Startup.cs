@@ -16,6 +16,7 @@ using PhotoBooth.BL;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
+using PhotoBooth.Mocks;
 
 namespace PhotoBooth.WEB
 {
@@ -61,6 +62,8 @@ namespace PhotoBooth.WEB
         private void Install(IServiceCollection services)
         {
             services.AddTransient(typeof(UserFacade));
+            MockInstaller.Install(services);
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

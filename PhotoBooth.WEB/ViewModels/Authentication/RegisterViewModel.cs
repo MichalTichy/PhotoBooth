@@ -13,8 +13,6 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using PhotoBooth.BL;
 using PhotoBooth.BL.Facades;
-using PhotoBooth.WEB.Resources;
-
 namespace PhotoBooth.WEB.ViewModels.Authentication
 {
    public class RegisterViewModel : MasterPageViewModel, IValidatableObject
@@ -58,7 +56,7 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
         {
             if (Password != ConfirmPassword)
             {
-                yield return new ValidationResult(Texts.Error_PasswordsMatch, new[] { nameof(ConfirmPassword) });
+                yield return new ValidationResult("Zadaná hesla se neschodují!", new[] { nameof(ConfirmPassword) });
             }
         }
 

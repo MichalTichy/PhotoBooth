@@ -1,6 +1,6 @@
 ﻿using System;
 using Riganti.Utils.Infrastructure.Core;
-
+using System.ComponentModel.DataAnnotations;
 namespace PhotoBooth.DAL.Entity
 {
     public abstract class EntityBase : IEntity<Guid>

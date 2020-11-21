@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoBooth.DAL;
 
 namespace PhotoBooth.DAL.Migrations
 {
     [DbContext(typeof(PhotoBoothContext))]
-    partial class PhotoBoothContextModelSnapshot : ModelSnapshot
+    [Migration("20201121122646_added amount left to product.cs")]
+    partial class addedamountlefttoproductcs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,20 +159,16 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BuildingNumber")
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PostalCode")
-                        .HasColumnType("nvarchar(20)")
-                        .HasMaxLength(20);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -200,12 +198,10 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(25)")
-                        .HasMaxLength(25);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -262,8 +258,7 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BannerUrl")
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("CancellationDate")
                         .HasColumnType("datetime2");
@@ -278,8 +273,7 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FinalPrice")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("LocationAddressId")
                         .HasColumnType("uniqueidentifier");
@@ -309,19 +303,16 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("DescriptionHtml")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PictureUrl")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -340,19 +331,16 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("DescriptionHtml")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PictureUrl")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PricePerHour")
                         .HasColumnType("decimal(18,2)");

@@ -4,6 +4,7 @@ using PhotoBooth.BL.Queries;
 using PhotoBooth.DAL.Entity;
 using System;
 using System.Collections.Generic;
+using Riganti.Utils.Infrastructure.Core;
 
 
 namespace PhotoBooth.BL.Facades
@@ -22,7 +23,7 @@ namespace PhotoBooth.BL.Facades
 
         public ICollection<ProductModel> GetAvailableProducts(DateTime since, DateTime till)
         {
-            throw new NotImplementedException();
+            return new ProductsQuery(new UnitOfWorkProviderBase());
         }
 
         public ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType? type = null)

@@ -27,7 +27,8 @@ namespace PhotoBooth.BL
                     .AddClasses(classes => classes.AssignableTo(typeof(QueryBase<>)))
                     .AsSelf()
                     .WithTransientLifetime());
-
+            
+            serviceCollection.AddSingleton<IUnitOfWorkRegistry,AsyncLocalUnitOfWorkRegistry>();
             //serviceCollection.AddSingleton<Func<QUERYTYPE>>(x => () => x.GetService<QUERYTYPE>());
 
             serviceCollection.AddSingleton<IUnitOfWorkProvider, AppUnitOfWorkProvider>();

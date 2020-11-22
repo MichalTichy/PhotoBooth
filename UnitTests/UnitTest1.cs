@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.InMemory;
 using System;
 using PhotoBooth.DAL.Repository;
 using PhotoBooth.DAL.Entity;
+using DbContextOptions = Riganti.Utils.Infrastructure.EntityFrameworkCore.DbContextOptions;
 
 namespace UnitTests
 {
@@ -21,7 +22,9 @@ namespace UnitTests
 
         public class TestUnitOfWorkProvider : EntityFrameworkUnitOfWorkProvider<PhotoBoothContext>
         {
-            public TestUnitOfWorkProvider() : base(new ThreadLocalUnitOfWorkRegistry(), DbContextFactory)
+
+
+            public TestUnitOfWorkProvider() : base(new AsyncLocalUnitOfWorkRegistry(), DbContextFactory)
             {
             }
 
@@ -51,8 +54,8 @@ namespace UnitTests
             using (var uow = uowProvider.Create())
             {
                 //var dfdfd = EntityFrameworkUnitOfWork.TryGetDbContext(uowProvider).ContextId;
-                throw new Exception((EntityFrameworkUnitOfWork.TryGetDbContext(uowProvider)  == null )+ " this is the value inserted");
-
+                //throw new Exception((EntityFrameworkUnitOfWork.TryGetDbContext(uowProvider)  == null )+ " this is the value inserted");
+                
                 repo.GetById(idSpeci);
                 //repo.Insert(new Product() { Id = idSpeci, Name = "name", PictureUrl = "fffffff", DescriptionHtml = "fasdjfklajsdf", });
                 throw new Exception(repo.GetById(idSpeci) + " this is the value inserted");

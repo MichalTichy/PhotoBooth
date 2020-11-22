@@ -25,6 +25,10 @@ namespace PhotoBooth.DAL
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<ItemPackage> ItemPackages { get; set; }
+
+
     }
 
 }

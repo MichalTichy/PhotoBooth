@@ -9,18 +9,19 @@ using AutoMapper.QueryableExtensions;
 
 namespace PhotoBooth.BL.Queries
 {
-    public class RentalItemsQuery : QueryBase<Product, RentalItem>
+    public class RentalItemsQuery : QueryBase<RentalItem, RentalItemModel>
     {
         public RentalItemsQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
         {
         }
 
-        protected override IQueryable<RentalItem> GetQueryable()
+        protected override IQueryable<RentalItemModel> GetQueryable()
         {
             return this.Context.Products
                 .OrderBy(x => x.Name)
                 .ThenBy(x => x.Price)
-                .ProjectTo<RentalItem>(MapConfig);
+                .ProjectTo<RentalItemModel>(MapConfig);
         }
+
     }
 }

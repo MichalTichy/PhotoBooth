@@ -30,7 +30,7 @@ namespace PhotoBooth.BL
             
             serviceCollection.AddSingleton<IUnitOfWorkRegistry,AsyncLocalUnitOfWorkRegistry>();
             //serviceCollection.AddSingleton<Func<QUERYTYPE>>(x => () => x.GetService<QUERYTYPE>());
-
+            
             serviceCollection.AddSingleton<IUnitOfWorkProvider, AppUnitOfWorkProvider>();
         }
 

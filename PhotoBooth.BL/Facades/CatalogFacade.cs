@@ -10,9 +10,9 @@ using Riganti.Utils.Infrastructure.Core;
 
 namespace PhotoBooth.BL.Facades
 {
-    public class CatalogFacade : FacadeBase<ProductModel>, ICatalogFacade
+    public class CatalogFacade : FacadeBase<Product>, ICatalogFacade
     {
-        public CatalogFacade(BaseRepository<ProductModel> repository, IUnitOfWorkProvider uow) : base(repository, uow)
+        public CatalogFacade(BaseRepository<Product> repository, IUnitOfWorkProvider uow) : base(repository, uow)
         {
         }
 

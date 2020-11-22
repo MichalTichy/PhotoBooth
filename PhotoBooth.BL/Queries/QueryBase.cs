@@ -6,6 +6,7 @@ using Riganti.Utils.Infrastructure.EntityFrameworkCore;
 using PhotoBooth.DAL;
 using AutoMapper.QueryableExtensions;
 using AutoMapper;
+using System.Linq;
 
 namespace PhotoBooth.BL.Queries
 {

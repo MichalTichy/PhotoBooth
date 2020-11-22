@@ -6,21 +6,47 @@ using System.Threading.Tasks;
 using Riganti.Utils.Infrastructure.Core;
 namespace PhotoBooth.DAL
 {
-    public class UnitOfWork : UnitOfWorkBase
+    public class UnitOfWork : IUnitOfWork
     {
-        protected override Task CommitAsyncCore(CancellationToken cancellationToken)
+        private PhotoBoothContext Context { get; set;}
+        public event EventHandler Disposing;
+
+        public UnitOfWork()
         {
-            return this.CommitAsync();
+            Context = new PhotoBoothContext();
         }
 
-        protected override void CommitCore()
+        UnitOfWork(PhotoBoothContext Context)
         {
-            this.Commit();
+            this.Context = Context;
         }
 
-        protected override void DisposeCore()
+        public void Commit()
         {
-            this.Dispose();
+            Context.SaveChanges();
+        }
+
+        public Task CommitAsync()
+        {
+            return Context.SaveChangesAsync();
+        }
+
+        public Task CommitAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Context.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            Disposing?.Invoke(this, EventArgs.Empty);
+            Context.Dispose();
+        }
+
+        public void RegisterAfterCommitAction(Action action)
+        {
+            Commit();
+            action?.Invoke();
         }
     }
 }

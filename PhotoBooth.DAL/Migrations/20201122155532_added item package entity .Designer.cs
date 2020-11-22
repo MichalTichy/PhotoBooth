@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoBooth.DAL;
 
 namespace PhotoBooth.DAL.Migrations
 {
     [DbContext(typeof(PhotoBoothContext))]
-    partial class PhotoBoothContextModelSnapshot : ModelSnapshot
+    [Migration("20201122155532_added item package entity ")]
+    partial class addeditempackageentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -467,7 +469,7 @@ namespace PhotoBooth.DAL.Migrations
             modelBuilder.Entity("PhotoBooth.DAL.Entity.Product", b =>
                 {
                     b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", null)
-                        .WithMany("Products")
+                        .WithMany("ProductIds")
                         .HasForeignKey("ItemPackageId");
 
                     b.HasOne("PhotoBooth.DAL.Entity.Order", null)
@@ -478,7 +480,7 @@ namespace PhotoBooth.DAL.Migrations
             modelBuilder.Entity("PhotoBooth.DAL.Entity.RentalItem", b =>
                 {
                     b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", null)
-                        .WithMany("RentalItems")
+                        .WithMany("RentalItemTypes")
                         .HasForeignKey("ItemPackageId");
 
                     b.HasOne("PhotoBooth.DAL.Entity.Order", null)

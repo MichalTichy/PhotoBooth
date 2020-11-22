@@ -36,12 +36,12 @@ namespace PhotoBooth.WEB.ViewModels
 
         [Required]
         public OrderMatadata OrderBasicInfo { get; set; }
-        public ICollection<ItemPackage> Packages { get; set; }
+        public ICollection<ItemPackageDTO> Packages { get; set; }
         public ICollection<ProductModel> Products { get; set; }
         public ICollection<RentalItemType> SelectedRentalItemTypes { get; set; } =new List<RentalItemType>();
         public ICollection<Guid> SelectedProductIds { get; set; } =new List<Guid>();
 
-        public ItemPackage SelectedPackage { get; set; }
+        public ItemPackageDTO SelectedPackage { get; set; }
         public override Task PreRender()
         {
             if (OrderMetadataForm)

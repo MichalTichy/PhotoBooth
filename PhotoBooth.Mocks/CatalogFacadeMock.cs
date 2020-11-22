@@ -27,19 +27,19 @@ namespace PhotoBooth.Mocks
             return true;
         }
 
-        public ICollection<ItemPackage> GetAllPackages()
+        public ICollection<ItemPackageDTO> GetAllPackages()
         {
             return GeneratePackages();
         }
 
 
-        public static ICollection<ItemPackage> GeneratePackages()
+        public static ICollection<ItemPackageDTO> GeneratePackages()
         {
             var products = GenerateProducts();
             var rentalItems = GenerateRentalItems();
-            return new List<ItemPackage>()
+            return new List<ItemPackageDTO>()
             {
-                new ItemPackage()
+                new ItemPackageDTO()
                 {
                     Name = "Balík 1",
                     ProductIds = products.Take(1).Select(t=>t.Id).ToList(),
@@ -50,7 +50,7 @@ namespace PhotoBooth.Mocks
                     }
                 },
 
-                new ItemPackage()
+                new ItemPackageDTO()
                 {
                     Name = "Balík 2",
                     ProductIds = products.Take(2).Select(t=>t.Id).ToList(),

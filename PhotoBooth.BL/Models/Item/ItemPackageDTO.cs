@@ -6,7 +6,7 @@ using PhotoBooth.DAL.Entity;
 
 namespace PhotoBooth.BL.Facades
 {
-    public class ItemPackage
+    public class ItemPackageDTO
     {
         public string Name { get; set; }
         public ICollection<RentalItemType> RentalItemTypes { get; set; }

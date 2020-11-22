@@ -46,19 +46,56 @@ namespace UnitTests
 
 
         [Test]
-        public void Test1()
+        public async System.Threading.Tasks.Task Test1Async()
         {
             var uowProvider = new TestUnitOfWorkProvider();
             var idSpeci = Guid.NewGuid();
             var repo = new BaseRepository<Product>(uowProvider, new DateTimeProvider());
             using (var uow = uowProvider.Create())
             {
-                //var dfdfd = EntityFrameworkUnitOfWork.TryGetDbContext(uowProvider).ContextId;
-                //throw new Exception((EntityFrameworkUnitOfWork.TryGetDbContext(uowProvider)  == null )+ " this is the value inserted");
-                
-                repo.GetById(idSpeci);
-                //repo.Insert(new Product() { Id = idSpeci, Name = "name", PictureUrl = "fffffff", DescriptionHtml = "fasdjfklajsdf", });
-                throw new Exception(repo.GetById(idSpeci) + " this is the value inserted");
+                var t = repo.GetById(idSpeci);
+                Assert.AreEqual(t, null);
+            }
+            //insert getById
+            using (var uow = uowProvider.Create())
+            {
+                repo.Insert(new Product() { Id = idSpeci, Name = "name", PictureUrl = "fffffff", DescriptionHtml = "fasdjfklajsdf", });
+                var t = repo.GetById(idSpeci);
+                Assert.IsTrue(t != null);
+            }
+            //insert and store
+            using (var uow = uowProvider.Create())
+            {
+                var t = repo.GetById(idSpeci);
+                Assert.IsTrue(t == null);
+                repo.Insert(new Product() { Id = idSpeci, Name = "name", PictureUrl = "fffffff", DescriptionHtml = "fasdjfklajsdf", });
+                uow.Commit();
+            }
+
+            using (var uow = uowProvider.Create())
+            {
+                var t = repo.GetById(idSpeci);
+                Assert.IsTrue(t != null);
+            }
+            //delete 
+            using (var uow = uowProvider.Create())
+            {
+                repo.Delete(idSpeci);
+                var t = repo.GetById(idSpeci);
+                Assert.IsTrue(t == null);
+                uow.Commit();
+            }
+            using (var uow = uowProvider.Create())
+            {
+                repo.Delete(idSpeci);
+                var t = repo.GetById(idSpeci);
+                Assert.IsTrue(t == null);
+                uow.Commit();
+            }
+            using (var uow = uowProvider.Create())
+            {
+                var t = repo.GetById(idSpeci);
+                Assert.IsTrue(t == null);
             }
         }
     }

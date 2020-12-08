@@ -61,7 +61,7 @@ namespace PhotoBooth.WEB
 
         private void Install(IServiceCollection services)
         {
-            MockInstaller.Install(services); //todo
+            //MockInstaller.Install(services); //todo
             BlInstaller.Install(services);
             DALInstaller.Install(services);
             

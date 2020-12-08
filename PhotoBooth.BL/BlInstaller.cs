@@ -19,7 +19,7 @@ namespace PhotoBooth.BL
             serviceCollection.Scan(selector =>
                 selector.FromCallingAssembly()
                     .AddClasses(classes => classes.AssignableTo(typeof(FacadeBase<>)))
-                    .AsSelf()
+                    .AsImplementedInterfaces()
                     .WithTransientLifetime());
 
             serviceCollection.Scan(selector =>
@@ -29,7 +29,6 @@ namespace PhotoBooth.BL
                     .WithTransientLifetime());
             
             serviceCollection.AddSingleton<IUnitOfWorkRegistry,AsyncLocalUnitOfWorkRegistry>();
-            //serviceCollection.AddSingleton<Func<QUERYTYPE>>(x => () => x.GetService<QUERYTYPE>());
             
             serviceCollection.AddSingleton<IUnitOfWorkProvider, AppUnitOfWorkProvider>();
         }

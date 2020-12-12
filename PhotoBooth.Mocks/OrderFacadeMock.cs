@@ -12,6 +12,9 @@ namespace PhotoBooth.Mocks
 {
     public class OrderFacadeMock : IOrderFacade
     {
+
+        private List<OrderSummaryModel> _orderSummaries = new List<OrderSummaryModel>() { GenerateOrderSummary() };
+
         public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems,
             ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
@@ -107,7 +110,7 @@ namespace PhotoBooth.Mocks
                 new OrderListModel()
                 {
                     Address = "Obránců míru 1592 Rychnov nad Knežnou 516 01",
-                    Id = Guid.Parse("9d75bbc6-206d-422d-a022-0f34719fc3fd"),
+                    Id = Guid.Parse("119567d0-fab4-4e40-9c57-bfa9d8e80732"),
                     RentalSince = new DateTime(2020, 12, 3, 16, 0, 0),
                     RentalTill = new DateTime(2020, 12, 3, 23, 0, 0),
                     Created = new DateTime(2020, 10, 3, 16, 0, 0),
@@ -128,6 +131,19 @@ namespace PhotoBooth.Mocks
                     CustomerFullName = "Marta Jurčíková",
                 }
             };
+        }
+
+        //return ordersummarymodel in case it's in _orderSummaries list, null otherwise
+        public OrderSummaryModel GetOrderById(Guid id)
+        {
+            foreach (var order in _orderSummaries)
+            {
+                if (order.Id == id)
+                {
+                    return order;
+                }
+            }
+            return null;
         }
     }
 }

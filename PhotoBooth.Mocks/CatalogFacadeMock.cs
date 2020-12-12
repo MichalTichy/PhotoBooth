@@ -17,7 +17,7 @@ namespace PhotoBooth.Mocks
 
             return type == null ? availableRentalItems : availableRentalItems.Where(t=>t.Type==type).ToList();
         }
-        public ICollection<ProductModel> GetAvailableProducts(DateTime since, DateTime till)
+        public ICollection<ProductModel> GetAvailableProducts()
         {
             return GenerateProducts();
         }
@@ -187,5 +187,6 @@ namespace PhotoBooth.Mocks
                 }
             };
         }
+
     }
 }

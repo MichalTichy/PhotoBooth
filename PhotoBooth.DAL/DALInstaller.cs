@@ -10,6 +10,8 @@ namespace PhotoBooth.DAL
     {
         public static void Install(IServiceCollection serviceCollection)
         {
+            serviceCollection.AddSingleton<Func<PhotoBoothContext>>(provider => provider.GetService<PhotoBoothContext>);
+            serviceCollection.AddSingleton<IDateTimeProvider, LocalDateTimeProvider>();
             serviceCollection.Scan(selector =>
                 selector.FromCallingAssembly()
                     .AddClasses(classes => classes.AssignableTo(typeof(IRepository<,>)))

@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using PhotoBooth.BL.Queries;
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.DAL.Repository;
@@ -34,6 +35,9 @@ namespace UnitTests
             {
                 OrdersRepository.Insert(o);
                 uow.Commit();
+                OrderListQuery q = new OrderListQuery(UnitOfWorkProvider);
+                
+                var list = q.Execute();
             }
         }
 

@@ -40,5 +40,84 @@ namespace PhotoBooth.DEMO.API.Controllers
             }
             return Ok(order);
         }
+
+        [HttpGet("user/{id}")]
+        public async Task<ActionResult<OrderSummaryModel>> GetOrdersByUser(Guid id)
+        {
+            var orders = await Task.Run(() => _orderFacade.GetOrdersByUser(id));
+            return Ok(orders);
+        }
+
+        [HttpPost()]
+        public async Task<ActionResult<OrderSummaryModel>> CreateOrder(OrderSummaryModel order)
+        {
+            //in case of valid order summary, id will be assigned and the whole order summary will be returned
+            var id = order.Id;
+            var res = await Task.Run(() => _orderFacade.CreateOrder(order));
+            if (res.Id != id)
+            {
+                return Ok(order);
+            }
+            else
+            {
+                return BadRequest(order);
+            }
+        }
+
+        [HttpPost("edit")]
+        public async Task<ActionResult<OrderSummaryModel>> EditOrder(OrderSummaryModel order)
+        {
+            var success = await Task.Run(() => _orderFacade.UpdateOrder(order));
+            if (success)
+            {
+                return Ok();
+            } 
+            else
+            {
+                return BadRequest(order);
+            }
+        }
+
+        [HttpPost("delete")]
+        public async Task<ActionResult<OrderSummaryModel>> DeleteOrder(OrderSummaryModel order)
+        {
+            var success = await Task.Run(() => _orderFacade.DeleteOrder(order.Id));
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(order);
+            }
+        }
+
+        [HttpPost("confirm/{id}")]
+        public async Task<ActionResult<OrderSummaryModel>> ConfirmOrder(Guid id)
+        {
+            var success = await Task.Run(() => _orderFacade.ConfirmOrder(id));
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(id);
+            }
+        }
+
+        [HttpPost("cancel/{id}")]
+        public async Task<ActionResult<OrderSummaryModel>> CancelOrder(Guid id)
+        {
+            var success = await Task.Run(() => _orderFacade.CancelOrder(id));
+            if (success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(id);
+            }
+        }
     }
 }

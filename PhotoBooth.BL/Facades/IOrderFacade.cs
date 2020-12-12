@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
@@ -14,8 +15,11 @@ namespace PhotoBooth.BL.Facades
         ICollection<OrderListModel> GetOrdersByUser(Guid userId);
         OrderSummaryModel GetOrderSummary(Guid id);
         OrderSummaryModel ChangeOrderPrice(Guid id,double newPrice);
-        void ConfirmOrder(Guid orderId);
-        void CancelOrder(Guid orderId);
+        bool ConfirmOrder(Guid orderId);
+        bool CancelOrder(Guid orderId);
+        bool UpdateOrder(OrderSummaryModel order);
+        bool DeleteOrder(Guid orderId);
         OrderSummaryModel GetOrderById(Guid id);
+        OrderSummaryModel CreateOrder(OrderSummaryModel order);
     }
 }

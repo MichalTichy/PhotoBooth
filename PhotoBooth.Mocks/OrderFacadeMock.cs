@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Models.Item.Product;
@@ -45,18 +46,36 @@ namespace PhotoBooth.Mocks
 
         public ICollection<OrderListModel> GetAllOrders()
         {
-            return GenerateOrderListModels();
+            return _orderSummaries.Select(o => new OrderListModel()
+            {
+                Address = o.LocationAddress.ToString(),
+                Id = o.Id,
+                RentalSince = o.RentalSince,
+                RentalTill = o.RentalTill,
+                Created = new DateTime(2020, 10, 3, 16, 0, 0),
+                IsConfirmed = o.ConfirmationDate == null ? false : true,
+                FinalPrice = o.FinalPrice,
+                CustomerFullName = o.Customer.FirstName + " " + o.Customer.LastName,
+            }).ToList();
         }
 
 
         public ICollection<OrderListModel> GetOrdersByUser(Guid userId)
         {
-            return GenerateOrderListModels();
+            if (userId == Guid.Parse("df88b24e-84c0-4758-8fdd-61b176563b23"))
+            {
+                return new List<OrderListModel>(){ GenerateOrderListModels().First() };
+            }
+            return new List<OrderListModel>();
         }
 
         public OrderSummaryModel GetOrderSummary(Guid id)
         {
-            return GenerateOrderSummary();
+            if (id == Guid.Parse("119567d0-fab4-4e40-9c57-bfa9d8e80732"))
+            {
+                return GenerateOrderSummary();
+            }
+            return null;
         }
 
         public OrderSummaryModel ChangeOrderPrice(Guid id, double newPrice)
@@ -66,12 +85,89 @@ namespace PhotoBooth.Mocks
 
 
 
-        public void ConfirmOrder(Guid orderId)
+        public bool ConfirmOrder(Guid orderId)
         {
+            for (int i = 0; i < _orderSummaries.Count(); i++)
+            {
+                if (_orderSummaries[i].Id == orderId)
+                {
+                    _orderSummaries[i].ConfirmationDate = DateTime.Now;
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public void CancelOrder(Guid orderId)
+        //return ordersummarymodel in case it's in _orderSummaries list, null otherwise
+        public OrderSummaryModel GetOrderById(Guid id)
         {
+            foreach (var order in _orderSummaries)
+            {
+                if (order.Id == id)
+                {
+                    return order;
+                }
+            }
+            return null;
+        }
+
+        public bool UpdateOrder(OrderSummaryModel order)
+        {
+            for (int i = 0; i < _orderSummaries.Count(); i++)
+            {
+                if (_orderSummaries[i].Id == order.Id)
+                {
+                    _orderSummaries.Remove(_orderSummaries[i]);
+                    _orderSummaries.Add(order);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool DeleteOrder(Guid orderId)
+        {
+            for (int i = 0; i < _orderSummaries.Count(); i++)
+            {
+                if (_orderSummaries[i].Id == orderId)
+                {
+                    _orderSummaries.Remove(_orderSummaries[i]);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public OrderSummaryModel CreateOrder(OrderSummaryModel order)
+        {
+            //cannot create order with guid
+            if (order.Id != Guid.Empty)
+            {
+                return order;
+            }
+            order.Id = Guid.NewGuid();
+            foreach (var o in _orderSummaries)
+            {
+                if (o.Id == order.Id)
+                {
+                    throw new InvalidOperationException("Order with this id already exists.");
+                }
+            }
+            _orderSummaries.Add(order);
+            return order;
+        }
+
+        public bool CancelOrder(Guid orderId)
+        {
+            for (int i = 0; i < _orderSummaries.Count(); i++)
+            {
+                if (_orderSummaries[i].Id == orderId)
+                {
+                    _orderSummaries[i].ConfirmationDate = null;
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static OrderSummaryModel GenerateOrderSummary()
@@ -133,17 +229,6 @@ namespace PhotoBooth.Mocks
             };
         }
 
-        //return ordersummarymodel in case it's in _orderSummaries list, null otherwise
-        public OrderSummaryModel GetOrderById(Guid id)
-        {
-            foreach (var order in _orderSummaries)
-            {
-                if (order.Id == id)
-                {
-                    return order;
-                }
-            }
-            return null;
-        }
+        
     }
 }

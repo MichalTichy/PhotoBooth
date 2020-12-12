@@ -6,13 +6,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PhotoBooth.BL;
 using PhotoBooth.DAL;
+using PhotoBooth.DAL.Entity;
 using PhotoBooth.Mocks;
 
 namespace PhotoBooth.DEMO.API
@@ -31,6 +34,16 @@ namespace PhotoBooth.DEMO.API
         {
             services.AddControllers();
             Install(services);
+
+            services.AddEntityFrameworkSqlServer()
+                .AddDbContext<PhotoBoothContext>(options =>
+                {
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                });
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<PhotoBoothContext>()
+                .AddDefaultTokenProviders();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

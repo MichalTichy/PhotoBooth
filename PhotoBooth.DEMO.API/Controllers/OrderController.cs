@@ -29,10 +29,10 @@ namespace PhotoBooth.DEMO.API.Controllers
             return _orderFacade.GetOrdersByUser(userId);
         }
 
-        [HttpPost("PrepareOrder")]
-        public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMetadata)
-        {
-            return _orderFacade.PrepareOrder(rentalItems,products,orderMetadata);
-        }
+        //[HttpPost("PrepareOrder")]
+        //public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMetadata)
+        //{
+        //    return _orderFacade.PrepareOrder(rentalItems,products,orderMetadata);
+        //}
     }
 }

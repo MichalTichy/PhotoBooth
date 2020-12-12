@@ -11,7 +11,7 @@ namespace PhotoBooth.BL.Facades
     {
         private readonly UserManager<ApplicationUser> userManager;
 		
-        public UserFacade(UserManager<ApplicationUser> userManager,IRepository<Order,Guid> orderRepository)
+        public UserFacade(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
         }

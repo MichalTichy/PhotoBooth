@@ -1,18 +1,27 @@
+<<<<<<< HEAD
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using NUnit.Framework;
 using PhotoBooth.BL.Models.Order;
 using PhotoBooth.BL.Queries;
+=======
+﻿using NUnit.Framework;
+>>>>>>> e68eac5... added basic test for mapping
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.DAL.Repository;
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore;
 using System;
+<<<<<<< HEAD
 using System.Collections.Generic;
 using System.Linq;
 
 
+=======
+using System.Linq;
+
+>>>>>>> e68eac5... added basic test for mapping
 namespace UnitTests
 {
     public class MappingTests
@@ -28,6 +37,7 @@ namespace UnitTests
         }
 
         [Test]
+<<<<<<< HEAD
         public void OrderMappingTest()
         {
             MapperConfiguration MapConfig = new MapperConfiguration(cfg =>
@@ -79,6 +89,20 @@ namespace UnitTests
                 {
                     q.Execute();
                 });
+=======
+        public void OrderListQueryTest()
+        {
+            Order o = new Order(){
+                RentalSince = new DateTime(2020, 12, 3, 16, 0, 0),
+                RentalTill = new DateTime(2020, 12, 3, 23, 0, 0),
+                Created = new DateTime(2020, 10, 3, 16, 0, 0),
+                FinalPrice = 1234.ToString()
+            };
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                OrdersRepository.Insert(o);
+                uow.Commit();
+>>>>>>> e68eac5... added basic test for mapping
             }
         }
 

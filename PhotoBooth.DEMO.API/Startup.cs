@@ -18,6 +18,7 @@ using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.Mocks;
 
+[assembly: ApiController]
 namespace PhotoBooth.DEMO.API
 {
     public class Startup

@@ -9,9 +9,9 @@ using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
 
+
 namespace PhotoBooth.DEMO.API.Controllers
 {
-    [ApiController]
     [Route("[controller]")]
     public class OrderController : ControllerBase
     {

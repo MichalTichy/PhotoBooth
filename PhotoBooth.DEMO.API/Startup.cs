@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PhotoBooth.BL;
 using PhotoBooth.DAL;
+using PhotoBooth.Mocks;
 
 namespace PhotoBooth.DEMO.API
 {
@@ -62,7 +63,7 @@ namespace PhotoBooth.DEMO.API
 
         private void Install(IServiceCollection services)
         {
-            //MockInstaller.Install(services);
+            MockInstaller.Install(services);
             BlInstaller.Install(services);
             DALInstaller.Install(services);
         }

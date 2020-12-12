@@ -76,7 +76,7 @@ namespace PhotoBooth.DEMO.API
 
         private void Install(IServiceCollection services)
         {
-            MockInstaller.Install(services);
+            //MockInstaller.Install(services);
             BlInstaller.Install(services);
             DALInstaller.Install(services);
         }

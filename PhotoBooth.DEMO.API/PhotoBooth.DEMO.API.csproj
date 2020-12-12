@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PhotoBooth.BL\PhotoBooth.BL.csproj" />
+    <ProjectReference Include="..\PhotoBooth.Mocks\PhotoBooth.Mocks.csproj" />
   </ItemGroup>
 
 

@@ -118,7 +118,7 @@ namespace PhotoBooth.WEB.ViewModels
         {
 
             Packages = _catalogFacade.GetAllPackages();
-            Products = _catalogFacade.GetAvailableProducts(OrderBasicInfo.Since, OrderBasicInfo.Till);
+            Products = _catalogFacade.GetAvailableProducts();
         }
         private void LoadDataForBoothSelect()
         {

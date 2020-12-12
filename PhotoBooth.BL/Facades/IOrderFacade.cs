@@ -16,8 +16,11 @@ namespace PhotoBooth.BL.Facades
         ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false);
         OrderSummaryModel GetOrderSummary(Guid id);
         OrderSummaryModel ChangeOrderPrice(Guid id,double newPrice);
-        void ConfirmOrder(Guid orderId);
-        void CancelOrder(Guid orderId);
+        bool ConfirmOrder(Guid orderId);
+        bool CancelOrder(Guid orderId);
+        bool UpdateOrder(OrderSummaryModel order);
+        bool DeleteOrder(Guid orderId);
         OrderSummaryModel GetOrderById(Guid id);
+        OrderSummaryModel CreateOrder(OrderSummaryModel order);
     }
 }

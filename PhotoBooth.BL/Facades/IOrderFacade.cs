@@ -18,5 +18,6 @@ namespace PhotoBooth.BL.Facades
         OrderSummaryModel ChangeOrderPrice(Guid id,double newPrice);
         void ConfirmOrder(Guid orderId);
         void CancelOrder(Guid orderId);
+        OrderSummaryModel GetOrderById(Guid id);
     }
 }

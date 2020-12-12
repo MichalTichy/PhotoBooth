@@ -28,7 +28,7 @@ namespace PhotoBooth.BL.Facades
             throw new NotImplementedException();
         }
 
-        public ICollection<ProductModel> GetAvailableProducts(DateTime since, DateTime till)
+        public ICollection<ProductModel> GetAvailableProducts()
         {
             var query = new ProductsQuery(base.UnitOfWorkFactory);
             query.AddSortCriteria(x => x.AmountLeft > 0);

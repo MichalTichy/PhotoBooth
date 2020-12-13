@@ -8,10 +8,11 @@ using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
-
+using PhotoBooth.DEMO.API.Filters;
 
 namespace PhotoBooth.DEMO.API.Controllers
 {
+    [QueryFilter]
     [Route("api/[controller]")]
     public class OrdersController : ControllerBase
     {

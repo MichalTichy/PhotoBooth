@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Item.Product;
+using PhotoBooth.DEMO.API.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PhotoBooth.DEMO.API.Controllers
 {
+    [QueryFilter]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {

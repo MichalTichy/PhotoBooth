@@ -17,6 +17,11 @@ namespace PhotoBooth.DEMO.API.Controllers
     {
         private readonly IProductFacade _productFacade;
 
+        public ProductsController(IProductFacade productFacade)
+        {
+            _productFacade = productFacade;
+        }
+
         // GET: api/<ProductsController>
         [HttpGet]
         public async Task<ActionResult<ProductModel>> GetAllProducts()
@@ -62,14 +67,14 @@ namespace PhotoBooth.DEMO.API.Controllers
         }
 
         [HttpPost("delete")]
-        public async Task<ActionResult<Guid>> EditProduct(Guid id)
+        public async Task<ActionResult<Guid>> DeleteProduct(ProductModel product)
         {
-            var success = await _productFacade.DeleteProductAsync(id);
+            var success = await _productFacade.DeleteProductAsync(product.Id);
             if (success)
             {
-                return Ok(id);
+                return Ok(product);
             }
-            return BadRequest(id);
+            return BadRequest(product);
         }
     }
 }

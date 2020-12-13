@@ -41,7 +41,6 @@ namespace PhotoBooth.BL.Facades
 
         public bool DeleteOrder(Guid orderId)
         {
-<<<<<<< HEAD
             using(var uow = UnitOfWorkFactory.Create())
             {
                 _repository.Delete(orderId);
@@ -55,26 +54,18 @@ namespace PhotoBooth.BL.Facades
                 }
             }
             return true;
-=======
-            throw new NotImplementedException();
->>>>>>> debugging - getAllOrders() implemented in ordersFacade
         }
 
         public ICollection<OrderListModel> GetAllOrders()
         {
-<<<<<<< HEAD
             using (UnitOfWorkFactory.Create())
             {
                 return new OrderListQuery(UnitOfWorkFactory).Execute();
             }
-=======
-            return new OrderListQuery(base.UnitOfWorkFactory).Execute();
->>>>>>> debugging - getAllOrders() implemented in ordersFacade
         }
 
         public OrderSummaryModel GetOrderById(Guid id)
         {
-<<<<<<< HEAD
             Order o;
             using (var uow = UnitOfWorkFactory.Create())
             {
@@ -90,9 +81,6 @@ namespace PhotoBooth.BL.Facades
                 Id = o.Id,
                 FinalPrice = int.Parse(o.FinalPrice)
             };
-=======
-            throw new NotImplementedException();
->>>>>>> debugging - getAllOrders() implemented in ordersFacade
         }
 
         public ICollection<OrderListModel> GetOrdersByUser(Guid userId)

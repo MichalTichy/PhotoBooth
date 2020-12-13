@@ -60,8 +60,6 @@ namespace PhotoBooth.DEMO.API
                 throw new SecurityException("This API is for demo purposes only! The API lacks ANY security.");
             }
 
-
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -77,9 +75,9 @@ namespace PhotoBooth.DEMO.API
 
         private void Install(IServiceCollection services)
         {
-            //MockInstaller.Install(services);
-            BlInstaller.Install(services);
-            DALInstaller.Install(services);
+            MockInstaller.Install(services);
+            //BlInstaller.Install(services);
+            //DALInstaller.Install(services);
         }
     }
 }

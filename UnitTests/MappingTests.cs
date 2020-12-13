@@ -72,11 +72,14 @@ namespace UnitTests
         [Test]
         public void QueryTest()
         {
-            OrderListQuery q = new OrderListQuery(UnitOfWorkProvider);
-            Assert.DoesNotThrow(() =>
+            using (UnitOfWorkProvider.Create())
             {
-                q.Execute();
-            });
+                OrderListQuery q = new OrderListQuery(UnitOfWorkProvider);
+                Assert.DoesNotThrow(() =>
+                {
+                    q.Execute();
+                });
+            }
         }
 
         protected PhotoBoothContext GetBoothContext(EntityFrameworkUnitOfWork<PhotoBoothContext> unitOfWork)

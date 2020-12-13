@@ -46,7 +46,10 @@ namespace PhotoBooth.BL.Facades
 
         public ICollection<OrderListModel> GetAllOrders()
         {
-            return new OrderListQuery(base.UnitOfWorkFactory).Execute();
+            using (UnitOfWorkFactory.Create())
+            {
+                return new OrderListQuery(UnitOfWorkFactory).Execute();
+            }
         }
 
         public OrderSummaryModel GetOrderById(Guid id)

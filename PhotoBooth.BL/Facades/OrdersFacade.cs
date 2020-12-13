@@ -41,7 +41,19 @@ namespace PhotoBooth.BL.Facades
 
         public bool DeleteOrder(Guid orderId)
         {
-            throw new NotImplementedException();
+            using(var uow = UnitOfWorkFactory.Create())
+            {
+                _repository.Delete(orderId);
+                try
+                {
+                    uow.Commit();
+                } 
+                catch
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public ICollection<OrderListModel> GetAllOrders()
@@ -54,7 +66,21 @@ namespace PhotoBooth.BL.Facades
 
         public OrderSummaryModel GetOrderById(Guid id)
         {
-            throw new NotImplementedException();
+            Order o;
+            using (var uow = UnitOfWorkFactory.Create())
+            {
+                o = _repository.GetById(id);
+            }
+            //temporiary solution while mapping services are not implemented
+            if(o == null)
+            {
+                return null;
+            }
+            return new OrderSummaryModel()
+            {
+                Id = o.Id,
+                FinalPrice = int.Parse(o.FinalPrice)
+            };
         }
 
         public ICollection<OrderListModel> GetOrdersByUser(Guid userId)

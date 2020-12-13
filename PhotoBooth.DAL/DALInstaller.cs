@@ -10,6 +10,7 @@ namespace PhotoBooth.DAL
     {
         public static void Install(IServiceCollection serviceCollection)
         {
+            serviceCollection.AddTransient<PhotoBoothContext>();
             serviceCollection.AddSingleton<Func<PhotoBoothContext>>(provider =>
             {
                 var s = provider.CreateScope();

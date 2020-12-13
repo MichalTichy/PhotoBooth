@@ -36,7 +36,13 @@ namespace PhotoBooth.BL.Facades
 
         public OrderSummaryModel CreateOrder(OrderSummaryModel order)
         {
-            throw new NotImplementedException();
+            var uow = UnitOfWorkFactory.Create();
+            _repository.Insert(new Order()
+            {
+                FinalPrice = "1222"
+            });
+            uow.Commit();
+            return order;
         }
 
         public bool DeleteOrder(Guid orderId)
@@ -58,10 +64,8 @@ namespace PhotoBooth.BL.Facades
 
         public ICollection<OrderListModel> GetAllOrders()
         {
-            using (UnitOfWorkFactory.Create())
-            {
-                return new OrderListQuery(UnitOfWorkFactory).Execute();
-            }
+            UnitOfWorkFactory.Create();
+            return new OrderListQuery(UnitOfWorkFactory).Execute();
         }
 
         public OrderSummaryModel GetOrderById(Guid id)

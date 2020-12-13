@@ -130,8 +130,12 @@ namespace UnitTests
             OrderListQuery q = new OrderListQuery(UnitOfWorkProvider);
             Assert.DoesNotThrow(() =>
             {
-                q.Execute();
-            });
+                OrderListQuery q = new OrderListQuery(UnitOfWorkProvider);
+                Assert.DoesNotThrow(() =>
+                {
+                    q.Execute();
+                });
+            }
         }
 
         protected PhotoBoothContext GetBoothContext(EntityFrameworkUnitOfWork<PhotoBoothContext> unitOfWork)

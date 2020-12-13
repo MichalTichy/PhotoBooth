@@ -8,6 +8,7 @@ namespace PhotoBooth.Mocks
         public static void Install(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IOrderFacade, OrderFacadeMock>();
+            serviceCollection.AddSingleton<IProductFacade, ProductFacadeMock>();
             serviceCollection.AddSingleton<ICatalogFacade,CatalogFacadeMock>();
         }
     }

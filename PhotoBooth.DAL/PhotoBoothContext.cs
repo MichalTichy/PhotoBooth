@@ -5,12 +5,8 @@ using PhotoBooth.DAL.Entity;
 
 namespace PhotoBooth.DAL
 {
-    public class PhotoBoothContext : IdentityDbContext<ApplicationUser>
+    public class PhotoBoothContext : DbContext
     {
-        public PhotoBoothContext()
-        {
-
-        }
 
         public PhotoBoothContext(DbContextOptions options)
             : base(options)

@@ -5,7 +5,7 @@ using PhotoBooth.DAL.Entity;
 
 namespace PhotoBooth.DAL.Entity
 {
-    public class ItemPackage : EntityBase
+    public class ItemPackage : IEntity
     {
         [MaxLength(100)]
         public string Name { get; set; }

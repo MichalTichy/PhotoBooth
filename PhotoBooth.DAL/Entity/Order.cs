@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace PhotoBooth.DAL.Entity
 {
-    public class Order : EntityBase
+    public class Order : IEntity
     {
         public DateTime Created { get; set; }
         public DateTime? ConfirmationDate { get; set; }

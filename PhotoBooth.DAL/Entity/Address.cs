@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 namespace PhotoBooth.DAL.Entity
 {
-    public class Address : EntityBase
+    public class Address : IEntity
     {
+        public Guid Id { get; set; }
         [MaxLength(100)]
         public string City { get; set; }
         [MaxLength(20)]

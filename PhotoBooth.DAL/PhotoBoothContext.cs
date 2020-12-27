@@ -7,7 +7,12 @@ namespace PhotoBooth.DAL
 {
     public class PhotoBoothContext : DbContext
     {
-
+        private string connectionString { get; set; }
+        public PhotoBoothContext() { }
+        public PhotoBoothContext(string connectionString)
+        {
+            this.connectionString = connectionString;
+        }
         public PhotoBoothContext(DbContextOptions options)
             : base(options)
         {
@@ -24,7 +29,11 @@ namespace PhotoBooth.DAL
 
         public DbSet<ItemPackage> ItemPackages { get; set; }
 
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(connectionString);
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 
 }

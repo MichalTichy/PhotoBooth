@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 namespace PhotoBooth.DAL.Entity
 {
-    public abstract class ItemBase : EntityBase
+    public abstract class ItemBase : IEntity
     {
+        public Guid Id { get; set; }
         [MaxLength(150)]
         public string Name { get; set; }
         [MaxLength(250)]

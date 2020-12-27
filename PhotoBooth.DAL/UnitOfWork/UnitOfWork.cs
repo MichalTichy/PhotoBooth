@@ -8,69 +8,74 @@ namespace PhotoBooth.DAL.UnitOfWork
 {
     public class UnitOfWork : IDisposable
     {
-        private BaseRepositoryWraper<Address> addressRepo;
-        private BaseRepositoryWraper<ItemPackage> itemPackageRepo;
-        private BaseRepositoryWraper<Order> orderRepo;
-        private BaseRepositoryWraper<Product> productRepo;
-        private BaseRepositoryWraper<RentalItem> renatalItemRepo;
+        private PhotoBoothContext context = new PhotoBoothContext();
+        private BaseRepository<Address> addressRepo;
+        private BaseRepository<ItemPackage> itemPackageRepo;
+        private BaseRepository<Order> orderRepo;
+        private BaseRepository<Product> productRepo;
+        private BaseRepository<RentalItem> renatalItemRepo;
 
         public UnitOfWork(string database)
         {
-            var context = new PhotoBoothContext(database);
-            addressRepo = new BaseRepositoryWraper<Address>(context);
-            itemPackageRepo= new BaseRepositoryWraper<ItemPackage>(context);
-            orderRepo = new BaseRepositoryWraper<Order>(context);
-            productRepo = new BaseRepositoryWraper<Product>(context);
-            renatalItemRepo = new BaseRepositoryWraper<RentalItem>(context);
+            context = new PhotoBoothContext(database);
         }
         public UnitOfWork()
         {
             context = new PhotoBoothContext();
         }
-        public BaseRepository<Address> AddressRepository
+        public BaseRepository<Address> AddressRepository 
         {
             get
             {
-                if (this.addressRepo == null)
+                if (addressRepo == null)
                 {
                     this.addressRepo = new BaseRepository<Address>(context);
                 }
                 return addressRepo;
             }
         }
-        public BaseRepository<ItemPackage> ItemPackageRepository
+        public BaseRepository<ItemPackage> ItempackageRepository 
         {
             get
             {
-                if (this.itemPackageRepo == null)
+                if (itemPackageRepo == null)
                 {
                     this.itemPackageRepo = new BaseRepository<ItemPackage>(context);
                 }
                 return itemPackageRepo;
             }
         }
-
         public BaseRepository<Order> OrderRepository
         {
             get
             {
-                if (this.orderRepo == null)
+                if (orderRepo == null)
                 {
                     this.orderRepo = new BaseRepository<Order>(context);
                 }
                 return orderRepo;
             }
         }
-
         public BaseRepository<Product> ProductRepository
         {
             get
             {
-                if (this.productRepo == null)
+                if (productRepo== null)
                 {
                     this.productRepo = new BaseRepository<Product>(context);
                 }
                 return productRepo;
+            }
+        }
+        public BaseRepository<RentalItem> RentalItemRepository
+        {
+            get
+            {
+                if (renatalItemRepo == null)
+                {
+                    this.renatalItemRepo = new BaseRepository<RentalItem>(context);
+                }
+                return renatalItemRepo;
             }
         }
 

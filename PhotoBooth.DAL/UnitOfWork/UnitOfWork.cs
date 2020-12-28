@@ -95,17 +95,17 @@ namespace PhotoBooth.DAL.UnitOfWork
         {
             object temp = null;
             if (typeof(T) == typeof(Address))
-                temp = (object)AddressRepository;
+                temp = AddressRepository;
             if (typeof(T) == typeof(ItemPackage))
-                temp = (object)ItempackageRepository;
+                temp = ItempackageRepository;
             if (typeof(T) == typeof(Order))
-                temp = (object)OrderRepository;
+                temp = OrderRepository;
             if (typeof(T) == typeof(Product))
-                temp = (object)ProductRepository;
+                temp = ProductRepository;
             if (typeof(T) == typeof(RentalItem))
-                temp = (object)RentalItemRepository;
+                temp = RentalItemRepository;
             if (typeof(T) == typeof(ApplicationUser))
-                temp = (object)ApplicationUserRepository;
+                temp = ApplicationUserRepository;
 
 
             return (BaseRepository<T>)temp;

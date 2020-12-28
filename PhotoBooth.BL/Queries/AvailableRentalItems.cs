@@ -12,17 +12,28 @@ namespace PhotoBooth.BL.Queries
 {
     class AvailableRentalItems : QueryBase<RentalItem, RentalItemModel>
     {
-        public AvailableRentalItems(string databaseLink = "") : base(databaseLink) { }
+        private DateTime since;
+        private DateTime till;
+        public AvailableRentalItems(DateTime since, DateTime till, string databaseLink = "") : base(databaseLink) 
+        {
+            this.since = since;
+            this.till = till;
+        }
 
-        public override ICollection<RentalItem> ExecuteAsync()
+        public override ICollection<RentalItemModel> ExecuteAsync()
         {
             using (var uow = new UnitOfWork())
             {
-                var usedItems = uow.OrderRepository
-                IQueryable temp = uow.GetRepo<TStart>().Get(fPredicate, sortLambda, "").Take(pageSize).AsQueryable();
-                return (ICollection<RentalItem>)temp.ProjectTo<RentalItem>(MapConfig);
+                var usedOrders = uow.OrderRepository.Get(x => (x.RentalSince >= since && x.RentalSince <= till) || (x.RentalTill >= since && x.RentalTill <= till));
+                var items = usedOrders.SelectMany(x => x.RentalItems).ToHashSet();
+                IQueryable temp = uow.GetRepo<RentalItem>().Get(x => !items.Contains(x), sortLambda, "").Take(pageSize).AsQueryable();
+                return (ICollection<RentalItemModel>)temp.ProjectTo<RentalItemModel>(MapConfig);
             }
         }
 
+        internal ICollection<RentalItemModel> Execute()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

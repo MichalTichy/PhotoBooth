@@ -48,10 +48,10 @@ namespace PhotoBooth.BL.Queries
 
         public virtual ICollection<TResult> ExecuteAsync()
         {
-            using (var uow = new UnitOfWork())
+            using (var uow = (specialDatabaseLink == "") ? new UnitOfWork() : new UnitOfWork(specialDatabaseLink))
             {
                 IQueryable temp = uow.GetRepo<TStart>().Get(fPredicate, sortLambda, "").Take(pageSize).AsQueryable();
-                return (ICollection<TResult>)temp.ProjectTo<TResult>(MapConfig);
+                return (ICollection<TResult>)temp.ProjectTo<TResult>(MapConfig).ToList();
             }
         }
     

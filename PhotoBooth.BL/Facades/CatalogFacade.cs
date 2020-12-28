@@ -19,9 +19,7 @@ namespace PhotoBooth.BL.Facades
 
         public bool AreAllRentalItemsAvailable(ICollection<RentalItemModel> items, DateTime since, DateTime till)
         {
-            var availabreRepo = new AvailableRentalItems();
-            availabreRepo.Where(x => x. )
-            var availables = 
+            var availables = new AvailableRentalItems(since, till).ExecuteAsync();
             return items.All(x => availables.Contains(x));
         }
 
@@ -32,14 +30,14 @@ namespace PhotoBooth.BL.Facades
 
         public ICollection<ProductModel> GetAvailableProducts()
         {
-            var query = new ProductsQuery(base.UnitOfWorkFactory);
-            query.AddSortCriteria(x => x.AmountLeft > 0);
-            return query.Execute();
+            var query = new ProductsQuery();
+            query.Where(x => x.AmountLeft > 0);
+            return query.ExecuteAsync();
         }
 
         public ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType? type = null)
         {
-            return new AvailableRentalItems(base.UnitOfWorkFactory, since, till).Execute();
+            return new AvailableRentalItems( since, till).ExecuteAsync();
         }
     }
 }

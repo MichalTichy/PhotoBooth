@@ -11,16 +11,9 @@ namespace PhotoBooth.BL.Queries
 {
     public class ApplicationUserLisstModelQuery : QueryBase<ApplicationUser, ApplicationUserListModel>
     {
-        public ApplicationUserLisstModelQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
+        public ApplicationUserLisstModelQuery(string dbName = "") : base(dbName)
         {
         }
 
-        protected override IQueryable<ApplicationUserListModel> GetQueryable()
-        {
-            return this.Context.Users
-                .OrderBy(x => x.FirstName)
-                .ThenBy(x => x.LastName)
-                .ProjectTo<ApplicationUserListModel>(MapConfig);
-        }
     }
 }

@@ -9,15 +9,8 @@ namespace PhotoBooth.BL.Queries
 {
     public class OrderSummaryQuery : QueryBase<Order, OrderSummaryModel>
     {
-        public OrderSummaryQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
+        public OrderSummaryQuery(string dbName = "") : base(dbName)
         {
-        }
-
-        protected override IQueryable<OrderSummaryModel> GetQueryable()
-        {
-            return this.Context.Orders
-                .OrderBy(x => x.ConfirmationDate)
-                .ProjectTo<OrderSummaryModel>(MapConfig);
         }
     }
 }

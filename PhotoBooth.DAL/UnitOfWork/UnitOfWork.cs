@@ -14,6 +14,7 @@ namespace PhotoBooth.DAL.UnitOfWork
         private BaseRepository<Order> orderRepo;
         private BaseRepository<Product> productRepo;
         private BaseRepository<RentalItem> renatalItemRepo;
+        private BaseRepository<ApplicationUser> applicationUserRepo;
 
         public UnitOfWork(string database)
         {
@@ -23,7 +24,7 @@ namespace PhotoBooth.DAL.UnitOfWork
         {
             context = new PhotoBoothContext();
         }
-        public BaseRepository<Address> AddressRepository 
+        public BaseRepository<Address> AddressRepository
         {
             get
             {
@@ -34,7 +35,7 @@ namespace PhotoBooth.DAL.UnitOfWork
                 return addressRepo;
             }
         }
-        public BaseRepository<ItemPackage> ItempackageRepository 
+        public BaseRepository<ItemPackage> ItempackageRepository
         {
             get
             {
@@ -60,7 +61,7 @@ namespace PhotoBooth.DAL.UnitOfWork
         {
             get
             {
-                if (productRepo== null)
+                if (productRepo == null)
                 {
                     this.productRepo = new BaseRepository<Product>(context);
                 }
@@ -78,7 +79,38 @@ namespace PhotoBooth.DAL.UnitOfWork
                 return renatalItemRepo;
             }
         }
+        public BaseRepository<ApplicationUser> ApplicationUserRepository
+        {
+            get
+            {
+                if (applicationUserRepo == null)
+                {
+                    this.applicationUserRepo = new BaseRepository<ApplicationUser>(context);
+                }
+                return applicationUserRepo;
+            }
+        }
 
+        public BaseRepository<T> GetRepo<T>() where T : class, IEntity, new()
+        {
+            object temp = null;
+            if (typeof(T) == typeof(Address))
+                temp = (object)AddressRepository;
+            if (typeof(T) == typeof(ItemPackage))
+                temp = (object)ItempackageRepository;
+            if (typeof(T) == typeof(Order))
+                temp = (object)OrderRepository;
+            if (typeof(T) == typeof(Product))
+                temp = (object)ProductRepository;
+            if (typeof(T) == typeof(RentalItem))
+                temp = (object)RentalItemRepository;
+            if (typeof(T) == typeof(ApplicationUser))
+                temp = (object)ApplicationUserRepository;
+
+
+            return (BaseRepository<T>)temp;
+        }
+            
 
         public void Save()
         {

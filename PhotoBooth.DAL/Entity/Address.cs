@@ -2,9 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 namespace PhotoBooth.DAL.Entity
 {
-    public class Address : IEntity
+    public class Address : EntityBase
     {
-        public Guid Id { get; set; }
         [MaxLength(100)]
         public string City { get; set; }
         [MaxLength(20)]

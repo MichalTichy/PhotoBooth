@@ -19,7 +19,9 @@ namespace PhotoBooth.BL.Facades
 
         public bool AreAllRentalItemsAvailable(ICollection<RentalItemModel> items, DateTime since, DateTime till)
         {
-            var availables = new AvailableRentalItems(base.UnitOfWorkFactory, since, till).Execute();
+            var availabreRepo = new AvailableRentalItems();
+            availabreRepo.Where(x => x. )
+            var availables = 
             return items.All(x => availables.Contains(x));
         }
 

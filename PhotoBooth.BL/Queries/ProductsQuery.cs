@@ -11,16 +11,9 @@ namespace PhotoBooth.BL.Queries
 {
     public class ProductsQuery : QueryBase<Product, ProductModel>
     {
-        public ProductsQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
+        public ProductsQuery(string dbName = "") : base(dbName)
         {
         }
 
-        protected override IQueryable<ProductModel> GetQueryable()
-        {
-            return this.Context.Products
-                .OrderBy(x => x.Name)
-                .ThenBy(x => x.Price)
-                .ProjectTo<ProductModel>(MapConfig);
-        }
     }
 }

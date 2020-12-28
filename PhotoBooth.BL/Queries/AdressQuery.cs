@@ -4,19 +4,15 @@ using PhotoBooth.BL.Models.Address;
 using PhotoBooth.DAL.Entity;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using System.Collections.Generic;
+using PhotoBooth.DAL.UnitOfWork;
+using PhotoBooth.BL.Models.Item.RentalItem;
 
 namespace PhotoBooth.BL.Queries
 {
     public class AddressQuery : QueryBase<Address, AddressModel>
     {
-        public AddressQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
-        {
-        }
+        public AddressQuery(string dbName = "") : base(dbName) { }
 
-        protected override IQueryable<AddressModel> GetQueryable()
-        {
-            return this.Context.Addresses
-                .ProjectTo<AddressModel>(MapConfig);
-        }
     }
 }

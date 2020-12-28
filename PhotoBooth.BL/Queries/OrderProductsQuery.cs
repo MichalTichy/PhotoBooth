@@ -12,15 +12,9 @@ namespace PhotoBooth.BL.Queries
 {
     class OrderProductsQuery : QueryBase<Order, OrderProductsModel>
     {
-        public OrderProductsQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
+        public OrderProductsQuery(string dbName = "") : base(dbName)
         {
         }
 
-        protected override IQueryable<OrderProductsModel> GetQueryable()
-        {
-            return this.Context.Orders
-                .OrderBy(x => x.ConfirmationDate)
-                .ProjectTo<OrderProductsModel>(MapConfig);
-        }
     }
 }

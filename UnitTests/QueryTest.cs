@@ -7,7 +7,7 @@ using PhotoBooth.DAL.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using PhotoBooth.BL.Queries;
 
 namespace UnitTests
 {
@@ -40,7 +40,7 @@ namespace UnitTests
             }
             Orders.Add(new Order() { Id = Guid.NewGuid(), RentalItems = RentalItems.Take(13).ToList(), RentalSince = since, RentalTill = till });
 
-            /*using (var db = new PhotoBoothContext(databaseStr))
+            using (var db = new PhotoBoothContext(databaseStr))
             {
                 db.Database.EnsureCreated();
                 db.SaveChanges();
@@ -53,7 +53,7 @@ namespace UnitTests
                 RentalItems.ForEach(x => uow.RentalItemRepository.Create(x));
                 Orders.ForEach(x => uow.OrderRepository.Create(x));
                 uow.Save();
-            }*/
+            }
         }
 
         [Test]
@@ -81,15 +81,15 @@ namespace UnitTests
             
         }
         [Test]
-        public void TestQuery()
+        public void TestAddressQuery()
         {
-            
+
             AddressQuery temp = new AddressQuery(databaseStr);
             var query = temp.ExecuteAsync().ToList();
             var listA = Addresses.Take(10).Select(x => new AddressModel()
             { BuildingNumber = x.BuildingNumber, City = x.City, Id = x.Id, PostalCode = x.PostalCode, Street = x.Street })
                 .ToList();
-            Assert.AreSame(listA.Select(x => x.ToString()), query.Select(x => x.ToString()) ,
+            Assert.AreSame(listA.Select(x => x.ToString()), query.Select(x => x.ToString()),
                 "addressquery does not work correctly" +
                 query.Aggregate("", (a, address) => a + " \n" + address)
                 + "\n\n\n --------------------------"
@@ -97,14 +97,25 @@ namespace UnitTests
 
         }
 
+        [Test]
+        public void TestAvailableQuery()
+        {
+            using (var uow = new UnitOfWork(databaseStr))
+            {
+                throw new Exception(uow.OrderRepository.Get().ToList().Aggregate("", (a,b)=> a + " \n " + b.RentalItems.Count().ToString()));
+            }
+                var temp = new AvailableRentalItems(since, till, databaseStr);
+            Assert.AreEqual(temp.ExecuteAsync().Count, 90);
+        }
+
         [TearDown]
         public void TearDownMethod()
         {
-            /*using (var db = new PhotoBoothContext(databaseStr))
+            using (var db = new PhotoBoothContext(databaseStr))
             {
                 db.Database.EnsureDeleted();
                 db.SaveChanges();
-            }*/
+            }
         }
     }
 }

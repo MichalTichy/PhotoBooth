@@ -10,7 +10,7 @@ using System.Text;
 
 namespace PhotoBooth.BL.Queries
 {
-    class AvailableRentalItems : QueryBase<RentalItem, RentalItemModel>
+    public class AvailableRentalItems : QueryBase<RentalItem, RentalItemModel>
     {
         private DateTime since;
         private DateTime till;
@@ -22,18 +22,14 @@ namespace PhotoBooth.BL.Queries
 
         public override ICollection<RentalItemModel> ExecuteAsync()
         {
-            using (var uow = new UnitOfWork())
+            using (var uow = (specialDatabaseLink == "") ? new UnitOfWork(): new UnitOfWork(specialDatabaseLink))
             {
                 var usedOrders = uow.OrderRepository.Get(x => (x.RentalSince >= since && x.RentalSince <= till) || (x.RentalTill >= since && x.RentalTill <= till));
-                var items = usedOrders.SelectMany(x => x.RentalItems).ToHashSet();
+                var items = usedOrders.Where(x => x != null).SelectMany(x => x.RentalItems);
                 IQueryable temp = uow.GetRepo<RentalItem>().Get(x => !items.Contains(x), sortLambda, "").Take(pageSize).AsQueryable();
                 return (ICollection<RentalItemModel>)temp.ProjectTo<RentalItemModel>(MapConfig);
             }
         }
 
-        internal ICollection<RentalItemModel> Execute()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

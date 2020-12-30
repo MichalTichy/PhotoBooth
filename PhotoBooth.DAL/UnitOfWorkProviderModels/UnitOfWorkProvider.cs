@@ -8,7 +8,7 @@ namespace PhotoBooth.DAL.UnitOfWorkProviderModels
 {
     public class UnitOfWorkProvider : IUnitOfWorkProvider
     {
-        private readonly string dbString;
+        private readonly string dbString = "Server=(localdb)\\mssqllocaldb;Database=PhotoBooth;Trusted_Connection=True;";
         private IUnitOfWork uow;
         public UnitOfWorkProvider() { }
         public UnitOfWorkProvider(string dbString)

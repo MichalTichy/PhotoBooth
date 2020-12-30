@@ -7,7 +7,6 @@ using PhotoBooth.DAL.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PhotoBooth.BL.Queries;
 
 namespace UnitTests
 {
@@ -96,6 +95,8 @@ namespace UnitTests
                 + listA.Aggregate("", (a, address) => a + " \n" + address));
 
         }
+
+
 
         [Test]
         public void TestAvailableQuery()

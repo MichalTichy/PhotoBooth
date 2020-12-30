@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoBooth.Mocks", "PhotoBo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{795F5C94-1BB9-445E-8ED2-AAD70783B81C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoBooth.WEB", "PhotoBooth.WEB\PhotoBooth.WEB.csproj", "{B6EAA389-4B25-4A93-A341-4475BF64B2D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{795F5C94-1BB9-445E-8ED2-AAD70783B81C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{795F5C94-1BB9-445E-8ED2-AAD70783B81C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{795F5C94-1BB9-445E-8ED2-AAD70783B81C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6EAA389-4B25-4A93-A341-4475BF64B2D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6EAA389-4B25-4A93-A341-4475BF64B2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6EAA389-4B25-4A93-A341-4475BF64B2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6EAA389-4B25-4A93-A341-4475BF64B2D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

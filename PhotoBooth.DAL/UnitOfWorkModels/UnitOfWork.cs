@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PhotoBooth.DAL.UnitOfWork
+namespace PhotoBooth.DAL.UnitOfWorkModels
 {
     public class UnitOfWork : IDisposable
     {

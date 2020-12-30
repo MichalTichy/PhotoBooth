@@ -5,12 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Facades\**" />
-    <EmbeddedResource Remove="Facades\**" />
-    <None Remove="Facades\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Riganti.Utils.Infrastructure.EntityFrameworkCore" Version="2.3.0" />
     <PackageReference Include="Scrutor" Version="3.3.0" />

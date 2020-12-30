@@ -10,8 +10,8 @@ namespace PhotoBooth.BL.Facades
     {
         OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata);
         OrderSummaryModel SubmitOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata);
-        ICollection<OrderListModel> GetAllOrders();
-        ICollection<OrderListModel> GetOrdersByUser(Guid userId);
+        ICollection<OrderListModel> GetAllOrders(bool includeDeleted=false);
+        ICollection<OrderListModel> GetOrdersByUser(Guid userId, bool includeDeleted = false);
         OrderSummaryModel GetOrderSummary(Guid id);
         OrderSummaryModel ChangeOrderPrice(Guid id,double newPrice);
         void ConfirmOrder(Guid orderId);

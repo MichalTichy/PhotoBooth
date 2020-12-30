@@ -16,7 +16,6 @@ namespace PhotoBooth.DAL.Entity
         public ICollection<Product> OrderItems { get; set; }
         [MaxLength(100)]
         public string BannerUrl { get; set; }
-        [MaxLength(50)]
-        public string FinalPrice { get; set; }
+        public double FinalPrice { get; set; }
     }
 }

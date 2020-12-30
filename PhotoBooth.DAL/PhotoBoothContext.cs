@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PhotoBooth.DAL.Entity;
@@ -7,6 +8,16 @@ namespace PhotoBooth.DAL
 {
     public class PhotoBoothContext : IdentityDbContext<ApplicationUser>
     {
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
+
+        public override ValueTask DisposeAsync()
+        {
+            return base.DisposeAsync();
+        }
+
         public PhotoBoothContext()
         {
 

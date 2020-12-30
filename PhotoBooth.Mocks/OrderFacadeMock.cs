@@ -40,13 +40,13 @@ namespace PhotoBooth.Mocks
             };
         }
 
-        public ICollection<OrderListModel> GetAllOrders()
+        public ICollection<OrderListModel> GetAllOrders(bool includeDeleted = false)
         {
             return GenerateOrderListModels();
         }
 
 
-        public ICollection<OrderListModel> GetOrdersByUser(Guid userId)
+        public ICollection<OrderListModel> GetOrdersByUser(Guid userId, bool includeDeleted = false)
         {
             return GenerateOrderListModels();
         }

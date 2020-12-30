@@ -14,7 +14,6 @@ namespace PhotoBooth.BL.Queries
     {
         protected MapperConfiguration MapConfig = new MapperConfiguration(cfg =>
                 cfg.CreateMap<TStart, TResult>());
-        public new PhotoBoothContext Context => (PhotoBoothContext)base.Context;
         public QueryBase(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
         {
         }

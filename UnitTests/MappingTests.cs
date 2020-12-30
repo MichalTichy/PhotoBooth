@@ -57,7 +57,7 @@ namespace UnitTests
                 RentalTill = new DateTime(2020, 12, 8, 23, 0, 0),
                 Created = new DateTime(2020, 11, 3, 16, 0, 0),
                 ConfirmationDate = new DateTime(2020, 11, 3, 16, 0, 0),
-                FinalPrice = "4321",
+                FinalPrice = 4321,
                 Customer = new ApplicationUser("Marta Jurčíková")
             };
             IQueryable<Order> orders = new List<Order>() { order }.AsQueryable();
@@ -75,7 +75,7 @@ namespace UnitTests
         {
             using (UnitOfWorkProvider.Create())
             {
-                OrderListQuery q = new OrderListQuery(UnitOfWorkProvider);
+                OrderListQuery q = new OrderListQuery(UnitOfWorkProvider,true);
                 Assert.DoesNotThrow(() =>
                 {
                     q.Execute();
@@ -112,7 +112,7 @@ namespace UnitTests
                 RentalTill = new DateTime(2020, 12, 8, 23, 0, 0),
                 Created = new DateTime(2020, 11, 3, 16, 0, 0),
                 ConfirmationDate = new DateTime(2020, 11, 3, 16, 0, 0),
-                FinalPrice = "4321",
+                FinalPrice =4321,
                 Customer = new ApplicationUser("Marta Jurčíková")
             };
             IQueryable<Order> orders = new List<Order>() { order }.AsQueryable();

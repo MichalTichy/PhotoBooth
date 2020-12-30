@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using PhotoBooth.DAL.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using PhotoBooth.DAL.Entity;
-using Riganti.Utils.Infrastructure.Core;
 
 namespace PhotoBooth.BL.Facades
 {
+    namespace PhotoBooth.BL.Facades
+    {
+    }
+
     public class UserFacade
     {
         private readonly UserManager<ApplicationUser> userManager;
-		
+
         public UserFacade(UserManager<ApplicationUser> userManager)
         {
             this.userManager = userManager;
@@ -39,12 +41,12 @@ namespace PhotoBooth.BL.Facades
         private ClaimsIdentity CreateIdentity(ApplicationUser user)
         {
             var identity = new ClaimsIdentity(
-                new []
+                new[]
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id), 
-                    new Claim(ClaimTypes.Role, "administrator"), 
-                },"Cookie");
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Role, "administrator"),
+                }, "Cookie");
             return identity;
         }
 

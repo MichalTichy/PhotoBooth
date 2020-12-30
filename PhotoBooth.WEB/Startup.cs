@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
@@ -42,11 +43,6 @@ namespace PhotoBooth.WEB
             services.AddAuthorization();
             services.AddWebEncoders();
             Install(services);
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContext<PhotoBoothContext>(options =>
-                {
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-                });
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PhotoBoothContext>()
                 .AddDefaultTokenProviders();
@@ -61,7 +57,12 @@ namespace PhotoBooth.WEB
 
         private void Install(IServiceCollection services)
         {
-            MockInstaller.Install(services); //todo
+            services.AddDbContext<PhotoBoothContext>(builder =>
+            {
+
+                builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            } ,ServiceLifetime.Transient, ServiceLifetime.Singleton);
+
             BlInstaller.Install(services);
             DALInstaller.Install(services);
             

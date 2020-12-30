@@ -13,25 +13,28 @@ namespace PhotoBooth.BL.Queries
     {
         private DateTime OrderSince;
         private DateTime OrderTill;
-        public AvailableRentalItems(IUnitOfWorkProvider unitOfWorkProvider, DateTime OrderSince, DateTime OrderTill) : base(unitOfWorkProvider)
+        private RentalItemType? RentalItemType;
+
+        public AvailableRentalItems(IUnitOfWorkProvider unitOfWorkProvider, DateTime OrderSince, DateTime OrderTill,
+            RentalItemType? rentalItemType=null) : base(unitOfWorkProvider)
         {
             this.OrderSince = OrderSince;
             this.OrderTill = OrderTill;
+            RentalItemType = rentalItemType;
         }
         protected override IQueryable<RentalItemModel> GetQueryable()
         {
-            var temp = Context.Orders
+            var rentedItems = Context.Orders
                 .Where(x => x.RentalSince >= OrderSince && x.RentalTill <= OrderTill)
-                .Select(x => x.RentalItems);
-            return Context.RentalItems
-                .Where(x => temp.Any(y => y.Any(z => x.Id ==z.Id )))
-                .ProjectTo<RentalItemModel>(MapConfig); ;
-        }
+                .SelectMany(x => x.RentalItems).Select(t=>t.Id).ToList();
+            var availableItems = Context.RentalItems.Where(t => !rentedItems.Contains(t.Id));
 
-        public void setTimeCriteria(DateTime since, DateTime till)
-        {
-            OrderSince = since;
-            OrderTill = till;
+            if (RentalItemType!=null)
+            {
+                availableItems = availableItems.Where(t => t.Type == RentalItemType);
+            }
+            return availableItems
+                .ProjectTo<RentalItemModel>(MapConfig); ;
         }
     }
 }

@@ -3,6 +3,6 @@
     public class RentalItem : ItemBase
     {
         public RentalItemType Type { get; set; }
-        public decimal PricePerHour { get; set; }
+        public double PricePerHour { get; set; }
     }
 }

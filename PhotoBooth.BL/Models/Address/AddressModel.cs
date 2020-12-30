@@ -16,7 +16,7 @@ namespace PhotoBooth.BL.Models.Address
         public string BuildingNumber { get; set; }
         public override string ToString()
         {
-            return " city:" + City + " postalCode: " + PostalCode + " street: " + Street + " buildingNum: " + BuildingNumber;
+            return " city:" + City + " postalCode: " + PostalCode + " street: " + Street + " buildingNum: " + BuildingNumber + " id: " + Id.ToString();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace PhotoBooth.BL.Facades
             using (var uow = provider.GetUinOfWork())
             {
                 uow.GetRepo<Order>().Delete(orderId);
-                uow.Commit();
+                uow.Save();
             }
         }
 
@@ -89,7 +89,7 @@ namespace PhotoBooth.BL.Facades
                     , Customer = new ApplicationUser("hektor")
                 };
                 uow.GetRepo<Order>().Update(model);
-                uow.Commit();
+                uow.Save();
             }
             return PrepareOrder(rentalItems, products, orderMatadata);
         }

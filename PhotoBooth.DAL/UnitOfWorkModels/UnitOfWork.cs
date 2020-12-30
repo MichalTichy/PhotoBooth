@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PhotoBooth.DAL.UnitOfWorkModels
 {
-    public class UnitOfWork : IDisposable
+    public class UnitOfWork : IUnitOfWork
     {
         private PhotoBoothContext context = new PhotoBoothContext();
         private BaseRepository<Address> addressRepo;

@@ -8,7 +8,7 @@ namespace PhotoBooth.DAL.UnitOfWorkProviderModels
 {
     public class UnitOfWorkProvider : IUnitOfWorkProvider
     {
-        private string dbString;
+        private readonly string dbString;
         private IUnitOfWork uow;
         public UnitOfWorkProvider() { }
         public UnitOfWorkProvider(string dbString)

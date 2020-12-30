@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Compile Remove="MappingTests.cs" />
-    <Compile Remove="RepositoryTests.cs" />
     <Compile Remove="TestUnitOfWorkProvider.cs" />
   </ItemGroup>
 

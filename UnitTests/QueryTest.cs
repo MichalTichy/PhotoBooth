@@ -14,86 +14,67 @@ namespace UnitTests
 
     public class QueryTest
     {
-        public string databaseStr = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=IlinovTestDB011";
-        public List<Address> Addresses = new List<Address>();
-        public List<ApplicationUser> Users = new List<ApplicationUser>();
-        public List<Order> Orders = new List<Order>();
-        public List<ItemPackage> ItemPackages = new List<ItemPackage>();
-        public List<ApplicationUser> ApplicationUsers = new List<ApplicationUser>();
-        public List<RentalItem> RentalItems = new List<RentalItem>();
-        public DateTime since = new DateTime(1998, 9, 11);
-        public DateTime till = new DateTime(1999, 9, 11);
+
+        public static bool loadDbStart = true;
+        public static bool destroyDbEnd = false;
         [SetUp]
         public void SetUp()
         {
-            for (int i = 0; i < 25; i++)
+            if (loadDbStart)
             {
-                Addresses.Add(new Address() { City = "Kosice", PostalCode = i.ToString(), Street = "lunik " + i, BuildingNumber = "azp" + (i * i) });
-            }
-            for (int i = 0; i < 25; i++)
-            {
-                ApplicationUsers.Add(new ApplicationUser("hektor" + i) { FirstName = "Macko", LastName = "Usko" + i });
-            }
-            for (int i = 0; i < 100; i++)
-            {
-                RentalItems.Add(new RentalItem { Id = Guid.NewGuid(), Name = "fotka0" + i, PictureUrl = "new Photo of" + i });
-            }
-            Orders.Add(new Order() { Id = Guid.NewGuid(), RentalItems = RentalItems.Take(13).ToList(), RentalSince = since, RentalTill = till });
-
-            using (var db = new PhotoBoothContext(databaseStr))
-            {
-                db.Database.EnsureCreated();
-                db.SaveChanges();
-            }
-            
-            using (var uow = new UnitOfWork(databaseStr))
-            {
-                Addresses.ForEach(x => uow.AddressRepository.Create(x));
-                ApplicationUsers.ForEach(x => uow.ApplicationUserRepository.Create(x));
-                RentalItems.ForEach(x => uow.RentalItemRepository.Create(x));
-                Orders.ForEach(x => uow.OrderRepository.Create(x));
-                uow.Save();
-            }
-        }
-
-        [Test]
-        public void TestIfDataEmpty()
-        {
-            /* this code needs to be in first test as it creates database and fills it, and if it is in setup it does throws errors,
-             * this cemented part of code mus be run only once
-             * 
-            
-            */
-
-
-
-            using (var uow = new UnitOfWork(databaseStr))
-            {
-                var temp = uow.AddressRepository.Get();
-                var t = temp.Any();
-                Assert.IsTrue(t, "database is empty");
-                /*
-                foreach (var address in uow.AddressRepository.Get())
+                using (var db = new PhotoBoothContext(TestData.databaseStr))
                 {
-                    s = s + address.City + " " + address.PostalCode + " street: " + address.Street + " buildingNum: " + address.BuildingNumber + "\n";
-                }*/
+                    var t = db.Database.EnsureDeleted();
+                    db.SaveChanges();
+                }
+
+                using (var db = new PhotoBoothContext(TestData.databaseStr))
+                {
+                    db.Database.EnsureCreated();
+                    db.SaveChanges();
+                }
+
+                using (var uow = TestData.provider.GetUinOfWork())
+                {
+
+
+                    TestData.Addresses.ForEach(x => uow.GetRepo<Address>().Create(x));
+                    TestData.ApplicationUsers.ForEach(x => uow.GetRepo<ApplicationUser>().Create(x));
+                    //RentalItems.ForEach(x => uow.GetRepo<RentalItem>().Create(x));
+                    uow.GetRepo<Order>().Create(new Order() { Id = Guid.NewGuid(), RentalItems = TestData.RentalItems.Take(10).ToList(), RentalSince = TestData.since, RentalTill = TestData.till });
+                    uow.Save();
+                }
             }
-            
+
+        }
+
+        [Test]
+        public void ThisShouldThrow()
+        {
+            using (var uow = TestData.provider.GetUinOfWork())
+            {
+                throw new Exception(
+                    "ADDRESES: \n"+
+                    uow.GetRepo<Address>().Get().Aggregate("", (a, b) => a + " " + b + "\n") +
+                    "Users:\n"+
+                    "Orders: \n"+
+                    uow.GetRepo<Order>().Get().Aggregate("", (a, b) => a + " " + b.Id + " " + b?.RentalItems?.Aggregate("list :", (c,d)=> c + ", " +  d.Name) + "\n"));
+            }
         }
         [Test]
-        public void TestAddressQuery()
+        public void TestAddressQuery() // this works but doesnt
         {
 
-            AddressQuery temp = new AddressQuery(new UnitOfWorkProvider(databaseStr));
+            AddressQuery temp = new AddressQuery(new UnitOfWorkProvider(TestData.databaseStr));
             var query = temp.ExecuteAsync().ToList();
-            var listA = Addresses.Take(10).Select(x => new AddressModel()
+            var listA = TestData.Addresses.Take(10).Select(x => new AddressModel()
             { BuildingNumber = x.BuildingNumber, City = x.City, Id = x.Id, PostalCode = x.PostalCode, Street = x.Street })
                 .ToList();
             Assert.AreSame(listA.Select(x => x.ToString()), query.Select(x => x.ToString()),
-                "addressquery does not work correctly" +
+                "addressquery does not work correctly, query count " + query.Count() + "list count :" + listA.Count() +
                 query.Aggregate("", (a, address) => a + " \n" + address)
                 + "\n\n\n --------------------------"
-                + listA.Aggregate("", (a, address) => a + " \n" + address));
+                + listA.Aggregate("", (a, address) => a + " \n" + address)) ;
 
         }
 
@@ -102,22 +83,28 @@ namespace UnitTests
         [Test]
         public void TestAvailableQuery()
         {
-            using (var uow = new UnitOfWork(databaseStr))
+            using (var uow = TestData.provider.GetUinOfWork())
             {
-                throw new Exception(uow.OrderRepository.Get().ToList().Aggregate("", (a,b)=> a + " \n " + b.RentalItems.Count().ToString()));
+                var t = uow.GetRepo<Order>().Get().ToList();
+                var s = t.Aggregate("", (a, b) => a + " \n " + b.RentalItems?.Count().ToString());
+                throw new Exception(s);
             }
-                var temp = new AvailableRentalItems(since, till, new UnitOfWorkProvider(databaseStr));
+                var temp = new AvailableRentalItems(TestData.since, TestData.till, TestData.provider);
             Assert.AreEqual(temp.ExecuteAsync().Count, 90);
         }
 
         [TearDown]
         public void TearDownMethod()
         {
-            using (var db = new PhotoBoothContext(databaseStr))
+            if (destroyDbEnd)
             {
-                db.Database.EnsureDeleted();
-                db.SaveChanges();
+                using (var db = new PhotoBoothContext(TestData.databaseStr))
+                {
+                    db.Database.EnsureDeleted();
+                    db.SaveChanges();
+                }
             }
+            
         }
     }
 }

@@ -50,7 +50,7 @@ namespace PhotoBooth.BL.Queries
         {
             using (var uow = provider.GetUinOfWork())
             {
-                IQueryable temp = uow.GetRepo<TStart>().Get(fPredicate, sortLambda, "").Take(pageSize).AsQueryable();
+                IQueryable temp = uow.GetRepo<TStart>().Get(fPredicate, sortLambda, "").Take(pageSize).ToList().AsQueryable();
                 return (ICollection<TResult>)temp.ProjectTo<TResult>(MapConfig).ToList();
             }
         }

@@ -6,8 +6,8 @@ namespace PhotoBooth.DAL.UnitOfWorkModels
 {
     public interface IUnitOfWork : IDisposable
     {
-        void Commit();
+        void Save();
         BaseRepository<T> GetRepo<T>() where T : class, IEntity, new();
-        void RegisterAvtionSAfterCommit(Action action);
+        //void RegisterAvtionSAfterCommit(Action action);
     }
 }

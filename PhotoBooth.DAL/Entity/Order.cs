@@ -18,5 +18,6 @@ namespace PhotoBooth.DAL.Entity
         public string BannerUrl { get; set; }
         [MaxLength(50)]
         public string FinalPrice { get; set; }
+
     }
 }

@@ -3,7 +3,8 @@ using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Queries;
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
-using PhotoBooth.DAL.UnitOfWork;
+using PhotoBooth.DAL.UnitOfWorkModels;
+using PhotoBooth.DAL.UnitOfWorkProviderModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,7 +84,7 @@ namespace UnitTests
         public void TestAddressQuery()
         {
 
-            AddressQuery temp = new AddressQuery(databaseStr);
+            AddressQuery temp = new AddressQuery(new UnitOfWorkProvider(databaseStr));
             var query = temp.ExecuteAsync().ToList();
             var listA = Addresses.Take(10).Select(x => new AddressModel()
             { BuildingNumber = x.BuildingNumber, City = x.City, Id = x.Id, PostalCode = x.PostalCode, Street = x.Street })
@@ -105,7 +106,7 @@ namespace UnitTests
             {
                 throw new Exception(uow.OrderRepository.Get().ToList().Aggregate("", (a,b)=> a + " \n " + b.RentalItems.Count().ToString()));
             }
-                var temp = new AvailableRentalItems(since, till, databaseStr);
+                var temp = new AvailableRentalItems(since, till, new UnitOfWorkProvider(databaseStr));
             Assert.AreEqual(temp.ExecuteAsync().Count, 90);
         }
 

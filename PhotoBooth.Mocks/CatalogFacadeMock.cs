@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using PhotoBooth.BL.Facades;
+using PhotoBooth.BL.Models;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.DAL.Entity;

@@ -31,9 +31,9 @@ namespace PhotoBooth.Mocks
                 RentalItems = rentalItems,
                 Created = DateTime.Now,
                 BannerUrl = @"https://picsum.photos/200",
-                Customer = orderMatadata.User,
+                Customer = orderMatadata?.User,
                 FinalPrice = 1234,
-                LocationAddress = orderMatadata.Address,
+                LocationAddress = orderMatadata?.Address,
                 OrderItems = products,
                 RentalSince = orderMatadata.Since,
                 RentalTill = orderMatadata.Till

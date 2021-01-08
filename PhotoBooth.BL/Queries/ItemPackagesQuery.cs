@@ -6,6 +6,7 @@ using System.Text;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using PhotoBooth.BL.Facades;
+using PhotoBooth.BL.Models;
 using PhotoBooth.DAL.Entity;
 using Riganti.Utils.Infrastructure.Core;
 

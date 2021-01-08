@@ -11,7 +11,7 @@
         <h1 class="text-center" style="margin:20px; font-weight: 700;">Rezervácia fotobúdky</h1>
         <div>
             <div class="d-flex justify-content-center">
-                <div class="col-12 col-md-6 form-box">
+                <div class="col-12 col-md-8 form-box">
                     <form>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-6">
@@ -38,42 +38,62 @@
         </div>
     </div>
 
-    <div IncludeInPage="{value: ServiceSelect}">
-        <dot:Repeater DataSource="{value: Packages}">
-            <dot:RadioButton CheckedItem="{value: _root.SelectedPackage}" CheckedValue="{value: _this}" Text="{value: Name}" GroupName="Packages" Changed="{command: _root.UpdateItemsBasedOnSelectedPackage()}" />
-        </dot:Repeater>
+    <div class="container" IncludeInPage="{value: ServiceSelect}">
         <div>
-            <div>
-                <h4>Fotobudka</h4>
-                <p>Iam la la novajxo surmare li kiam kaj tamen dolcxe bone la ensxipis ne morti li ne fisxoj turkoj honto</p>
-                <dot:CheckBox CheckedItems="{value: SelectedRentalItemTypes}" CheckedValue="{value: RentalItemType.PhotoBooth}" />
-            </div>
-
-            <div>
-                <h4>Fotopozadí</h4>
-                <p>Aux et de troupeaux enfants porteurs ses mufle monté troupeaux ni les geindre verte monté sais récifs leurs de trombes</p>
-                <dot:CheckBox CheckedItems="{value: SelectedRentalItemTypes}" CheckedValue="{value: RentalItemType.Background}" />
-            </div>
-
-            <div>
-                <h4>Rekvizity</h4>
-                <p>Sí modo fu fragilita se cosa discerniamo quella pieno beato d'esse in di in mentre son tutte manifestamente primo niuno</p>
-                <dot:CheckBox CheckedItems="{value: SelectedRentalItemTypes}" CheckedValue="{value: RentalItemType.Prop}" Changed="{command: _root.RentalItemSelectionChanged()}" />
+            <div class="d-flex justify-content-center">
+                <img class="col-6 col-md-3" src="img/logo.png" />
             </div>
         </div>
-        <dot:Repeater DataSource="{value: Products}">
-            <div>
-
-                <img src="{value: PictureUrl}" height="100" width="100" />
-                <h4>{{value: Name}}</h4>
-                <dot:HtmlLiteral Html="{value: DescriptionHtml}" WrapperTagName="p" />
-                <p>Cena: {{value: Price}}</p>
-                <dot:CheckBox CheckedItems="{value: _root.SelectedProductIds}" CheckedValue="{value: Id}" Changed="{command: _root.ProductsSelectionChanged()}" />
+        <h1 class="text-center" style="margin:20px; font-weight: 700;">Služby</h1>
+        <div>
+            <div class="d-flex justify-content-center">
+                <div class="col-12 col-md-8 form-box">
+                    <form>
+                        <div class="form-row justify-content-center" style="font-size: 30px;">
+                            <dot:Repeater DataSource="{value: Packages}">
+                                <div class="form-check form-check-inline" style="margin-right: 20px;">
+                                    <dot:RadioButton class="form-check-input" GroupName="packages" CheckedItem="{value: _parent.SelectedPackage}" CheckedValue="{value: _this}" Text="{value: Name}" Changed="{command: _parent.UpdateItemsBasedOnSelectedPackage()}"/>
+                                </div>
+                            </dot:Repeater>
+                            <div class="form-check form-check-inline" style="margin-right: 20px;">
+                                <dot:RadioButton class="form-check-input" type="radio" GroupName="packages" CheckedItem="{value: CustomPackage}" CheckedValue="{value: true}" Text="Vlastný balík" Changed="{command ClearProductSelection()}"/>
+                            </div>
+                        </div>
+                        <img class="col form-divider" src="img/divider.png" />
+                        <div class="row" style="padding: 0px 50px;">
+                            <div class="col-sm-12 col-md-6">
+                                <dot:Repeater DataSource="{value: AvailableRentalTypes}">
+                                    <div class="form-check">
+                                        <dot:CheckBox class="form-check-input" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:_this}" Changed="{command: _parent.DeselectPackage()}" />
+                                        <label class="form-check-label form-checkbox-label">{{value: _this}}</label>
+                                        <p>asdasd</p>
+                                    </div>
+                                </dot:repeater>
+                            </div>
+                            <div class="col-sm-12 col-md-6">
+                                <dot:Repeater DataSource="{value: Products}">
+                                    <div class="form-check">
+                                        <dot:CheckBox class="form-check-input" GroupName="Products" CheckedItems="{value: _root.SelectedProductIds}" CheckedValue="{value:_this.Id}" Changed="{command: _parent.DeselectPackage()}" />
+                                        <label class="form-check-label form-checkbox-label">{{value: _this.Price}}</label>
+                                        <p>popis2</p>
+                                    </div>
+                                </dot:repeater>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </dot:Repeater>
-        <dot:Button Click="{command: GoToProductsDetailSelection()}" Text="Další" />
+            <div class="d-flex justify-content-center">
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <dot:Button class="col form-red form-button" Click="{command: GoToServicesSelection()}" Text="&larr; SP&#196;Ť" Validation.Enabled="false"/>
+                        <dot:Button class="col form-green form-button" Click="{command: GoToProductsDetailSelection()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div>
 
-    </div>
     <div IncludeInPage="{value: BoothSelect}">
         <dot:Repeater DataSource="{value: Booths}">
             <div>

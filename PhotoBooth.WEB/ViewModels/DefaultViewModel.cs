@@ -13,6 +13,7 @@ using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
 using PhotoBooth.DAL.Entity;
+using PhotoBooth.BL.Models;
 
 namespace PhotoBooth.WEB.ViewModels
 {
@@ -27,6 +28,7 @@ namespace PhotoBooth.WEB.ViewModels
             _orderFacade = orderFacade;
         }
 
+        //order stages
         public bool OrderMetadataForm { get; set; } = true;
         public bool ServiceSelect { get; set; } = false;
         public bool BoothSelect { get; set; } = false;
@@ -37,9 +39,11 @@ namespace PhotoBooth.WEB.ViewModels
         [Required]
         public OrderMatadata OrderBasicInfo { get; set; }
         public ICollection<ItemPackageDTO> Packages { get; set; }
+        public bool CustomPackage => SelectedPackage == null;
         public ICollection<ProductModel> Products { get; set; }
         public ICollection<RentalItemType> SelectedRentalItemTypes { get; set; } =new List<RentalItemType>();
         public ICollection<Guid> SelectedProductIds { get; set; } =new List<Guid>();
+        public ICollection<RentalItemType> AvailableRentalTypes { get; set; } = Enum.GetValues(typeof(RentalItemType)).Cast<RentalItemType>().ToList();        
 
         public ItemPackageDTO SelectedPackage { get; set; }
         public override Task PreRender()
@@ -118,8 +122,23 @@ namespace PhotoBooth.WEB.ViewModels
         {
 
             Packages = _catalogFacade.GetAllPackages();
+            SelectedPackage = Packages.FirstOrDefault();
             Products = _catalogFacade.GetAvailableProducts();
+            SelectedRentalItemTypes.Add(RentalItemType.Background);
+            SelectedProductIds.Add(Products.FirstOrDefault().Id);
         }
+
+        public void DeselectPackage()
+        {
+            SelectedPackage = null;
+        }
+
+        public void ClearProductSelection()
+        {
+            SelectedProductIds.Clear();
+            SelectedRentalItemTypes.Clear();
+        }
+
         private void LoadDataForBoothSelect()
         {
             Booths=_catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since,OrderBasicInfo.Till,RentalItemType.PhotoBooth);

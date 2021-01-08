@@ -38,7 +38,7 @@ namespace PhotoBooth.WEB
 
 		public void ConfigureServices(IDotvvmServiceCollection options)
         {
-            options.AddDefaultTempStorages("temp");
+            //options.AddDefaultTempStorages("temp");
 		}
     }
 }

@@ -2,9 +2,9 @@
 @masterPage Views/MasterPage.dotmaster
 @import RentalItemType =  PhotoBooth.DAL.Entity.RentalItemType
 <dot:Content ContentPlaceHolderID="MainContent">
-<div class="container">
-        <div class="row">
-            <div class="row d-flex justify-content-center">
+    <div class="container" IncludeInPage="{value: OrderMetadataForm}">
+        <div>
+            <div class="d-flex justify-content-center">
                 <img class="col-6 col-md-3" src="img/logo.png" />
             </div>
         </div>
@@ -15,34 +15,139 @@
                     <form>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-6">
-                                <label for="inputDate">Dátum</label>
-                                <input type="date" class="form-control form-control-lg" id="inputDate"/>
+                                <label for="inputDate">Dátum a čas</label>
+                                <dot:TextBox class="form-control form-control-lg" id="inputDate" Text="{value: OrderBasicInfo.Since}" Type="DateTimeLocal" Validator.Value="{value: OrderBasicInfo.Since}" Validator.InvalidCssClass="has-error" Validator.SetToolTipText="true" />
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
-                            <div class="form-group col-sm-6">
-                                <label for="inputTime">Čas</label>
-                                <input type="time"  class="form-control form-control-lg" id="inputTime"/>
-                            </div>
-                        </div>
-                        <div class="form-row justify-content-center">
-                            <div class="form-group col-sm-6">
+                            <div RenderSettings.Mode="Server" class="form-group col-sm-6">
                                 <label for="inputDuration">Doba prenájmu (hodiny)</label>
-                                <input type="number" min="2" max="5" value="2" class="form-control form-control-lg" id="inputDuration"/>
+                                <dot:TextBox min="2" max="5" value="2" class="form-control form-control-lg" id="inputDuration" Text="{value: OrderBasicInfo.CountOfHours}" Type="Number"/>
                             </div>
                         </div>
-                        
                     </form>
                 </div>
             </div>
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <input type="button" class="col form-red form-button" value="&larr; SP&#196;Ť"/>
-                        <input type="button" class="col form-green form-button" value="ĎALEJ &rarr;"/>
+                        <dot:Button class="col form-green form-button" Click="{command: GoToServicesSelection()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div IncludeInPage="{value: ServiceSelect}">
+        <dot:Repeater DataSource="{value: Packages}">
+            <dot:RadioButton CheckedItem="{value: _root.SelectedPackage}" CheckedValue="{value: _this}" Text="{value: Name}" GroupName="Packages" Changed="{command: _root.UpdateItemsBasedOnSelectedPackage()}" />
+        </dot:Repeater>
+        <div>
+            <div>
+                <h4>Fotobudka</h4>
+                <p>Iam la la novajxo surmare li kiam kaj tamen dolcxe bone la ensxipis ne morti li ne fisxoj turkoj honto</p>
+                <dot:CheckBox CheckedItems="{value: SelectedRentalItemTypes}" CheckedValue="{value: RentalItemType.PhotoBooth}" />
+            </div>
+
+            <div>
+                <h4>Fotopozadí</h4>
+                <p>Aux et de troupeaux enfants porteurs ses mufle monté troupeaux ni les geindre verte monté sais récifs leurs de trombes</p>
+                <dot:CheckBox CheckedItems="{value: SelectedRentalItemTypes}" CheckedValue="{value: RentalItemType.Background}" />
+            </div>
+
+            <div>
+                <h4>Rekvizity</h4>
+                <p>Sí modo fu fragilita se cosa discerniamo quella pieno beato d'esse in di in mentre son tutte manifestamente primo niuno</p>
+                <dot:CheckBox CheckedItems="{value: SelectedRentalItemTypes}" CheckedValue="{value: RentalItemType.Prop}" Changed="{command: _root.RentalItemSelectionChanged()}" />
+            </div>
+        </div>
+        <dot:Repeater DataSource="{value: Products}">
+            <div>
+
+                <img src="{value: PictureUrl}" height="100" width="100" />
+                <h4>{{value: Name}}</h4>
+                <dot:HtmlLiteral Html="{value: DescriptionHtml}" WrapperTagName="p" />
+                <p>Cena: {{value: Price}}</p>
+                <dot:CheckBox CheckedItems="{value: _root.SelectedProductIds}" CheckedValue="{value: Id}" Changed="{command: _root.ProductsSelectionChanged()}" />
+            </div>
+        </dot:Repeater>
+        <dot:Button Click="{command: GoToProductsDetailSelection()}" Text="Další" />
+
+    </div>
+    <div IncludeInPage="{value: BoothSelect}">
+        <dot:Repeater DataSource="{value: Booths}">
+            <div>
+
+                <img src="{value: PictureUrl}" height="100" width="100" />
+                <h4>{{value: Name}}</h4>
+                <dot:HtmlLiteral Html="{value: DescriptionHtml}" WrapperTagName="p" />
+                <p>Cena: {{value: PricePerHour * _root.OrderBasicInfo.CountOfHours}}</p>
+                <dot:Button Text="Vybrat" Click="{command: _root.SelectBooth(_this)}" />
+            </div>
+        </dot:Repeater>
+        <dot:Button Click="{command: GoToServicesSelection()}" Text="Zpět" />
+    </div>
+    <div IncludeInPage="{value: BackgroundSelect}">
+        <dot:Repeater DataSource="{value: Backgrounds}">
+            <div>
+
+                <img src="{value: PictureUrl}" height="100" width="100" />
+                <h4>{{value: Name}}</h4>
+                <dot:HtmlLiteral Html="{value: DescriptionHtml}" WrapperTagName="p" />
+                <p>Cena: {{value: PricePerHour * _root.OrderBasicInfo.CountOfHours}}</p>
+                <dot:Button Text="Vybrat" Click="{command: _root.SelectBackground(_this)}" />
+            </div>
+        </dot:Repeater>
+        <dot:Button Click="{command: GoToBoothSelection(true)}" Text="Zpět" />
+    </div>
+    <div IncludeInPage="{value: PropsSelect}">
+        <dot:Repeater DataSource="{value: Props}">
+            <div>
+
+                <img src="{value: PictureUrl}" height="100" width="100" />
+                <h4>{{value: Name}}</h4>
+                <dot:HtmlLiteral Html="{value: DescriptionHtml}" WrapperTagName="p" />
+                <p>Cena: {{value: PricePerHour * _root.OrderBasicInfo.CountOfHours}}</p>
+                <dot:CheckBox Text="Vybrat" CheckedItems="{value: _root.SelectedProps}" CheckedValue="{value: _this}" />
+            </div>
+        </dot:Repeater>
+        <dot:Button Click="{command: GoToBackgroundSelection(true)}" Text="Zpět" />
+        <dot:Button Click="{command: GoToSummary()}" Text="Další" />
+    </div>
+    <div IncludeInPage="{value: _root.Summary}" DataContext="{value: OrderPreview}">
+        <div>
+            Od:
+            <dot:Literal Text="{value: RentalSince }" ValueType="DateTime" />
+            Do:
+            <dot:Literal Text="{value: RentalTill }" ValueType="DateTime" />
+        </div>
+        <div DataContext="{value: LocationAddress}">
+            {{value: Street}} {{value: BuildingNumber}} {{value: City}} {{value: PostalCode}}
+        </div>
+        <div DataContext="{value: Customer}">
+            {{value: FirstName}} {{value: LastName}}
+        </div>
+        <div>Počet hodin: {{value: _root.OrderBasicInfo.CountOfHours}}</div>
+        <dot:GridView DataSource="{value: RentalItems}">
+            <Columns>
+                <dot:GridViewTextColumn HeaderText="Položka k zapůjčení" ValueBinding="{value: Name}" />
+                <dot:GridViewTextColumn HeaderText="Cena za hodinu" ValueBinding="{value: PricePerHour}" />
+                <dot:GridViewTextColumn HeaderText="Cena celkem" ValueBinding="{value: PricePerHour * _root.OrderBasicInfo.CountOfHours}" />
+            </Columns>
+        </dot:GridView>
+        <dot:GridView DataSource="{value: OrderItems}">
+            <Columns>
+                <dot:GridViewTextColumn HeaderText="Položka k zapůjčení" ValueBinding="{value: Name}" />
+                <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: Price}" />
+            </Columns>
+        </dot:GridView>
+        <div>
+            Výsledná cena: {{value: FinalPrice}}
+        </div>
+        <dot:Button Click="{command: _root.SendOrder()}" Text="Odeslat obědnávku" />
+
+        <dot:Button Click="{command: _root.GoToPropsSelection(true)}" Text="Zpět" />
+
+    </div>
+
 </dot:Content>

@@ -55,7 +55,7 @@ namespace PhotoBooth.WEB.ViewModels
 
             if (ServiceSelect)
             {
-                LoadDataForServiceSelect();
+                //LoadDataForServiceSelect();
             }
 
             if (BoothSelect)
@@ -124,8 +124,8 @@ namespace PhotoBooth.WEB.ViewModels
             Packages = _catalogFacade.GetAllPackages();
             SelectedPackage = Packages.FirstOrDefault();
             Products = _catalogFacade.GetAvailableProducts();
-            SelectedRentalItemTypes.Add(RentalItemType.Background);
-            SelectedProductIds.Add(Products.FirstOrDefault().Id);
+            //SelectedRentalItemTypes.Add(RentalItemType.Background);
+            //SelectedProductIds.Add(Products.FirstOrDefault().Id);
         }
 
         public void DeselectPackage()
@@ -135,6 +135,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         public void ClearProductSelection()
         {
+            SelectedPackage = null;
             SelectedProductIds.Clear();
             SelectedRentalItemTypes.Clear();
         }
@@ -158,6 +159,7 @@ namespace PhotoBooth.WEB.ViewModels
         {
             HideAllSections();
             ServiceSelect = true;
+            LoadDataForServiceSelect();
         }
 
         public void UpdateItemsBasedOnSelectedPackage()

@@ -2,7 +2,7 @@
 @masterPage Views/MasterPage.dotmaster
 @import RentalItemType =  PhotoBooth.DAL.Entity.RentalItemType
 <dot:Content ContentPlaceHolderID="MainContent">
-    <div class="container" IncludeInPage="{value: OrderMetadataForm}">
+    <div class="container" IncludeInPage="{value: OrderMetadataForm}" Validation.Enabled="false">
         <div>
             <div class="d-flex justify-content-center">
                 <img class="col-6 col-md-3" src="img/logo.png" />
@@ -31,14 +31,14 @@
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <dot:Button class="col form-green form-button" Click="{command: GoToServicesSelection()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
+                        <dot:Button class="col form-green form-button" Click="{command: GoToServicesSelection()}" Text="ĎALEJ &rarr;"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container" IncludeInPage="{value: ServiceSelect}">
+    <div class="container" IncludeInPage="{value: ServiceSelect}" Validation.Enabled="false">
         <div>
             <div class="d-flex justify-content-center">
                 <img class="col-6 col-md-3" src="img/logo.png" />
@@ -64,7 +64,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <dot:Repeater DataSource="{value: AvailableRentalTypes}">
                                     <div class="form-check">
-                                        <dot:CheckBox class="form-check-input" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:_this}" Changed="{command: _parent.DeselectPackage()}" />
+                                        <dot:CheckBox class="form-check-input" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:_this}" Changed="{command: _parent.DeselectPackage()}"/>
                                         <label class="form-check-label form-checkbox-label">{{value: _this}}</label>
                                         <p>asdasd</p>
                                     </div>
@@ -73,7 +73,7 @@
                             <div class="col-sm-12 col-md-6">
                                 <dot:Repeater DataSource="{value: Products}">
                                     <div class="form-check">
-                                        <dot:CheckBox class="form-check-input" GroupName="Products" CheckedItems="{value: _root.SelectedProductIds}" CheckedValue="{value:_this.Id}" Changed="{command: _parent.DeselectPackage()}" />
+                                        <dot:CheckBox class="form-check-input" GroupName="Products" CheckedItems="{value: _root.SelectedProductIds}" CheckedValue="{value:_this.Id}" Changed="{command: _parent.DeselectPackage()}"/>
                                         <label class="form-check-label form-checkbox-label">{{value: _this.Price}}</label>
                                         <p>popis2</p>
                                     </div>
@@ -86,7 +86,6 @@
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <dot:Button class="col form-red form-button" Click="{command: GoToServicesSelection()}" Text="&larr; SP&#196;Ť" Validation.Enabled="false"/>
                         <dot:Button class="col form-green form-button" Click="{command: GoToProductsDetailSelection()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
                     </div>
                 </div>

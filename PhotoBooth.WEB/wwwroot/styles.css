@@ -7,6 +7,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    background-attachment:fixed;
     font-family: 'Raleway', sans-serif;
 }
 
@@ -37,5 +38,4 @@ body {
     border-radius: 25px;
     color: white;
     padding: 25px 10px;
-    margin: 10px;
 }

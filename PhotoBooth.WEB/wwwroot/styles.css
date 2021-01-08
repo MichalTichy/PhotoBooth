@@ -2,3 +2,40 @@
     background-color: red;
 }
 
+body {
+    background-image: url('img/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: 'Raleway', sans-serif;
+}
+
+.form-button {
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.form-red {
+    background-color: #9d0b0e;
+}
+
+.form-green {
+    background-color: #598527;
+}
+
+.form-button:hover {
+    opacity: 1;
+}
+
+.form-box {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 25px;
+    color: white;
+    padding: 25px 10px;
+    margin: 10px;
+}

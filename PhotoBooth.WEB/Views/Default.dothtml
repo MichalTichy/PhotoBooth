@@ -2,7 +2,7 @@
 @masterPage Views/MasterPage.dotmaster
 @import RentalItemType =  PhotoBooth.DAL.Entity.RentalItemType
 <dot:Content ContentPlaceHolderID="MainContent">
-    <div class="container" IncludeInPage="{value: OrderMetadataForm}" Validation.Enabled="false">
+    <div class="container" IncludeInPage="{value: OrderMetadataForm}" Validation.Enabled="true">
         <div>
             <div class="d-flex justify-content-center">
                 <img class="col-6 col-md-3" src="img/logo.png" />
@@ -16,13 +16,28 @@
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-6">
                                 <label for="inputDate">Dátum a čas</label>
-                                <dot:TextBox class="form-control form-control-lg" id="inputDate" Text="{value: OrderBasicInfo.Since}" Type="DateTimeLocal" Validator.Value="{value: OrderBasicInfo.Since}" Validator.InvalidCssClass="has-error" Validator.SetToolTipText="true" />
+                                <dot:TextBox class="form-control form-control-lg" id="inputDate" Text="{value: OrderBasicInfo.Since}" Type="DateTimeLocal" Validator.Value="{value: OrderBasicInfo.Since}" Validator.InvalidCssClass="is-invalid"/>
+                                <div class="invalid-feedback">
+                                  Dátum a čas sú zadané nesprávne. Rezervácia sa nedá uskutočniť do minulosti.
+                                </div>
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
                             <div RenderSettings.Mode="Server" class="form-group col-sm-6">
                                 <label for="inputDuration">Doba prenájmu (hodiny)</label>
-                                <dot:TextBox min="2" max="5" value="2" class="form-control form-control-lg" id="inputDuration" Text="{value: OrderBasicInfo.CountOfHours}" Type="Number"/>
+                                <dot:TextBox min="2" max="5" value="2" class="form-control form-control-lg" id="inputDuration" Text="{value: OrderBasicInfo.CountOfHours}" Type="Number" Validator.InvalidCssClass="is-invalid" Validator.Value="{value: OrderBasicInfo.CountOfHours}"/>
+                                <div class="invalid-feedback">
+                                  Zadaná doba prenájmu nie je platná.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-sm-6">
+                                <label for="inputAddress">Miesto konania</label>
+                                <dot:TextBox class="form-control form-control-lg" id="inputAddress" Text="{value: OrderBasicInfo.Address.City}" Validator.InvalidCssClass="is-invalid" Validator.Value="{value: OrderBasicInfo.Address.City}" placeholder="Napr.: Hotel Lev, Levice"/>
+                                <div class="invalid-feedback">
+                                  Zadajte miesto konania udalosti.
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -31,7 +46,7 @@
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <dot:Button class="col form-green form-button" Click="{command: GoToServicesSelection()}" Text="ĎALEJ &rarr;"/>
+                        <dot:Button class="col form-green form-button" Click="{command: GoToServicesSelection()}" Text="ĎALEJ &rarr;" Validation.Target="{value: OrderBasicInfo}"/>
                     </div>
                 </div>
             </div>

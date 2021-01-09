@@ -115,12 +115,12 @@ namespace PhotoBooth.WEB.ViewModels
         private void LoadDataOrderMetadataFrom()
         {
             OrderBasicInfo=new OrderMatadata();
+            OrderBasicInfo.Address = new BL.Models.Address.AddressModel();
         }
 
 
         private void LoadDataForServiceSelect()
         {
-
             Packages = _catalogFacade.GetAllPackages();
             SelectedPackage = Packages.FirstOrDefault();
             Products = _catalogFacade.GetAvailableProducts();

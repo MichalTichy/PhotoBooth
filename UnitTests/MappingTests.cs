@@ -3,7 +3,6 @@ using AutoMapper.QueryableExtensions;
 using NUnit.Framework;
 using PhotoBooth.BL.Models.Order;
 using PhotoBooth.BL.Queries;
-using NUnit.Framework;
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.DAL.Repository;
@@ -15,7 +14,7 @@ using System.Linq;
 
 
 namespace UnitTests
-{
+{/*
     public class MappingTests
     {
         private EntityFrameworkUnitOfWorkProvider<PhotoBoothContext> UnitOfWorkProvider;
@@ -127,5 +126,5 @@ namespace UnitTests
         {
             return unitOfWork.Context;
         }
-    }
+    }*/
 }

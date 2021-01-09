@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CatalogFacadeMock.cs" />
+    <Compile Remove="MockInstaller.cs" />
+    <Compile Remove="OrderFacadeMock.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PhotoBooth.BL\PhotoBooth.BL.csproj" />
   </ItemGroup>
 

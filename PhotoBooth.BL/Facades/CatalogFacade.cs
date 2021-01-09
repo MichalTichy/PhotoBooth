@@ -2,42 +2,40 @@
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Queries;
 using PhotoBooth.DAL.Entity;
+using PhotoBooth.DAL.UnitOfWorkProviderModels;
 using System;
 using System.Collections.Generic;
-using PhotoBooth.DAL;
-using PhotoBooth.DAL.Repository;
-using Riganti.Utils.Infrastructure.Core;
 using System.Linq;
 
 namespace PhotoBooth.BL.Facades
 {
     public class CatalogFacade : FacadeBase<Product>, ICatalogFacade
     {
-        public CatalogFacade(BaseRepository<Product> repository, IUnitOfWorkProvider uow) : base(repository, uow)
+        public CatalogFacade(UnitOfWorkProvider provider) : base(provider)
         {
         }
 
         public bool AreAllRentalItemsAvailable(ICollection<RentalItemModel> items, DateTime since, DateTime till)
         {
-            var availables = new AvailableRentalItems(base.UnitOfWorkFactory, since, till).Execute();
+            var availables = new AvailableRentalItems(since, till, provider).ExecuteAsync();
             return items.All(x => availables.Contains(x));
         }
 
         public ICollection<ItemPackageDTO> GetAllPackages()
         {
-            throw new NotImplementedException();
+            return new ItemPackagesQuery(provider).ExecuteAsync();
         }
 
         public ICollection<ProductModel> GetAvailableProducts()
         {
-            var query = new ProductsQuery(base.UnitOfWorkFactory);
-            query.AddSortCriteria(x => x.AmountLeft > 0);
-            return query.Execute();
+            var query = new ProductsQuery(provider);
+            query.Where(x => x.AmountLeft > 0);
+            return query.ExecuteAsync();
         }
 
         public ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType? type = null)
         {
-            return new AvailableRentalItems(base.UnitOfWorkFactory, since, till).Execute();
+            return new AvailableRentalItems(since, till, provider).ExecuteAsync();
         }
     }
 }

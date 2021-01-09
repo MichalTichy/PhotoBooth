@@ -1,37 +1,33 @@
 ﻿using AutoMapper.QueryableExtensions;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.DAL.Entity;
-using Riganti.Utils.Infrastructure.Core;
+using PhotoBooth.DAL.UnitOfWorkProviderModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PhotoBooth.BL.Queries
 {
-    class AvailableRentalItems : QueryBase<RentalItem, RentalItemModel>
+    public class AvailableRentalItems : QueryBase<RentalItem, RentalItemModel>
     {
-        private DateTime OrderSince;
-        private DateTime OrderTill;
-        public AvailableRentalItems(IUnitOfWorkProvider unitOfWorkProvider, DateTime OrderSince, DateTime OrderTill) : base(unitOfWorkProvider)
+        private DateTime since;
+        private DateTime till;
+        public AvailableRentalItems(DateTime since, DateTime till, IUnitOfWorkProvider provider) : base(provider) 
         {
-            this.OrderSince = OrderSince;
-            this.OrderTill = OrderTill;
-        }
-        protected override IQueryable<RentalItemModel> GetQueryable()
-        {
-            var temp = Context.Orders
-                .Where(x => x.RentalSince >= OrderSince && x.RentalTill <= OrderTill)
-                .Select(x => x.RentalItems);
-            return Context.RentalItems
-                .Where(x => temp.Any(y => y.Any(z => x.Id ==z.Id )))
-                .ProjectTo<RentalItemModel>(MapConfig); ;
+            this.since = since;
+            this.till = till;
         }
 
-        public void setTimeCriteria(DateTime since, DateTime till)
+        public override ICollection<RentalItemModel> ExecuteAsync()
         {
-            OrderSince = since;
-            OrderTill = till;
+            using (var uow = provider.GetUinOfWork())
+            {
+                var usedOrders = uow.GetRepo<Order>().Get(x => (x.RentalSince >= since && x.RentalSince <= till) || (x.RentalTill >= since && x.RentalTill <= till));
+                var items = usedOrders.Where(x => x != null).SelectMany(x => x.RentalItems);
+                IQueryable temp = uow.GetRepo<RentalItem>().Get(x => !items.Contains(x), sortLambda, "").Take(pageSize).AsQueryable();
+                return (ICollection<RentalItemModel>)temp.ProjectTo<RentalItemModel>(MapConfig);
+            }
         }
+
     }
 }

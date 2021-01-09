@@ -16,7 +16,6 @@ using PhotoBooth.BL;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
-using PhotoBooth.Mocks;
 
 namespace PhotoBooth.WEB
 {
@@ -61,7 +60,7 @@ namespace PhotoBooth.WEB
 
         private void Install(IServiceCollection services)
         {
-            MockInstaller.Install(services); //todo
+            //MockInstaller.Install(services); //todo
             BlInstaller.Install(services);
             DALInstaller.Install(services);
             

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 namespace PhotoBooth.DAL.Entity
 {
     public class Address : EntityBase
@@ -11,5 +12,9 @@ namespace PhotoBooth.DAL.Entity
         public string Street { get; set; }
         [MaxLength(25)]
         public string BuildingNumber { get; set; }
+        public override string ToString()
+        {
+            return " city:" + City + " postalCode: " + PostalCode + " street: " + Street + " buildingNum: " + BuildingNumber + " id: " + Id;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using PhotoBooth.DAL.Entity;
-using Riganti.Utils.Infrastructure.Core;
+using PhotoBooth.DAL.Repository;
 
 namespace PhotoBooth.BL.Facades
 {
@@ -11,7 +11,7 @@ namespace PhotoBooth.BL.Facades
     {
         private readonly UserManager<ApplicationUser> userManager;
 		
-        public UserFacade(UserManager<ApplicationUser> userManager,IRepository<Order,Guid> orderRepository)
+        public UserFacade(UserManager<ApplicationUser> userManager,IRepository<Order> orderRepository)
         {
             this.userManager = userManager;
         }

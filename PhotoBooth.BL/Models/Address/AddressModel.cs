@@ -14,5 +14,9 @@ namespace PhotoBooth.BL.Models.Address
 
         [Required(ErrorMessage = "Musíte zadat číslo domu!")]
         public string BuildingNumber { get; set; }
+        public override string ToString()
+        {
+            return " city:" + City + " postalCode: " + PostalCode + " street: " + Street + " buildingNum: " + BuildingNumber + " id: " + Id.ToString();
+        }
     }
 }

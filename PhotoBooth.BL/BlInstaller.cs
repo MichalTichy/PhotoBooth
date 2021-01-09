@@ -14,13 +14,13 @@ namespace PhotoBooth.BL
     {
         public static void Install(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient(typeof(UserFacade));
+            //serviceCollection.AddTransient(typeof(UserFacade));
 
-            serviceCollection.Scan(selector =>
+            /*serviceCollection.Scan(selector =>
                 selector.FromCallingAssembly()
                     .AddClasses(classes => classes.AssignableTo(typeof(FacadeBase<>)))
                     .AsSelf()
-                    .WithTransientLifetime());
+                    .WithTransientLifetime());*/
 
             serviceCollection.Scan(selector =>
                 selector.FromCallingAssembly()

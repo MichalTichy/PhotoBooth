@@ -2,6 +2,7 @@
 @masterPage Views/MasterPage.dotmaster
 @import RentalItemType =  PhotoBooth.DAL.Entity.RentalItemType
 <dot:Content ContentPlaceHolderID="MainContent">
+    
     <div class="container" IncludeInPage="{value: OrderMetadataForm}" Validation.Enabled="true">
         <div>
             <div class="d-flex justify-content-center">
@@ -18,7 +19,7 @@
                                 <label for="inputDate">Dátum a čas</label>
                                 <dot:TextBox class="form-control form-control-lg" id="inputDate" Text="{value: OrderBasicInfo.Since}" Type="DateTimeLocal" Validator.Value="{value: OrderBasicInfo.Since}" Validator.InvalidCssClass="is-invalid"/>
                                 <div class="invalid-feedback">
-                                  Dátum a čas sú zadané nesprávne. Rezervácia sa nedá uskutočniť do minulosti.
+                                  Dátum a čas sú zadané nesprávne. Rezervácia do minulosti sa nedá uskutočniť.
                                 </div>
                             </div>
                         </div>
@@ -103,53 +104,83 @@
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <dot:Button class="col form-green form-button" Click="{command: GoToProductsDetailSelection()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
+                        <dot:Button class="col form-green form-button" Click="{command: GoToDetailServicesSelection()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
                     </div>
                 </div>
             </div>
         </div>
-    <div>
-
-    <div IncludeInPage="{value: BoothSelect}">
-        <dot:Repeater DataSource="{value: Booths}">
-            <div>
-
-                <img src="{value: PictureUrl}" height="100" width="100" />
-                <h4>{{value: Name}}</h4>
-                <dot:HtmlLiteral Html="{value: DescriptionHtml}" WrapperTagName="p" />
-                <p>Cena: {{value: PricePerHour * _root.OrderBasicInfo.CountOfHours}}</p>
-                <dot:Button Text="Vybrat" Click="{command: _root.SelectBooth(_this)}" />
-            </div>
-        </dot:Repeater>
-        <dot:Button Click="{command: GoToServicesSelection()}" Text="Zpět" />
     </div>
-    <div IncludeInPage="{value: BackgroundSelect}">
-        <dot:Repeater DataSource="{value: Backgrounds}">
-            <div>
 
-                <img src="{value: PictureUrl}" height="100" width="100" />
-                <h4>{{value: Name}}</h4>
-                <dot:HtmlLiteral Html="{value: DescriptionHtml}" WrapperTagName="p" />
-                <p>Cena: {{value: PricePerHour * _root.OrderBasicInfo.CountOfHours}}</p>
-                <dot:Button Text="Vybrat" Click="{command: _root.SelectBackground(_this)}" />
+    <div class="container" IncludeInPage="{value: DetailedServicesSelect}" Validation.Enabled="false">
+        <div>
+            <div class="d-flex justify-content-center">
+                <img class="col-6 col-md-3" src="img/logo.png" />
             </div>
-        </dot:Repeater>
-        <dot:Button Click="{command: GoToBoothSelection(true)}" Text="Zpět" />
+        </div>
+        <h1 class="text-center" style="margin:20px; font-weight: 700;">Výber služieb</h1>
+        <div>
+            <div class="d-flex justify-content-center">
+                <div class="col-12 col-md-8 form-box">
+                    <form>
+                        <div IncludeInPage="{value: BoothSelect}" >
+                            <p class="col-12" style="font-size:35px;">Budka</p>
+                            <p class="col-12">{{value: SelectedBooth.DescriptionHtml}}</p>
+                            <img class="col form-divider" src="img/divider.png" />
+                            <dot:Repeater DataSource="{value: Booths}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
+                                <label class="col-6 col-md-3 d-flex">
+                                    <dot:RadioButton class="form-check-input" GroupName="Booths" CheckedItem="{value: _parent.SelectedBooth}" CheckedValue="{value: _this}"/>
+                                    <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
+                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;"/>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
+                                    </div>
+                                </label>
+                            </dot:Repeater>
+                        </div>
+                        <div IncludeInPage="{value: BackgroundSelect}">
+                            <p class="col-12" style="font-size:35px;">Pozadie</p>
+                            <p class="col-12">{{value: SelectedBackground.DescriptionHtml}}</p>
+                            <img class="col form-divider" src="img/divider.png" />
+                            <dot:Repeater DataSource="{value: Backgrounds}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
+                                <label class="col-6 col-md-3 d-flex">
+                                    <dot:RadioButton class="form-check-input" GroupName="Backgrounds" CheckedItem="{value: _parent.SelectedBackground}" CheckedValue="{value: _this}"/>
+                                    <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
+                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;"/>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
+                                    </div>
+                                </label>
+                            </dot:Repeater>
+                        </div>
+                        <div IncludeInPage="{value: PropsSelect}">
+                            <p class="col-12" style="font-size:35px;">Rekvizity</p>
+                            <p class="col-12">{{value: SelectedBackground.DescriptionHtml}}</p>
+                            <img class="col form-divider" src="img/divider.png" />
+                            <dot:Repeater DataSource="{value: Props}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
+                                <label class="col-6 col-md-3 d-flex">
+                                    <dot:CheckBox class="form-check-input" GroupName="Props" CheckedItems="{value: _root.SelectedProps}" CheckedValue="{value:_this}">
+                                        <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">{{value: _this.Name}}</p>
+                                    </dot:CheckBox>
+                                    <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
+                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;"/>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
+                                    </div>
+                                </label>
+                            </dot:Repeater>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center">
+                <div class="col-12 col-md-6">
+                    <div class="row">
+                        <dot:Button class="col form-red form-button" Click="{command: GoToServicesSelection(false)}" Text="&larr; SP&#196;Ť" Validation.Enabled="false"/>
+                        <dot:Button class="col form-green form-button" Click="{command: GoToSummary()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div IncludeInPage="{value: PropsSelect}">
-        <dot:Repeater DataSource="{value: Props}">
-            <div>
 
-                <img src="{value: PictureUrl}" height="100" width="100" />
-                <h4>{{value: Name}}</h4>
-                <dot:HtmlLiteral Html="{value: DescriptionHtml}" WrapperTagName="p" />
-                <p>Cena: {{value: PricePerHour * _root.OrderBasicInfo.CountOfHours}}</p>
-                <dot:CheckBox Text="Vybrat" CheckedItems="{value: _root.SelectedProps}" CheckedValue="{value: _this}" />
-            </div>
-        </dot:Repeater>
-        <dot:Button Click="{command: GoToBackgroundSelection(true)}" Text="Zpět" />
-        <dot:Button Click="{command: GoToSummary()}" Text="Další" />
-    </div>
+    
     <div IncludeInPage="{value: _root.Summary}" DataContext="{value: OrderPreview}">
         <div>
             Od:

@@ -14,6 +14,7 @@ using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.BL.Models;
+using DotVVM.Framework.ViewModel.Validation;
 
 namespace PhotoBooth.WEB.ViewModels
 {
@@ -34,6 +35,7 @@ namespace PhotoBooth.WEB.ViewModels
         public bool BoothSelect { get; set; } = false;
         public bool BackgroundSelect { get; set; } = false;
         public bool PropsSelect { get; set; } = false;
+        public bool DetailedServicesSelect { get; set; } = false;
         public bool Summary { get; set; } = false;
 
         [Required]
@@ -62,22 +64,22 @@ namespace PhotoBooth.WEB.ViewModels
 
             if (BoothSelect)
             {
-                LoadDataForBoothSelect();
+                //LoadDataForBoothSelect();
             }
 
             if (BackgroundSelect)
             {
-                LoadDataForBackgroundSelect();
+                //LoadDataForBackgroundSelect();
             }
 
             if (PropsSelect)
             {
-                LoadDataForPropsSelect();
+                //LoadDataForPropsSelect();
             }
 
             if (Summary)
             {
-                LoadDataForSummary();
+                //LoadDataForSummary();
             }
             return base.PreRender();
         }
@@ -125,13 +127,11 @@ namespace PhotoBooth.WEB.ViewModels
         {
             OrderBasicInfo.Till = OrderBasicInfo.Since.AddHours(OrderBasicInfo.CountOfHours);
             AvailableRentalItems = _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Till);
-            if (!AvailableRentalItems.Any(a => a.Type == RentalItemType.PhotoBooth)) {
-                Context.InterruptRequest();
-            }
             AvailableRentalTypes = AvailableRentalItems.Select(a => a.Type).Distinct().Where(a=>a!=RentalItemType.Employe).ToList();
             Packages = _catalogFacade.GetAllPackages();
-            SelectedPackage = Packages.FirstOrDefault();
             Products = _catalogFacade.GetAvailableProducts();
+            SelectedPackage = Packages.FirstOrDefault();
+            UpdateItemsBasedOnSelectedPackage();
             //SelectedRentalItemTypes.Add(RentalItemType.Background);
             //SelectedProductIds.Add(Products.FirstOrDefault().Id);
         }
@@ -148,26 +148,47 @@ namespace PhotoBooth.WEB.ViewModels
             SelectedRentalItemTypes.Clear();
         }
 
-        private void LoadDataForBoothSelect()
+        private void LoadDataForDeatiledServicesSelect()
         {
-            Booths=_catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since,OrderBasicInfo.Till,RentalItemType.PhotoBooth);
+            Booths = AvailableRentalItems.Where(a => a.Type == RentalItemType.PhotoBooth).ToList();
+            SelectedBooth = Booths.FirstOrDefault();
+
+            Backgrounds = AvailableRentalItems.Where(a => a.Type == RentalItemType.Background).ToList();
+            SelectedBackground = Backgrounds.FirstOrDefault();
+
+            Props = AvailableRentalItems.Where(a => a.Type == RentalItemType.Prop).ToList();
+            SelectedProps.Clear();
+
+            if (SelectedRentalItemTypes.Contains(RentalItemType.PhotoBooth)) {
+                BoothSelect = true;
+            }
+            if (SelectedRentalItemTypes.Contains(RentalItemType.Background)) {
+                BackgroundSelect = true;
+            }
+            if (SelectedRentalItemTypes.Contains(RentalItemType.Prop)) {
+                PropsSelect = true;
+            }
         }
 
         public void HideAllSections()
         {
             OrderMetadataForm = false;
             ServiceSelect = false;
+            DetailedServicesSelect = false;
             BoothSelect = false;
             BackgroundSelect = false;
             PropsSelect = false;
             Summary = false;
         }
 
-        public void GoToServicesSelection()
+        public void GoToServicesSelection(bool loadData = true)
         {
+            if (loadData)
+            {
+                LoadDataForServiceSelect();
+            }
             HideAllSections();
             ServiceSelect = true;
-            LoadDataForServiceSelect();
         }
 
         public void UpdateItemsBasedOnSelectedPackage()
@@ -186,37 +207,16 @@ namespace PhotoBooth.WEB.ViewModels
                 t.ProductIds.Count == SelectedProductIds.Count && t.ProductIds.All(s => SelectedProductIds.Contains(s)));
         }
 
-        public void ProductsSelectionChanged()
-        {
-            SelectPackageBasedOnItemSelection();
-        }
-
-        public void RentalItemSelectionChanged()
-        {
-            SelectPackageBasedOnItemSelection();
-        }
-
-        public void GoToProductsDetailSelection()
+        public void GoToDetailServicesSelection()
         {
             ValidateProductSelection();
-            GoToBoothSelection();
+            HideAllSections();
+            LoadDataForDeatiledServicesSelect();
+            DetailedServicesSelect = true;
         }
 
         public void GoToBoothSelection(bool back=false)
         {
-            if (!SelectedRentalItemTypes.Contains(RentalItemType.PhotoBooth))
-            {
-                if (back)
-                {
-                    GoToServicesSelection();
-                }
-                else
-                {
-                    GoToBackgroundSelection();
-                }
-                return;
-            }
-
             HideAllSections();
             BoothSelect = true;
         }

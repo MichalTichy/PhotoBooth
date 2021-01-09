@@ -36,6 +36,7 @@ namespace PhotoBooth.WEB.ViewModels
         public bool BackgroundSelect { get; set; } = false;
         public bool PropsSelect { get; set; } = false;
         public bool DetailedServicesSelect { get; set; } = false;
+        public bool UserInfoSelect { get; set; } = false;
         public bool Summary { get; set; } = false;
 
         [Required]
@@ -51,7 +52,8 @@ namespace PhotoBooth.WEB.ViewModels
 
         public ItemPackageDTO SelectedPackage { get; set; }
 
-        public OrderSummaryModel OrderPreview { get; set; }
+        //CREATING JUST FOR TESTING PURPOSES - ASSIGNMENT SHOULD BE DONE IN PrepareSummary()
+        public OrderSummaryModel OrderPreview { get; set; } = new OrderSummaryModel();
 
         private List<ProductModel> GetSelectedProducts()
         {
@@ -66,6 +68,7 @@ namespace PhotoBooth.WEB.ViewModels
             BoothSelect = false;
             BackgroundSelect = false;
             PropsSelect = false;
+            UserInfoSelect = false;
             Summary = false;
         }
 
@@ -176,6 +179,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         private void PrepareSummary()
         {
+            OrderPreview = new OrderSummaryModel();
             //TODO
         }
 

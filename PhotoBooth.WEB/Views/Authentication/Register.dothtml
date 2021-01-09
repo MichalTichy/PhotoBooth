@@ -30,6 +30,60 @@
 			<dot:Button Text="Registrovat" IsSubmitButton="true" Click="{command: Register()}" />
 		</div>
     </div>
-    
+    <div class="container">
+        <div class="row">
+            <div class="row d-flex justify-content-center">
+                <img class="col-6 col-md-3" src="../../img/logo.png"/>
+            </div>
+        </div>
+        <h1 class="text-center" style="margin:20px; font-weight: 700;">Registrácia</h1>
+        <div>
+            <div class="row d-flex justify-content-center">
+                <div class="col-12 col-md-6 form-box">
+                    <form>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-sm-8">
+                                <label for="inputName">Prihlasovacie meno (e-mail)</label>
+                                <input type="text" class="form-control form-control-lg" id="inputName"/>
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-sm-4">
+                                <label for="inputName">Meno</label>
+                                <input type="text" class="form-control form-control-lg" id="inputName" />
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <label for="inputSurname">Priezvisko</label>
+                                <input type="text" class="form-control form-control-lg" id="inputSurname" />
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-sm-8">
+                                <label for="inputTel">Telefónne číslo</label>
+                                <input type="tel" class="form-control form-control-lg" id="inputTel"/>
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-sm-8">
+                                <label for="inputName">Heslo</label>
+                                <input type="password" class="form-control form-control-lg" id="inputName"/>
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-sm-8">
+                                <label for="inputName">Heslo znovu</label>
+                                <input type="password" class="form-control form-control-lg" id="inputName"/>
+                            </div>
+                        </div>
+                        <div class="form-row justify-content-center">
+                            <div class="form-group col-sm-6">
+                                <input type="button" class="col-12 form-button form-green" style="margin:0;" value="Registrovať sa"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </dot:Content>
 

@@ -81,6 +81,8 @@ namespace PhotoBooth.WEB.ViewModels
             Products = _catalogFacade.GetAvailableProducts();
             
             AvailableRentalTypes = AvailableRentalItems.Select(a => a.Type).Distinct().Where(a=>a!=RentalItemType.Employe).ToList();
+            
+            //when we do "default selection" it does not bind correctly
             //SelectedPackage = Packages.FirstOrDefault();
             UpdateItemsBasedOnSelectedPackage();
         }
@@ -172,6 +174,8 @@ namespace PhotoBooth.WEB.ViewModels
 
         public void GoToSummary()
         {
+            //is user already signed/registred?
+
             PrepareSummary();
             HideAllSections();
             Summary= true;

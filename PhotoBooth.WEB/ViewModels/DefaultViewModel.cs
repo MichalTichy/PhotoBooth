@@ -41,9 +41,11 @@ namespace PhotoBooth.WEB.ViewModels
         public ICollection<ItemPackageDTO> Packages { get; set; }
         public bool CustomPackage => SelectedPackage == null;
         public ICollection<ProductModel> Products { get; set; }
-        public ICollection<RentalItemType> SelectedRentalItemTypes { get; set; } =new List<RentalItemType>();
-        public ICollection<Guid> SelectedProductIds { get; set; } =new List<Guid>();
-        public ICollection<RentalItemType> AvailableRentalTypes { get; set; } = Enum.GetValues(typeof(RentalItemType)).Cast<RentalItemType>().ToList();        
+        public ICollection<RentalItemType> SelectedRentalItemTypes { get; set; } = new List<RentalItemType>();
+        public ICollection<Guid> SelectedProductIds { get; set; } = new List<Guid>();
+        public ICollection<RentalItemType> AvailableRentalTypes { get; set; }
+        public ICollection<RentalItemModel> AvailableRentalItems { get; set; }
+        public ICollection<RentalItemModel> SelectedRentalItems { get; set; }
 
         public ItemPackageDTO SelectedPackage { get; set; }
         public override Task PreRender()
@@ -115,12 +117,18 @@ namespace PhotoBooth.WEB.ViewModels
         private void LoadDataOrderMetadataFrom()
         {
             OrderBasicInfo=new OrderMatadata();
-            OrderBasicInfo.Address = new BL.Models.Address.AddressModel();
+            //OrderBasicInfo.Address = new BL.Models.Address.AddressModel();
         }
 
 
         private void LoadDataForServiceSelect()
         {
+            OrderBasicInfo.Till = OrderBasicInfo.Since.AddHours(OrderBasicInfo.CountOfHours);
+            AvailableRentalItems = _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Till);
+            if (!AvailableRentalItems.Any(a => a.Type == RentalItemType.PhotoBooth)) {
+                Context.InterruptRequest();
+            }
+            AvailableRentalTypes = AvailableRentalItems.Select(a => a.Type).Distinct().Where(a=>a!=RentalItemType.Employe).ToList();
             Packages = _catalogFacade.GetAllPackages();
             SelectedPackage = Packages.FirstOrDefault();
             Products = _catalogFacade.GetAvailableProducts();

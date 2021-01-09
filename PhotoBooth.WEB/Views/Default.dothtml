@@ -78,19 +78,21 @@
                         <div class="row" style="padding: 0px 50px;">
                             <div class="col-sm-12 col-md-6">
                                 <dot:Repeater DataSource="{value: AvailableRentalTypes}">
-                                    <div class="form-check">
-                                        <dot:CheckBox class="form-check-input" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:_this}" Changed="{command: _parent.DeselectPackage()}"/>
-                                        <label class="form-check-label form-checkbox-label">{{value: _this}}</label>
-                                        <p>asdasd</p>
+                                    <div class="form-check" style="margin-bottom:20px">
+                                        <dot:CheckBox class="form-check-input" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:_this}" Changed="{command: _parent.DeselectPackage()}">
+                                            <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">{{value: _this}}</p>
+                                        </dot:checkbox>
+                                        <div style="padding-top:25px;"></div>
                                     </div>
                                 </dot:repeater>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <dot:Repeater DataSource="{value: Products}">
-                                    <div class="form-check">
-                                        <dot:CheckBox class="form-check-input" GroupName="Products" CheckedItems="{value: _root.SelectedProductIds}" CheckedValue="{value:_this.Id}" Changed="{command: _parent.DeselectPackage()}"/>
-                                        <label class="form-check-label form-checkbox-label">{{value: _this.Price}}</label>
-                                        <p>popis2</p>
+                                    <div class="form-check" style="margin-bottom:20px">
+                                        <dot:CheckBox class="form-check-input" GroupName="Products" CheckedItems="{value: _root.SelectedProductIds}" CheckedValue="{value:_this.Id}" Changed="{command: _parent.DeselectPackage()}">
+                                            <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">{{value: _this.Name}}</p>
+                                        </dot:CheckBox>
+                                        <div style="padding-top:25px;">{{value:_this.DescriptionHtml}}</div>
                                     </div>
                                 </dot:repeater>
                             </div>

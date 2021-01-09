@@ -1,10 +1,14 @@
-﻿
+﻿html {
+    min-height: 100%;
+}
+
 body {
     background-image: url('img/background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
     font-family: 'Raleway', sans-serif;
+    min-height: 100%;
 }
 
 .form-button {

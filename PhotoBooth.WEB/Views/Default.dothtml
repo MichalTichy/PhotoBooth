@@ -182,39 +182,7 @@
 
     
     <div IncludeInPage="{value: _root.Summary}" DataContext="{value: OrderPreview}">
-        <div>
-            Od:
-            <dot:Literal Text="{value: RentalSince }" ValueType="DateTime" />
-            Do:
-            <dot:Literal Text="{value: RentalTill }" ValueType="DateTime" />
-        </div>
-        <div DataContext="{value: LocationAddress}">
-            {{value: Street}} {{value: BuildingNumber}} {{value: City}} {{value: PostalCode}}
-        </div>
-        <div DataContext="{value: Customer}">
-            {{value: FirstName}} {{value: LastName}}
-        </div>
-        <div>Počet hodin: {{value: _root.OrderBasicInfo.CountOfHours}}</div>
-        <dot:GridView DataSource="{value: RentalItems}">
-            <Columns>
-                <dot:GridViewTextColumn HeaderText="Položka k zapůjčení" ValueBinding="{value: Name}" />
-                <dot:GridViewTextColumn HeaderText="Cena za hodinu" ValueBinding="{value: PricePerHour}" />
-                <dot:GridViewTextColumn HeaderText="Cena celkem" ValueBinding="{value: PricePerHour * _root.OrderBasicInfo.CountOfHours}" />
-            </Columns>
-        </dot:GridView>
-        <dot:GridView DataSource="{value: OrderItems}">
-            <Columns>
-                <dot:GridViewTextColumn HeaderText="Položka k zapůjčení" ValueBinding="{value: Name}" />
-                <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: Price}" />
-            </Columns>
-        </dot:GridView>
-        <div>
-            Výsledná cena: {{value: FinalPrice}}
-        </div>
-        <dot:Button Click="{command: _root.SendOrder()}" Text="Odeslat obědnávku" />
-
-        <dot:Button Click="{command: _root.GoToPropsSelection(true)}" Text="Zpět" />
-
+        TODO
     </div>
 
 </dot:Content>

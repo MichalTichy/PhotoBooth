@@ -134,6 +134,7 @@ namespace PhotoBooth.WEB.ViewModels
             Products = _catalogFacade.GetAvailableProducts();
             //SelectedRentalItemTypes.Add(RentalItemType.Background);
             //SelectedProductIds.Add(Products.FirstOrDefault().Id);
+            UpdateItemsBasedOnSelectedPackage();
         }
 
         public void DeselectPackage()

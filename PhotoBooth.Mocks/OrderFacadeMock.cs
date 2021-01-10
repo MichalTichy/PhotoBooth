@@ -36,7 +36,7 @@ namespace PhotoBooth.Mocks
                 LocationAddress = orderMatadata?.Address,
                 OrderItems = products,
                 RentalSince = orderMatadata.Since,
-                RentalTill = orderMatadata.Till
+                RentalTill = orderMatadata.Since.AddHours(orderMatadata.CountOfHours)
             };
         }
 

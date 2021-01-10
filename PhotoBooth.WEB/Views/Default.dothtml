@@ -89,12 +89,12 @@
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <dot:Repeater DataSource="{value: Products}">
-                                    <div class="form-check" style="margin-bottom:20px">
+                                    <div class="form-check" style="margin:10px">
                                         <dot:CheckBox class="form-check-input" GroupName="Products" CheckedItems="{value: _root.SelectedProductIds}" CheckedValue="{value:_this.Id}" Changed="{command: _parent.DeselectPackage()}">
-                                            <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">{{value: _this.Name}}</p>
+                                            <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">{{value: _this.Name}} - {{value: _this.Price}}€</p>
                                         </dot:CheckBox>
-                                        <div style="padding-top:25px;">{{value:_this.DescriptionHtml}}</div>
                                     </div>
+                                    <br/>
                                 </dot:repeater>
                             </div>
                         </div>
@@ -124,35 +124,41 @@
                     <form>
                         <div IncludeInPage="{value: BoothSelect}" >
                             <p class="col-12" style="font-size:35px;">Budka</p>
-                            <p class="col-12">{{value: SelectedBooth.DescriptionHtml}}</p>
+                            <p class="col-12"><dot:HtmlLiteral Html="{value: SelectedBooth.DescriptionHtml}"></p>
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Booths}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
                                     <dot:RadioButton class="form-check-input" GroupName="Booths" CheckedItem="{value: _parent.SelectedBooth}" CheckedValue="{value: _this}"/>
                                     <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
                                         <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;"/>
-                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
+                                                    <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
+                                                    <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;"><dot:HtmlLiteral Html="{value: DescriptionHtml}"/></p>
+                                                    <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour * _parent.OrderBasicInfo.CountOfHours}}€</p>
+                                                    <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour}}€ * {{value: _parent.OrderBasicInfo.CountOfHours}}hod</p>
                                     </div>
                                 </label>
                             </dot:Repeater>
                         </div>
                         <div IncludeInPage="{value: BackgroundSelect}">
                             <p class="col-12" style="font-size:35px;">Pozadie</p>
-                            <p class="col-12">{{value: SelectedBackground.DescriptionHtml}}</p>
+                            <p class="col-12"><dot:HtmlLiteral Html="{value: SelectedBooth.DescriptionHtml}"></p>
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Backgrounds}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
-                                    <dot:RadioButton class="form-check-input" GroupName="Backgrounds" CheckedItem="{value: _parent.SelectedBackground}" CheckedValue="{value: _this}"/>
+                                    <dot:RadioButton class="form-check-input" GroupName="Backgrounds" CheckedItem="{value: _parent.SelectedBackground}" CheckedValue="{value: _this}" />
                                     <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
-                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;"/>
+                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;" />
                                         <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;"><dot:HtmlLiteral Html="{value: DescriptionHtml}" /></p>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour * _parent.OrderBasicInfo.CountOfHours}}€</p>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour}}€ * {{value: _parent.OrderBasicInfo.CountOfHours}}hod</p>
                                     </div>
                                 </label>
                             </dot:Repeater>
                         </div>
                         <div IncludeInPage="{value: PropsSelect}">
                             <p class="col-12" style="font-size:35px;">Rekvizity</p>
-                            <p class="col-12">{{value: SelectedBackground.DescriptionHtml}}</p>
+                            <p class="col-12"><dot:HtmlLiteral Html="{value: SelectedBooth.DescriptionHtml}"></p>
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Props}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
@@ -160,8 +166,11 @@
                                         <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">{{value: _this.Name}}</p>
                                     </dot:CheckBox>
                                     <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
-                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;"/>
+                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;" />
                                         <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;"><dot:HtmlLiteral Html="{value: DescriptionHtml}" /></p>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour * _parent.OrderBasicInfo.CountOfHours}}€</p>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour}}€ * {{value: _parent.OrderBasicInfo.CountOfHours}}hod</p>
                                     </div>
                                 </label>
                             </dot:Repeater>
@@ -192,32 +201,25 @@
                 <div class="col-12 col-md-6 form-box">
                     <form>
                         <div class="form-row justify-content-center">
-                            <h3 class="col-12" style="text-align: center; margin-bottom: 20px;">Máte už účet?</h3>
-                            <div class="form-group col-sm-6">
-                                <input type="button" class="col-12 form-button form-green" style="margin:0;" value="Prihlásiť sa"/>
-                            </div>
-                        </div>
-                        <img class="col form-divider" src="img/divider.png" />
-                        <div class="form-row justify-content-center">
                             <div class="form-group col-sm-4">
                                 <label for="inputName">Meno</label>
-                                <input type="text" class="form-control form-control-lg" id="inputName" placeholder="Katka"/>
+                                <dot:TextBox Text="{value: OrderBasicInfo.User.FirstName}" class="form-control form-control-lg" id="inputName" placeholder="Katka"/>
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="inputSurname">Priezvisko</label>
-                                <input type="text" class="form-control form-control-lg" id="inputSurname" placeholder="Krasnová"/>
+                                <dot:TextBox Text="{value: OrderBasicInfo.User.LastName}" class="form-control form-control-lg" id="inputSurname" placeholder="Krasnová"/>
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-8">
                                 <label for="inputEmail">E-mailová adresa</label>
-                                <input type="email" class="form-control form-control-lg" id="inputEmail" placeholder="@"/>
+                                <dot:TextBox Text="{value: OrderBasicInfo.User.Email}" Type="Email" class="form-control form-control-lg" id="inputEmail" placeholder="@"/>
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-8">
                                 <label for="inputTel">Telefónne číslo</label>
-                                <input type="tel" class="form-control form-control-lg" id="inputTel" placeholder="+421 9XX XXX XXX"/>
+                                <dot:TextBox Text="{value: OrderBasicInfo.User.PhoneNumber}" Type="Telephone" class="form-control form-control-lg" id="inputTel" placeholder="+421 9XX XXX XXX"/>
                             </div>
                         </div>
                     </form>
@@ -226,8 +228,8 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <input type="button" class="col form-red form-button" value="&larr; SP&#196;Ť"/>
-                        <input type="button" class="col form-green form-button" value="ĎALEJ &rarr;"/>
+                        <dot:Button class="col form-red form-button" Click="{command: GoToServicesSelection(false)}" Text="&larr; SP&#196;Ť" Validation.Enabled="false" />
+                        <dot:Button class="col form-green form-button" Click="{command: CreateUser()}" Text="ĎALEJ &rarr;" Validation.Enabled="false" />
                     </div>
                 </div>
             </div>
@@ -247,10 +249,11 @@
                     <div class="row">
                         <div class="col-6 form-summary-info">
                             <h4>Základné informácie</h4>
-                            <p>Meno Priezvisko</p>
-                            <p>+421 910 512 175</p>
-                            <p>Hotel Lev, Levice</p>
-                            <p>21.6.2021, 21:00</p>
+                            <p>{{value: Customer.FirstName}} {{value: Customer.LastName}}</p>
+                            <p>{{value: Customer.Email}}</p>
+                            <p>{{value: Customer.PhoneNumber}}</p>
+                            <p><dot:Literal Text="{value: RentalSince}" ValueType="DateTime" FormatString="g" /></p>
+                            <p>{{value: CountOfHours}}hod</p>
                         </div>
                     </div>
                     <div class="row">
@@ -259,57 +262,34 @@
                         </div>
                         <table class="table table-striped" style="color: white;">
                             <tbody>
-                                <tr>
-                                    <th scope="row" style="padding-left: 65px;">1</th>
-                                    <td>
-                                        Prenajom fotobudky
-                                    </td>
-                                    <td style="padding-right: 65px;">
-                                        2 hodiny
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" style="padding-left: 65px;">2</th>
-                                    <td>
-                                        Prenajom pozadia
-                                    </td>
-                                    <td>
-                                        2 hodiny
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" style="padding-left: 65px;">3</th>
-                                    <td>
-                                        Prenajom rekvizit
-                                    </td>
-                                    <td>
-                                        2 hodiny
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" style="padding-left: 65px;">4</th>
-                                    <td>
-                                        Pamatna fotokniha
-                                    </td>
-                                    <td>
-                                        1 ks
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" style="padding-left: 65px;">5</th>
-                                    <td>
-                                        USB s fotografiami
-                                    </td>
-                                    <td>
-                                        1 ks
-                                    </td>
-                                </tr>
+                                <dot:Repeater RenderWrapperTag="false" DataSource="{value: RentalItems}">
+                                    <tr>
+                                        <th scope="row" style="padding-left: 65px;">{{value: _index + 1 + _parent.RentalItems.Count}}</th>
+                                        <td>
+                                            {{value: Name}} - <dot:HtmlLiteral Html="{value: DescriptionHtml}" />
+                                        </td>
+                                        <td style="padding-right: 65px;">
+                                            {{value: PricePerHour}}€ * {{value: _parent.CountOfHours}}hod
+                                        </td>
+                                    </tr>
+                                </dot:Repeater>
+                                <dot:Repeater RenderWrapperTag="false" DataSource="{value: OrderItems}">
+                                    <tr>
+                                        <th scope="row" style="padding-left: 65px;">{{value: _index + 1 + _parent.RentalItems.Count}}</th>
+                                        <td>
+                                            {{value: Name}} - <dot:HtmlLiteral Html="{value: DescriptionHtml}" />
+                                        </td>
+                                        <td style="padding-right: 65px;">
+                                            {{value: Price}}€
+                                        </td>
+                                    </tr>
+                                </dot:Repeater>
                             </tbody>
                         </table>
                     </div>
                     <img class="col form-divider" src="img/divider.png" />
                     <div class="row d-flex justify-content-center">
-                        <h3 class="col-md6">Orientačná cena: 222€*</h3>
+                        <h3 class="col-md6">Orientačná cena: {{value: FinalPrice}}€ *</h3>
                     </div>
                     <div class="col-12">
                         <p>*K cene sa individuálne pripočítava cena dopravných nákladov.</p>

@@ -15,10 +15,12 @@ namespace PhotoBooth.BL.Facades
 {
     public class OrderFacade : FacadeBase<Order>, IOrderFacade
     {
+        private readonly ICatalogFacade _catalogFacade;
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public OrderFacade(BaseRepository<Order> repository, IUnitOfWorkProvider uow, IDateTimeProvider dateTimeProvider) : base(repository, uow)
+        public OrderFacade(BaseRepository<Order> repository, ICatalogFacade catalogFacade, IUnitOfWorkProvider uow, IDateTimeProvider dateTimeProvider) : base(repository, uow)
         {
+            _catalogFacade = catalogFacade;
             this.dateTimeProvider = dateTimeProvider;
         }
         public void CancelOrder(Guid orderId)
@@ -87,57 +89,64 @@ namespace PhotoBooth.BL.Facades
 
         public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
+            var rentalTill = orderMatadata.Since.AddHours(orderMatadata.CountOfHours);
+
+            //var availableEmployes =_catalogFacade.GetAvailableRentalItems(orderMatadata.Since,rentalTill,RentalItemType.Employe);
+            //rentalItems.Add(availableEmployes.First());
             return new OrderSummaryModel()
             {
                 RentalItems = rentalItems,
                 OrderItems = products,
                 RentalSince = orderMatadata.Since,
-                RentalTill = orderMatadata.Till,
+                RentalTill = rentalTill,
                 LocationAddress = orderMatadata.Address,
-                Customer = orderMatadata.User
+                Customer = orderMatadata.User,
+                Created = dateTimeProvider.Now,
+                FinalPrice = rentalItems.Sum(t=>t.PricePerHour)*orderMatadata.CountOfHours + products.Sum(t=>t.Price)
             };
         }
 
         public OrderSummaryModel SubmitOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
-            //TODO TEST
-            using (var uow = UnitOfWorkFactory.Create())
-            {
-                var mapperConfiguration = new MapperConfiguration(expression =>
-                {
-                    expression.CreateMap<RentalItemModel,RentalItem>();
-                    expression.CreateMap<ProductModel, Product>();
-                    expression.CreateMap<RentalItemModel,RentalItem>();
-                });
-                var model = new Order()
-                {
-                    RentalItems = rentalItems.AsQueryable().ProjectTo<RentalItem>(mapperConfiguration).ToList()
-                    ,
-                    OrderItems = products.AsQueryable().ProjectTo<Product>(mapperConfiguration).ToList()
-                    ,
-                    RentalSince = orderMatadata.Since
-                    ,
-                    RentalTill = orderMatadata.Till
-                    ,
-                    LocationAddress = new Address()
-                    {
-                        Id = new Guid()
-                        ,
-                        City = orderMatadata.Address.City
-                        ,
-                        PostalCode = orderMatadata.Address.PostalCode
-                        ,
-                        Street = orderMatadata.Address.Street
-                        ,
-                        BuildingNumber = orderMatadata.Address.BuildingNumber
-                    }
-                    ,
-                    Customer = new ApplicationUser("hektor")
-                };
-                _repository.Insert(model);
-                uow.Commit();
-            }
-            return PrepareOrder(rentalItems, products, orderMatadata);
+            throw new NotImplementedException();
+            ////TODO TEST
+            //using (var uow = UnitOfWorkFactory.Create())
+            //{
+            //    var mapperConfiguration = new MapperConfiguration(expression =>
+            //    {
+            //        expression.CreateMap<RentalItemModel,RentalItem>();
+            //        expression.CreateMap<ProductModel, Product>();
+            //        expression.CreateMap<RentalItemModel,RentalItem>();
+            //    });
+            //    var model = new Order()
+            //    {
+            //        RentalItems = rentalItems.AsQueryable().ProjectTo<RentalItem>(mapperConfiguration).ToList()
+            //        ,
+            //        OrderItems = products.AsQueryable().ProjectTo<Product>(mapperConfiguration).ToList()
+            //        ,
+            //        RentalSince = orderMatadata.Since
+            //        ,
+            //        RentalTill = orderMatadata.Till
+            //        ,
+            //        LocationAddress = new Address()
+            //        {
+            //            Id = new Guid()
+            //            ,
+            //            City = orderMatadata.Address.City
+            //            ,
+            //            PostalCode = orderMatadata.Address.PostalCode
+            //            ,
+            //            Street = orderMatadata.Address.Street
+            //            ,
+            //            BuildingNumber = orderMatadata.Address.BuildingNumber
+            //        }
+            //        ,
+            //        Customer = new ApplicationUser("hektor")
+            //    };
+            //    _repository.Insert(model);
+            //    uow.Commit();
+            //}
+            //return PrepareOrder(rentalItems, products, orderMatadata);
         }
 
     }

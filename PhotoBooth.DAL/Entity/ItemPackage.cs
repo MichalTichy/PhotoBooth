@@ -9,8 +9,25 @@ namespace PhotoBooth.DAL.Entity
     {
         [MaxLength(100)]
         public string Name { get; set; }
-        public ICollection<RentalItem> RentalItems { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public ICollection<ItemPackageRentalItem> RentalItems { get; set; }
+        public ICollection<ItemPackageProduct> Products { get; set; }
         public bool CurrentlyAvailable { get; set; }
+    }
+
+    public class ItemPackageRentalItem
+    {
+        public Guid ItemPackageId { get; set; }
+        public ItemPackage ItemPackage { get; set; }
+
+        public RentalItemType RentalItemType { get; set; }
+    }
+
+    public class ItemPackageProduct
+    {
+        public Guid ItemPackageId { get; set; }
+        public ItemPackage ItemPackage { get; set; }
+        public Guid ProductId { get; set; }
+
+        public Product Product { get; set; }
     }
 }

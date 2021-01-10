@@ -26,7 +26,7 @@ namespace PhotoBooth.BL.Queries
         {
             var rentedItems = Context.Orders
                 .Where(x => x.RentalSince >= OrderSince && x.RentalTill <= OrderTill)
-                .SelectMany(x => x.RentalItems).Select(t=>t.Id).ToList();
+                .SelectMany(x => x.RentalItems).Select(t=>t.Item.Id).ToList();
             var availableItems = Context.RentalItems.Where(t => !rentedItems.Contains(t.Id));
 
             if (RentalItemType!=null)

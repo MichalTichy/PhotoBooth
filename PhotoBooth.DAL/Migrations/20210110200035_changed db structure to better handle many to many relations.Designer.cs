@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoBooth.DAL;
 
 namespace PhotoBooth.DAL.Migrations
 {
     [DbContext(typeof(PhotoBoothContext))]
-    partial class PhotoBoothContextModelSnapshot : ModelSnapshot
+    [Migration("20210110200035_changed db structure to better handle many to many relations")]
+    partial class changeddbstructuretobetterhandlemanytomanyrelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,34 +275,6 @@ namespace PhotoBooth.DAL.Migrations
                     b.ToTable("ItemPackages");
                 });
 
-            modelBuilder.Entity("PhotoBooth.DAL.Entity.ItemPackageProduct", b =>
-                {
-                    b.Property<Guid>("ItemPackageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("ItemPackageId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ItemPackageProduct");
-                });
-
-            modelBuilder.Entity("PhotoBooth.DAL.Entity.ItemPackageRentalItem", b =>
-                {
-                    b.Property<Guid>("ItemPackageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RentalItemType")
-                        .HasColumnType("int");
-
-                    b.HasKey("ItemPackageId", "RentalItemType");
-
-                    b.ToTable("ItemPackageRentalItem");
-                });
-
             modelBuilder.Entity("PhotoBooth.DAL.Entity.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -387,6 +361,9 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<Guid?>("ItemPackageId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
@@ -395,10 +372,12 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemPackageId");
 
                     b.ToTable("Products");
                 });
@@ -412,6 +391,9 @@ namespace PhotoBooth.DAL.Migrations
                     b.Property<string>("DescriptionHtml")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<Guid?>("ItemPackageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(150)")
@@ -428,6 +410,8 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemPackageId");
 
                     b.ToTable("RentalItems");
                 });
@@ -490,30 +474,6 @@ namespace PhotoBooth.DAL.Migrations
                         .HasForeignKey("CustomerAddressId");
                 });
 
-            modelBuilder.Entity("PhotoBooth.DAL.Entity.ItemPackageProduct", b =>
-                {
-                    b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", "ItemPackage")
-                        .WithMany("Products")
-                        .HasForeignKey("ItemPackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PhotoBooth.DAL.Entity.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("PhotoBooth.DAL.Entity.ItemPackageRentalItem", b =>
-                {
-                    b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", "ItemPackage")
-                        .WithMany("RentalItems")
-                        .HasForeignKey("ItemPackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PhotoBooth.DAL.Entity.Order", b =>
                 {
                     b.HasOne("PhotoBooth.DAL.Entity.ApplicationUser", "Customer")
@@ -553,6 +513,20 @@ namespace PhotoBooth.DAL.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.Product", b =>
+                {
+                    b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", null)
+                        .WithMany("Products")
+                        .HasForeignKey("ItemPackageId");
+                });
+
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.RentalItem", b =>
+                {
+                    b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", null)
+                        .WithMany("RentalItems")
+                        .HasForeignKey("ItemPackageId");
                 });
 #pragma warning restore 612, 618
         }

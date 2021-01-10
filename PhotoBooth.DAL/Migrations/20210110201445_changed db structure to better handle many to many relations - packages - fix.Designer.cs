@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhotoBooth.DAL;
 
 namespace PhotoBooth.DAL.Migrations
 {
     [DbContext(typeof(PhotoBoothContext))]
-    partial class PhotoBoothContextModelSnapshot : ModelSnapshot
+    [Migration("20210110201445_changed db structure to better handle many to many relations - packages - fix")]
+    partial class changeddbstructuretobetterhandlemanytomanyrelationspackagesfix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,8 +397,8 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

@@ -15,6 +15,7 @@ using PhotoBooth.BL.Models.Order;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.BL.Models;
 using DotVVM.Framework.ViewModel.Validation;
+using PhotoBooth.BL.Models.User;
 
 namespace PhotoBooth.WEB.ViewModels
 {
@@ -22,11 +23,13 @@ namespace PhotoBooth.WEB.ViewModels
     {
         private readonly ICatalogFacade _catalogFacade;
         private readonly IOrderFacade _orderFacade;
+        private readonly UserFacade _userFacade;
 
-        public DefaultViewModel(ICatalogFacade catalogFacade,IOrderFacade orderFacade)
+        public DefaultViewModel(ICatalogFacade catalogFacade,IOrderFacade orderFacade,UserFacade userFacade)
         {
             _catalogFacade = catalogFacade;
             _orderFacade = orderFacade;
+            _userFacade = userFacade;
         }
 
         //order stages
@@ -48,11 +51,9 @@ namespace PhotoBooth.WEB.ViewModels
         public ICollection<Guid> SelectedProductIds { get; set; } = new List<Guid>();
         public ICollection<RentalItemType> AvailableRentalTypes { get; set; }
         public ICollection<RentalItemModel> AvailableRentalItems { get; set; }
-        public ICollection<RentalItemModel> SelectedRentalItems { get; set; }
 
         public ItemPackageDTO SelectedPackage { get; set; }
 
-        //CREATING JUST FOR TESTING PURPOSES - ASSIGNMENT SHOULD BE DONE IN PrepareSummary()
         public OrderSummaryModel OrderPreview { get; set; } = new OrderSummaryModel();
 
         private List<ProductModel> GetSelectedProducts()
@@ -60,6 +61,16 @@ namespace PhotoBooth.WEB.ViewModels
             return Products.Where(t=>SelectedProductIds.Contains(t.Id)).ToList();
         }
 
+        public async Task CreateUser()
+        {
+            var result = await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
+            //TODO display result
+            HideAllSections();
+
+            PrepareSummary();
+
+            Summary = true;
+        }
         public void HideAllSections()
         {
             OrderMetadataForm = false;
@@ -74,9 +85,8 @@ namespace PhotoBooth.WEB.ViewModels
 
         private void LoadDataForServiceSelect()
         {
-            OrderBasicInfo.Till = OrderBasicInfo.Since.AddHours(OrderBasicInfo.CountOfHours);
             //calling DB
-            AvailableRentalItems = _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Till);
+            AvailableRentalItems = _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Since.AddHours(OrderBasicInfo.CountOfHours));
             Packages = _catalogFacade.GetAllPackages();
             Products = _catalogFacade.GetAvailableProducts();
             
@@ -174,17 +184,29 @@ namespace PhotoBooth.WEB.ViewModels
 
         public void GoToSummary()
         {
-            //is user already signed/registred?
-
-            PrepareSummary();
             HideAllSections();
-            Summary= true;
+            if (Context?.HttpContext?.User?.Identity?.Name == null)
+            {
+                UserInfoSelect = true;
+                OrderBasicInfo.User=new ApplicationUserListModel();
+            }
+            else
+            {
+                PrepareSummary();
+
+                Summary = true;
+            }
         }
 
         private void PrepareSummary()
         {
-            OrderPreview = new OrderSummaryModel();
-            //TODO
+            var rentalItems = new List<RentalItemModel>();
+            rentalItems.AddRange(SelectedProps);
+
+            if (SelectedBooth!=null) rentalItems.Add(SelectedBooth);
+            if (SelectedBackground!=null) rentalItems.Add(SelectedBackground);
+
+            OrderPreview = _orderFacade.PrepareOrder(rentalItems,Products.Where(t=>SelectedProductIds.Contains(t.Id)).ToList(),OrderBasicInfo);
         }
 
         public ICollection<RentalItemModel> Booths { get; set; }

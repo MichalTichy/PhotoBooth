@@ -17,9 +17,9 @@ namespace PhotoBooth.BL.Queries
         protected new MapperConfiguration MapConfig = new MapperConfiguration(cfg =>
                 cfg.CreateMap<ItemPackage, ItemPackageDTO>()
                 .ForMember( dest => dest.RentalItemTypes, act => 
-                        act.MapFrom(src => src.RentalItems.Select(x => x.Type)))
+                        act.MapFrom(src => src.RentalItems.Select(x => x.RentalItemType)))
                 .ForMember(dest => dest.ProductIds, act => 
-                        act.MapFrom(src => src.Products.Select(x => x.Id)))
+                        act.MapFrom(src => src.Products.Select(x => x.ProductId)))
         );
                 
         public ItemPackagesQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)

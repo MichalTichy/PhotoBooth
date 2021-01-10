@@ -12,10 +12,25 @@ namespace PhotoBooth.DAL.Entity
         public DateTime RentalTill { get; set; }
         public Address LocationAddress { get; set; }
         public ApplicationUser Customer { get; set; }
-        public ICollection<RentalItem> RentalItems { get; set; }
-        public ICollection<Product> OrderItems { get; set; }
+        public ICollection<OrderRentalItem> RentalItems { get; set; }
+        public ICollection<OrderProduct> OrderItems { get; set; }
         [MaxLength(100)]
         public string BannerUrl { get; set; }
         public double FinalPrice { get; set; }
+    }
+
+    public class OrderRentalItem
+    {
+        public Guid ItemId { get; set; }
+        public RentalItem Item { get; set; }
+        public Guid OrderId { get; set; }
+        public Order Order { get; set; }
+    }
+    public class OrderProduct
+    {
+        public Guid ItemId { get; set; }
+        public Product Item { get; set; }
+        public Guid OrderId { get; set; }
+        public Order Order { get; set; }
     }
 }

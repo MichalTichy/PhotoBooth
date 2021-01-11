@@ -15,8 +15,6 @@
 </head>
 <body>
 	<nav>
-		<dot:RouteLink Text="Domů" RouteName="Default" />
-
 		<dot:AuthenticatedView>
 			<AuthenticatedTemplate>
 				<dot:LinkButton Text="Odhlásit se" Click="{command: SignOut()}" Validation.Enabled="false" />

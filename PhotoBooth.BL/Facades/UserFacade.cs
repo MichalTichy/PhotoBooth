@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using Microsoft.AspNetCore.Identity;
 using PhotoBooth.DAL.Entity;
 using System.Security.Claims;
@@ -21,6 +23,13 @@ namespace PhotoBooth.BL.Facades
             this.userManager = userManager;
         }
 
+        
+
+        public async Task<ClaimsIdentity> GetByUsername(string userName)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+            return CreateIdentity(user);
+        }
         public async Task<ClaimsIdentity> SignInAsync(string userName, string password)
         {
             var user = await userManager.FindByNameAsync(userName);
@@ -67,9 +76,7 @@ namespace PhotoBooth.BL.Facades
                 PhoneNumber = user.PhoneNumber
             };
             var result =  await userManager.CreateAsync(userEntity, password);
-            if (!result.Succeeded)
-                return result;
-            await SignInAsync(user.Email, password);
+            
             return result;
         }
 

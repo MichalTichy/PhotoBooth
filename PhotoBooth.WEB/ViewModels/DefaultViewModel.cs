@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using DotVVM.Framework.ViewModel;
@@ -15,6 +16,7 @@ using PhotoBooth.BL.Models.Order;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.BL.Models;
 using DotVVM.Framework.ViewModel.Validation;
+using Microsoft.AspNetCore.Authentication;
 using PhotoBooth.BL.Models.User;
 
 namespace PhotoBooth.WEB.ViewModels
@@ -61,9 +63,12 @@ namespace PhotoBooth.WEB.ViewModels
             return Products.Where(t=>SelectedProductIds.Contains(t.Id)).ToList();
         }
 
+        [Protect(ProtectMode.EncryptData)]
+        public string NewUserName { get; set; }
         public async Task CreateUser()
         {
-            var result = await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
+           await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
+           NewUserName = OrderBasicInfo.User.Email;
             //TODO display result
             HideAllSections();
 
@@ -228,9 +233,15 @@ namespace PhotoBooth.WEB.ViewModels
             }.Union(SelectedProps).ToList();
         }
 
-        public void SendOrder()
+        public async Task SendOrder()
         {
             var id = _orderFacade.SubmitOrder(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
+            if (NewUserName!=null)
+            {
+                var user = await _userFacade.GetByUsername(NewUserName);
+                await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(user));
+            }
+
             Context.RedirectToRoute($"OrderDetail/{id}");
         }
     }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AutoMapper;
 
 namespace PhotoBooth.BL.Queries
 {
@@ -22,6 +23,7 @@ namespace PhotoBooth.BL.Queries
             this.OrderTill = OrderTill;
             RentalItemType = rentalItemType;
         }
+
         protected override IQueryable<RentalItemModel> GetQueryable()
         {
             var rentedItems = Context.Orders

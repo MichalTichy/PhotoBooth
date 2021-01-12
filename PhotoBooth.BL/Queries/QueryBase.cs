@@ -18,6 +18,8 @@ namespace PhotoBooth.BL.Queries
 
         protected virtual void CreateMap(IMapperConfigurationExpression cfg)
         {
+            cfg.CreateMap<TStart, TResult>();
+
         }
 
 

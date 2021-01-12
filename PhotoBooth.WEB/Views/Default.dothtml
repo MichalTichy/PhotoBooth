@@ -37,7 +37,7 @@
                                 <label for="inputAddress">Miesto konania</label>
                                 <dot:TextBox class="form-control form-control-lg" id="inputAddress" Text="{value: OrderBasicInfo.Address.City}" Validator.InvalidCssClass="is-invalid" Validator.Value="{value: OrderBasicInfo.Address.City}" placeholder="Napr.: Hotel Lev, Levice"/>
                                 <div class="invalid-feedback">
-                                  Zadajte miesto konania udalosti.
+                                  Zadajte miesto konania udalosti dlhšie ako 4 znaky.
                                 </div>
                             </div>
                         </div>

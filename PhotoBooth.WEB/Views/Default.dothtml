@@ -125,7 +125,7 @@
                     <form>
                         <div IncludeInPage="{value: BoothSelect}" >
                             <p class="col-12" style="font-size:35px;">Budka</p>
-                            <p class="col-12"><dot:HtmlLiteral Html="{value: SelectedBooth.DescriptionHtml}"></p>
+                            <dot:HtmlLiteral class="col-12" Html="{value: SelectedBooth.DescriptionHtml}"/>
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Booths}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
@@ -133,7 +133,6 @@
                                     <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
                                         <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;"/>
                                                     <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
-                                                    <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;"><dot:HtmlLiteral Html="{value: DescriptionHtml}"/></p>
                                                     <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour * _parent.OrderBasicInfo.CountOfHours}}€</p>
                                                     <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour}}€ * {{value: _parent.OrderBasicInfo.CountOfHours}}hod</p>
                                     </div>
@@ -142,7 +141,7 @@
                         </div>
                         <div IncludeInPage="{value: BackgroundSelect}">
                             <p class="col-12" style="font-size:35px;">Pozadie</p>
-                            <p class="col-12"><dot:HtmlLiteral Html="{value: SelectedBackground.DescriptionHtml}"></p>
+                            <dot:HtmlLiteral  class="col-12" Html="{value: SelectedBackground.DescriptionHtml}"/>
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Backgrounds}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
@@ -150,7 +149,6 @@
                                     <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
                                         <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;" />
                                         <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
-                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;"><dot:HtmlLiteral Html="{value: DescriptionHtml}" /></p>
                                         <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour * _parent.OrderBasicInfo.CountOfHours}}€</p>
                                         <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour}}€ * {{value: _parent.OrderBasicInfo.CountOfHours}}hod</p>
                                     </div>
@@ -159,7 +157,9 @@
                         </div>
                         <div IncludeInPage="{value: PropsSelect}">
                             <p class="col-12" style="font-size:35px;">Rekvizity</p>
-                            <p class="col-12"><dot:HtmlLiteral Html="{value: SelectedBooth.DescriptionHtml}"></p>
+                            <dot:Repeater DataSource="{value: SelectedProps}">
+                                <dot:HtmlLiteral class="col-12" Html="{value: _this.DescriptionHtml}"/>
+                            </dot:Repeater>
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Props}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
@@ -169,7 +169,6 @@
                                     <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
                                         <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;" />
                                         <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
-                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;"><dot:HtmlLiteral Html="{value: DescriptionHtml}" /></p>
                                         <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour * _parent.OrderBasicInfo.CountOfHours}}€</p>
                                         <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour}}€ * {{value: _parent.OrderBasicInfo.CountOfHours}}hod</p>
                                     </div>

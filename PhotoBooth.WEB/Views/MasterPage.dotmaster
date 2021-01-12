@@ -18,6 +18,8 @@
 		<dot:AuthenticatedView>
 			<AuthenticatedTemplate>
 				<dot:LinkButton Text="Odhlásit se" Click="{command: SignOut()}" Validation.Enabled="false" />
+				<dot:RouteLink RouteName="OrderList" Text="Seznam objednavek" Validation.Enabled="false" />
+				<dot:LinkButton Text="Odhlásit se" Click="{command: SignOut()}" Validation.Enabled="false" />
 			</AuthenticatedTemplate>
 			<NotAuthenticatedTemplate>
 				<dot:RouteLink Text="Přihlásit se" Validation.Enabled="false" RouteName="Authentication_SignIn"/>

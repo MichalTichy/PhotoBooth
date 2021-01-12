@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -70,6 +71,7 @@ namespace PhotoBooth.WEB
             });
 
             services.AddDotVVM<DotvvmStartup>();
+
         }
 
         private void Install(IServiceCollection services)
@@ -87,13 +89,13 @@ namespace PhotoBooth.WEB
 
             BlInstaller.Install(services);
             DALInstaller.Install(services);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseAuthentication();
-
             // use DotVVM
             var dotvvmConfiguration = app.UseDotVVM<DotvvmStartup>(env.ContentRootPath);
             dotvvmConfiguration.AssertConfigurationIsValid();
@@ -103,6 +105,14 @@ namespace PhotoBooth.WEB
             {
                 FileProvider = new PhysicalFileProvider(env.WebRootPath)
             });
+            SeedUsers(app.ApplicationServices).Wait();
+
+        }
+
+        private async Task SeedUsers(IServiceProvider serviceProvider)
+        {
+            var userFacade = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<UserFacade>();
+            await userFacade.CreateAdminAccount();
         }
     }
 }

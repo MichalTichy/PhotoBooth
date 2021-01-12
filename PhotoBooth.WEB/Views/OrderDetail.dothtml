@@ -7,7 +7,17 @@
     </div>
 
     <div DataContext="{value: Detail}" class="row d-flex justify-content-center">
-        <div  class="col-sm-12 col-md-8 form-box">
+
+        <div class="col-sm-12 col-md-8 form-box">
+            <h1 IncludeInPage="{value: ConfirmationDate!=null && CancellationDate==null}">
+                Objednávka potvrzená
+            </h1>
+            <h1 IncludeInPage="{value: ConfirmationDate==null && CancellationDate==null}">
+                Objednávka čeká na potvrzení
+            </h1>
+            <h1 IncludeInPage="{value: CancellationDate!=null}">
+                Objednávka zrušená
+            </h1>
             <div class="row">
                 <div class="col-6 form-summary-info">
                     <h4>Základné informácie</h4>
@@ -57,6 +67,13 @@
             <div class="col-12">
                 <p>*K cene sa individuálne pripočítava cena dopravných nákladov.</p>
             </div>
+
+            <dot:RoleView Roles="admin,administrator">
+                <IsMemberTemplate>
+                    <dot:Button Text="Cancel" Click="{command: _root.Cancel()}" />
+                    <dot:Button Text="Confirm" Click="{command: _root.Confirm()}" />
+                </IsMemberTemplate>
+            </dot:RoleView>
         </div>
     </div>
 </dot:Content>

@@ -1,0 +1,21 @@
+﻿@viewModel PhotoBooth.WEB.ViewModels.OrderListViewModel, PhotoBooth.WEB
+@masterPage Views/MasterPage.dotmaster
+
+<dot:Content ContentPlaceHolderID="MainContent">
+
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-sm-12 col-md-8 form-box">
+            <dot:GridView DataSource="{value: Orders}">
+                <dot:GridViewTextColumn HeaderText="Datum" ValueType="DateTime" ValueBinding="{value: RentalSince}" FormatString="g" />
+                <dot:GridViewTextColumn HeaderText="Adresa" ValueBinding="{value: Address}" />
+                <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: FinalPrice}" />
+                <dot:GridViewCheckBoxColumn HeaderText="Potvrzeno" ValueBinding="{value: IsConfirmed}"/>
+                <dot:GridViewTemplateColumn>
+                    <dot:RouteLink RouteName="OrderDetail" Param-id="{value: Id}" Text="Detail" />
+                </dot:GridViewTemplateColumn>
+            </dot:GridView>
+        </div>
+    </div>
+</dot:Content>
+

@@ -17,13 +17,25 @@ namespace PhotoBooth.BL.Facades
     public class UserFacade
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserFacade(UserManager<ApplicationUser> userManager)
+        public UserFacade(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
+            _roleManager = roleManager;
         }
 
-        
+        public async Task CreateAdminAccount()
+        {
+            var admin = await GetUserByUsername("admin");
+            if (admin!=null)
+                return;
+
+            var userInfo = await RegisterAsync("admin", "Password1*");
+            admin = await GetUserByUsername("admin");
+            await _roleManager.CreateAsync(new IdentityRole("admin"));
+            await userManager.AddToRoleAsync(admin, "admin");
+        }
 
         public async Task<ClaimsIdentity> GetIdentityByUsername(string userName)
         {

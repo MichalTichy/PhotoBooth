@@ -13,7 +13,7 @@ namespace PhotoBooth.BL.Facades
         Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
             ICollection<ProductModel> products, OrderMatadata orderMatadata);
         ICollection<OrderListModel> GetAllOrders(bool includeDeleted=false);
-        ICollection<OrderListModel> GetOrdersByUser(Guid userId, bool includeDeleted = false);
+        ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false);
         OrderSummaryModel GetOrderSummary(Guid id);
         OrderSummaryModel ChangeOrderPrice(Guid id,double newPrice);
         void ConfirmOrder(Guid orderId);

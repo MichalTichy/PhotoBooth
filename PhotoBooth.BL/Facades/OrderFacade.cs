@@ -71,12 +71,12 @@ namespace PhotoBooth.BL.Facades
             }
         }
 
-        public ICollection<OrderListModel> GetOrdersByUser(Guid userId,bool includeDeleted = false)
+        public ICollection<OrderListModel> GetOrdersByUser(string username,bool includeDeleted = false)
         {
             using (UnitOfWorkFactory.Create())
             {
                 var query = new OrderListQuery(UnitOfWorkFactory, includeDeleted);
-                query.IncludeOnlyOrdersBySpecificUser(userId);
+                query.IncludeOnlyOrdersBySpecificUser(username);
                 return query.Execute();
             }
         }

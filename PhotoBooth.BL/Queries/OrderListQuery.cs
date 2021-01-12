@@ -12,15 +12,22 @@ namespace PhotoBooth.BL.Queries
     public class OrderListQuery : QueryBase<Order, OrderListModel>
     {
         private readonly bool _includeDeleted;
-        private Guid? UserId;
+        private string username;
+
         public OrderListQuery(IUnitOfWorkProvider unitOfWorkProvider,bool includeDeleted) : base(unitOfWorkProvider)
         {
             _includeDeleted = includeDeleted;
         }
 
-        public void IncludeOnlyOrdersBySpecificUser(Guid id)
+        public void IncludeOnlyOrdersBySpecificUser(string name)
         {
-            UserId = id;
+            this.username = name;
+        }
+
+        protected override void CreateMap(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<Order, OrderListModel>().ForMember(model => model.IsCanceled,expression => expression.MapFrom(order => order.CancellationDate.HasValue));
+            cfg.CreateMap<Order, OrderListModel>().ForMember(model => model.IsConfirmed,expression => expression.MapFrom(order => order.ConfirmationDate.HasValue));
         }
 
         protected override IQueryable<OrderListModel> GetQueryable()
@@ -32,9 +39,9 @@ namespace PhotoBooth.BL.Queries
                 orders = orders.Where(t => t.CancellationDate != null);
             }
 
-            if (UserId!=null)
+            if (username!=null)
             {
-                orders = orders.Where(t => t.Customer.Id == UserId.ToString());
+                orders = orders.Where(t => t.Customer.UserName == username.ToString());
             }
 
             return orders

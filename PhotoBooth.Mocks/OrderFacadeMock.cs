@@ -48,7 +48,7 @@ namespace PhotoBooth.Mocks
         }
 
 
-        public ICollection<OrderListModel> GetOrdersByUser(Guid userId, bool includeDeleted = false)
+        public ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false)
         {
             return GenerateOrderListModels();
         }

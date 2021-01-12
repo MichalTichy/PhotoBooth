@@ -23,11 +23,19 @@ namespace PhotoBooth.WEB.ViewModels
 
         public override Task PreRender()
         {
-            if (!Context.IsPostBack)
-            {
-                Detail = _orderFacade.GetOrderSummary(OrderId);
-            }
+            Detail = _orderFacade.GetOrderSummary(OrderId);
+
             return base.PreRender();
+        }
+
+        public void Cancel()
+        {
+            _orderFacade.CancelOrder(Detail.Id);
+        }
+
+        public void Confirm()
+        {
+            _orderFacade.ConfirmOrder(Detail.Id);
         }
     }
 }

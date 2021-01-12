@@ -12,6 +12,7 @@ namespace PhotoBooth.BL.Models.Order
     {
         public DateTime Created { get; set; }
         public DateTime? ConfirmationDate { get; set; }
+        public DateTime? CancellationDate { get; set; }
         public DateTime RentalSince { get; set; }
         public DateTime RentalTill { get; set; }
         public int CountOfHours => (int)Math.Ceiling((RentalTill - RentalSince).TotalHours);

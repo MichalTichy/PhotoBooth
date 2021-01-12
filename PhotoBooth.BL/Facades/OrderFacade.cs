@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
@@ -83,9 +84,12 @@ namespace PhotoBooth.BL.Facades
 
         public OrderSummaryModel GetOrderSummary(Guid id)
         {
-            using (UnitOfWorkFactory.Create())
+            using (var uow = UnitOfWorkFactory.Create())
             {
-                var order = _repository.GetById(id);
+                var context = (uow as EntityFrameworkUnitOfWork<PhotoBoothContext>)?.Context;
+                var order = context.Orders.Include(t => t.OrderItems).ThenInclude(t => t.Item).Include(o => o.RentalItems)
+                    .ThenInclude(s => s.Item).FirstOrDefault(t=>t.Id==id);
+                
 
                 //sorry for a shitcode :(
                 var mapperConfiguration = createMapper();
@@ -166,8 +170,7 @@ namespace PhotoBooth.BL.Facades
                     }
                 }
                 await uow.CommitAsync();
-
-                return new Mapper(mapperConfiguration).Map<OrderSummaryModel>(model);
+                return GetOrderSummary(model.Id);
             }
 
         }

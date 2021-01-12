@@ -20,7 +20,7 @@ namespace UnitTests
     {
         private EntityFrameworkUnitOfWorkProvider<PhotoBoothContext> UnitOfWorkProvider;
         private BaseRepository<Order> OrdersRepository;
-
+        
         [SetUp]
         public void SetupDatabase()
         {

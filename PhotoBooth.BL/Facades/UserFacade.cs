@@ -25,10 +25,14 @@ namespace PhotoBooth.BL.Facades
 
         
 
-        public async Task<ClaimsIdentity> GetByUsername(string userName)
+        public async Task<ClaimsIdentity> GetIdentityByUsername(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
             return CreateIdentity(user);
+        }
+        public async Task<ApplicationUser> GetUserByUsername(string userName)
+        {
+            return await userManager.FindByNameAsync(userName);
         }
         public async Task<ClaimsIdentity> SignInAsync(string userName, string password)
         {
@@ -49,11 +53,11 @@ namespace PhotoBooth.BL.Facades
             var user = new ApplicationUser(email);
             return await userManager.CreateAsync(user, password);
         }
+        static Random rnd = new Random();
         private static string CreatePassword(int length)
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
             StringBuilder res = new StringBuilder();
-            Random rnd = new Random();
             while (2 < length--)
             {
                 res.Append(valid[rnd.Next(valid.Length)]);

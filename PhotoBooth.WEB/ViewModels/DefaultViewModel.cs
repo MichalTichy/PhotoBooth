@@ -235,14 +235,14 @@ namespace PhotoBooth.WEB.ViewModels
 
         public async Task SendOrder()
         {
-            var id = _orderFacade.SubmitOrder(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
+            var order =await  _orderFacade.SubmitOrder(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
             if (NewUserName!=null)
             {
-                var user = await _userFacade.GetByUsername(NewUserName);
+                var user = await _userFacade.GetIdentityByUsername(NewUserName);
                 await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(user));
             }
 
-            Context.RedirectToRoute($"OrderDetail/{id}");
+            Context.RedirectToRoute($"OrderDetail",new {id=order.Id});
         }
     }
 }

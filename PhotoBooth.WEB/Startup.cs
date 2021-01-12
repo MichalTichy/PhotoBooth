@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
 using DotVVM.Framework.Hosting;
 using DotVVM.Framework.Routing;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using PhotoBooth.BL;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.DAL;
@@ -39,24 +40,43 @@ namespace PhotoBooth.WEB
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
+
             services.AddDataProtection();
             services.AddAuthorization();
             services.AddWebEncoders();
             Install(services);
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.SignIn.RequireConfirmedPhoneNumber = false;
+                })
                 .AddEntityFrameworkStores<PhotoBoothContext>()
                 .AddDefaultTokenProviders();
-			services.ConfigureApplicationCookie(o => { o.LoginPath = new PathString("/Authentication/SignIn"); });
+            services.ConfigureApplicationCookie(o => { o.LoginPath = new PathString("/Authentication/SignIn"); });
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Authentication/SignIn";
+
                 });
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+            });
+
             services.AddDotVVM<DotvvmStartup>();
         }
 
         private void Install(IServiceCollection services)
         {
+
+            services.AddHttpContextAccessor();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDbContext<PhotoBoothContext>(builder =>
             {
 
@@ -70,7 +90,8 @@ namespace PhotoBooth.WEB
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //app.UseAuthentication();
+            app.UseAuthentication();
+
             // use DotVVM
             var dotvvmConfiguration = app.UseDotVVM<DotvvmStartup>(env.ContentRootPath);
             dotvvmConfiguration.AssertConfigurationIsValid();

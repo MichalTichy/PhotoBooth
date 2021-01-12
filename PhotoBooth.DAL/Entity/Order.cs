@@ -12,6 +12,7 @@ namespace PhotoBooth.DAL.Entity
         public DateTime RentalTill { get; set; }
         public Address LocationAddress { get; set; }
         public ApplicationUser Customer { get; set; }
+        public string CustomerId { get; set; }
         public ICollection<OrderRentalItem> RentalItems { get; set; }
         public ICollection<OrderProduct> OrderItems { get; set; }
         [MaxLength(100)]

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
@@ -17,18 +19,20 @@ namespace PhotoBooth.BL.Facades
     {
         private readonly ICatalogFacade _catalogFacade;
         private readonly IDateTimeProvider dateTimeProvider;
+        private readonly UserFacade _userFacade;
 
-        public OrderFacade(BaseRepository<Order> repository, ICatalogFacade catalogFacade, IUnitOfWorkProvider uow, IDateTimeProvider dateTimeProvider) : base(repository, uow)
+        public OrderFacade(BaseRepository<Order> repository, ICatalogFacade catalogFacade, IUnitOfWorkProvider uow, IDateTimeProvider dateTimeProvider,UserFacade userFacade) : base(repository, uow)
         {
             _catalogFacade = catalogFacade;
             this.dateTimeProvider = dateTimeProvider;
+            _userFacade = userFacade;
         }
         public void CancelOrder(Guid orderId)
         {
             using (var uow = UnitOfWorkFactory.Create())
             {
-                //TODO: order has cancellation date which should be set (and respected during queries) instead of deleting it.
-                _repository.Delete(orderId);
+                var order = _repository.GetById(orderId);
+                order.CancellationDate = dateTimeProvider.Now;
                 uow.Commit();
             }
         }
@@ -91,8 +95,6 @@ namespace PhotoBooth.BL.Facades
         {
             var rentalTill = orderMatadata.Since.AddHours(orderMatadata.CountOfHours);
 
-            //var availableEmployes =_catalogFacade.GetAvailableRentalItems(orderMatadata.Since,rentalTill,RentalItemType.Employe);
-            //rentalItems.Add(availableEmployes.First());
             return new OrderSummaryModel()
             {
                 RentalItems = rentalItems,
@@ -102,51 +104,66 @@ namespace PhotoBooth.BL.Facades
                 LocationAddress = orderMatadata.Address,
                 Customer = orderMatadata.User,
                 Created = dateTimeProvider.Now,
-                FinalPrice = rentalItems.Sum(t=>t.PricePerHour)*orderMatadata.CountOfHours + products.Sum(t=>t.Price)
+                FinalPrice = GetFinalPrice(rentalItems, products, orderMatadata.CountOfHours)
             };
         }
 
-        public OrderSummaryModel SubmitOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
+        private double GetFinalPrice(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products,int countOfHours )
         {
-            throw new NotImplementedException();
-            ////TODO TEST
-            //using (var uow = UnitOfWorkFactory.Create())
-            //{
-            //    var mapperConfiguration = new MapperConfiguration(expression =>
-            //    {
-            //        expression.CreateMap<RentalItemModel,RentalItem>();
-            //        expression.CreateMap<ProductModel, Product>();
-            //        expression.CreateMap<RentalItemModel,RentalItem>();
-            //    });
-            //    var model = new Order()
-            //    {
-            //        RentalItems = rentalItems.AsQueryable().ProjectTo<RentalItem>(mapperConfiguration).ToList()
-            //        ,
-            //        OrderItems = products.AsQueryable().ProjectTo<Product>(mapperConfiguration).ToList()
-            //        ,
-            //        RentalSince = orderMatadata.Since
-            //        ,
-            //        RentalTill = orderMatadata.Till
-            //        ,
-            //        LocationAddress = new Address()
-            //        {
-            //            Id = new Guid()
-            //            ,
-            //            City = orderMatadata.Address.City
-            //            ,
-            //            PostalCode = orderMatadata.Address.PostalCode
-            //            ,
-            //            Street = orderMatadata.Address.Street
-            //            ,
-            //            BuildingNumber = orderMatadata.Address.BuildingNumber
-            //        }
-            //        ,
-            //        Customer = new ApplicationUser("hektor")
-            //    };
-            //    _repository.Insert(model);
-            //    uow.Commit();
-            //}
-            //return PrepareOrder(rentalItems, products, orderMatadata);
+            return rentalItems.Sum(t=>t.PricePerHour)*countOfHours + products.Sum(t=>t.Price);
+        }
+
+        public async Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
+            ICollection<ProductModel> products, OrderMatadata orderMatadata)
+        {
+            using (var uow = UnitOfWorkFactory.Create())
+            {
+                var mapperConfiguration = new MapperConfiguration(expression =>
+                {
+                    expression.CreateMap<Order, OrderSummaryModel>();
+                    expression.CreateMap<RentalItemModel, RentalItem>();
+                    expression.CreateMap<ProductModel, Product>();
+                    expression.CreateMap<RentalItemModel, RentalItem>();
+                    expression.CreateMap<Address, AddressModel>();
+                    expression.CreateMap<OrderRentalItem, RentalItemModel>().ConvertUsing((item, itemModel, context) => context.Mapper.Map<RentalItemModel>(item.Item));
+                    expression.CreateMap<OrderProduct, ProductModel>().ConvertUsing((item, itemModel, context) => context.Mapper.Map<ProductModel>(item.Item));
+                });
+                var orderId = Guid.NewGuid();
+                var user = await _userFacade.GetUserByUsername(orderMatadata.User.Email);
+                var model = new Order()
+                {
+                    Id = orderId,
+                    RentalItems = rentalItems?.AsQueryable().ProjectTo<RentalItem>(mapperConfiguration).Select(t=>new OrderRentalItem(){ItemId = t.Id,OrderId = orderId}).ToList()
+                    ,
+                    OrderItems = products?.AsQueryable().ProjectTo<Product>(mapperConfiguration).Select(t => new OrderProduct() { ItemId = t.Id, OrderId = orderId }).ToList()
+                    ,
+                    RentalSince = orderMatadata.Since
+                    ,
+                    RentalTill = orderMatadata.Since.AddHours(orderMatadata.CountOfHours)
+                    ,
+                    LocationAddress = new Address()
+                    {
+                        Id = Guid.NewGuid()
+                        ,
+                        City = orderMatadata.Address.City
+                        ,
+                        PostalCode = orderMatadata.Address.PostalCode
+                        ,
+                        Street = orderMatadata.Address.Street
+                        ,
+                        BuildingNumber = orderMatadata.Address.BuildingNumber
+                    }
+                    ,
+                    CustomerId = user.Id,
+                    Created = dateTimeProvider.Now,
+                    FinalPrice = GetFinalPrice(rentalItems,products,orderMatadata.CountOfHours)
+                };
+                _repository.Insert(model);
+                await uow.CommitAsync();
+
+                return new Mapper(mapperConfiguration).Map<OrderSummaryModel>(model);
+            }
+
         }
 
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Models.Item.Product;
@@ -18,9 +19,10 @@ namespace PhotoBooth.Mocks
             return GenerateOrderSummary(rentalItems, products, orderMatadata); 
         }
 
-        public OrderSummaryModel SubmitOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
+        public Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
+            ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
-            return GenerateOrderSummary(rentalItems, products, orderMatadata);
+            return Task.FromResult(GenerateOrderSummary(rentalItems, products, orderMatadata));
         }
 
         private static OrderSummaryModel GenerateOrderSummary(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)

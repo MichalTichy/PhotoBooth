@@ -27,7 +27,7 @@ namespace PhotoBooth.BL.Queries
         protected override IQueryable<RentalItemModel> GetQueryable()
         {
             var rentedItems = Context.Orders
-                .Where(x => x.RentalSince >= OrderSince && x.RentalTill <= OrderTill)
+                .Where(x => ((OrderSince >= x.RentalSince && OrderSince <= x.RentalTill) || (OrderTill >= x.RentalSince && OrderTill <= x.RentalTill) || (OrderSince <= x.RentalSince && OrderTill >= x.RentalTill)))
                 .SelectMany(x => x.RentalItems).Select(t=>t.Item.Id).ToList();
             var availableItems = Context.RentalItems.Where(t => !rentedItems.Contains(t.Id));
 

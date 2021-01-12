@@ -67,8 +67,8 @@ namespace PhotoBooth.WEB.ViewModels
         public string NewUserName { get; set; }
         public async Task CreateUser()
         {
-           await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
-           NewUserName = OrderBasicInfo.User.Email;
+            await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
+            NewUserName = OrderBasicInfo.User.Email;
             //TODO display result
             HideAllSections();
 

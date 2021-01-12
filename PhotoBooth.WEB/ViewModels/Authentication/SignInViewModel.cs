@@ -36,7 +36,7 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
             {
                 Context.ModelState.Errors.Add(new ViewModelValidationError
                 {
-                    ErrorMessage = "Neznáme přihlašobací údaje",
+                    ErrorMessage = "Neznáme prihlasovacie údaje",
                     PropertyPath = nameof(Password)
                 });
                 Context.FailOnInvalidModelState();

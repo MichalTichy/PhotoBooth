@@ -287,7 +287,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <img class="col form-divider" src="img/divider.png" />
+                    <img class="col form-divider" src="./img/divider.png" />
                     <div class="row d-flex justify-content-center">
                         <h3 class="col-md6">Orientačná cena: {{value: FinalPrice}}€ *</h3>
                     </div>

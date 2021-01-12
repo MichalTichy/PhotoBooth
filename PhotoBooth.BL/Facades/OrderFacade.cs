@@ -8,10 +8,13 @@ using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
+using PhotoBooth.BL.Models.User;
 using PhotoBooth.BL.Queries;
+using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.DAL.Repository;
 using Riganti.Utils.Infrastructure.Core;
+using Riganti.Utils.Infrastructure.EntityFrameworkCore;
 
 namespace PhotoBooth.BL.Facades
 {
@@ -80,15 +83,16 @@ namespace PhotoBooth.BL.Facades
 
         public OrderSummaryModel GetOrderSummary(Guid id)
         {
-            var order = _repository.GetById(id);
-
-            //sorry for a shitcode :(
-            var mapper = new Mapper(new MapperConfiguration(expression =>
+            using (UnitOfWorkFactory.Create())
             {
-                expression.CreateMap<Order, OrderSummaryModel>();
-            }));
-            var orderSummaryModel = mapper.Map<OrderSummaryModel>(order);
-            return orderSummaryModel;
+                var order = _repository.GetById(id);
+
+                //sorry for a shitcode :(
+                var mapperConfiguration = createMapper();
+                var mapper= new Mapper(mapperConfiguration);
+                var orderSummaryModel = mapper.Map<OrderSummaryModel>(order);
+                return orderSummaryModel;
+            }
         }
 
         public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
@@ -118,16 +122,7 @@ namespace PhotoBooth.BL.Facades
         {
             using (var uow = UnitOfWorkFactory.Create())
             {
-                var mapperConfiguration = new MapperConfiguration(expression =>
-                {
-                    expression.CreateMap<Order, OrderSummaryModel>();
-                    expression.CreateMap<RentalItemModel, RentalItem>();
-                    expression.CreateMap<ProductModel, Product>();
-                    expression.CreateMap<RentalItemModel, RentalItem>();
-                    expression.CreateMap<Address, AddressModel>();
-                    expression.CreateMap<OrderRentalItem, RentalItemModel>().ConvertUsing((item, itemModel, context) => context.Mapper.Map<RentalItemModel>(item.Item));
-                    expression.CreateMap<OrderProduct, ProductModel>().ConvertUsing((item, itemModel, context) => context.Mapper.Map<ProductModel>(item.Item));
-                });
+                var mapperConfiguration = createMapper();
                 var orderId = Guid.NewGuid();
                 var user = await _userFacade.GetUserByUsername(orderMatadata.User.Email);
                 var model = new Order()
@@ -158,7 +153,18 @@ namespace PhotoBooth.BL.Facades
                     Created = dateTimeProvider.Now,
                     FinalPrice = GetFinalPrice(rentalItems,products,orderMatadata.CountOfHours)
                 };
+
                 _repository.Insert(model);
+
+                var context = (uow as EntityFrameworkUnitOfWork<PhotoBoothContext>)?.Context;
+                if (context!=null && products!=null)
+                {
+                    foreach (var product in products)
+                    {
+                        var productFromDb = await context.Products.FindAsync(product.Id);
+                        productFromDb.AmountLeft--;
+                    }
+                }
                 await uow.CommitAsync();
 
                 return new Mapper(mapperConfiguration).Map<OrderSummaryModel>(model);
@@ -166,5 +172,35 @@ namespace PhotoBooth.BL.Facades
 
         }
 
+        private static MapperConfiguration createMapper()
+        {
+            return new MapperConfiguration(expression =>
+            {
+                expression.CreateMap<ApplicationUser, ApplicationUserListModel>();
+                expression.CreateMap<Order, OrderSummaryModel>();
+                expression.CreateMap<RentalItemModel, RentalItem>();
+                expression.CreateMap<ProductModel, Product>();
+                expression.CreateMap<RentalItemModel, RentalItem>();
+                expression.CreateMap<Address, AddressModel>();
+                expression.CreateMap<OrderRentalItem, RentalItemModel>().ConvertUsing((i, itemModel, context) => new RentalItemModel()
+                {
+                    Id = i.Item.Id,
+                    DescriptionHtml = i.Item.DescriptionHtml,
+                    Name = i.Item.Name,
+                    PictureUrl = i.Item.PictureUrl,
+                    PricePerHour = i.Item.PricePerHour,
+                    Type = i.Item.Type
+                });
+                expression.CreateMap<OrderProduct, ProductModel>().ConvertUsing((i, itemModel, context) => new ProductModel()
+                {
+                    Id = i.Item.Id,
+                    Name = i.Item.Name,
+                    PictureUrl = i.Item.PictureUrl,
+                    AmountLeft = i.Item.AmountLeft,
+                    DescriptionHtml = i.Item.DescriptionHtml,
+                    Price = i.Item.Price
+                });
+            });
+        }
     }
 }

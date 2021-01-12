@@ -12,6 +12,6 @@ namespace PhotoBooth.DAL.Entity
         [MaxLength(25)]
         public string LastName { get; set; }
         
-        public Address CustomerAddress { get; set; }
+        public virtual Address CustomerAddress { get; set; }
     }
 }

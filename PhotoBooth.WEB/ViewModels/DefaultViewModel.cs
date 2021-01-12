@@ -187,16 +187,26 @@ namespace PhotoBooth.WEB.ViewModels
             //TODO
         }
 
-        public void GoToSummary()
+        public async Task GoToSummary()
         {
             HideAllSections();
-            if (Context?.HttpContext?.User?.Identity?.Name == null)
+            var username = Context?.HttpContext?.User?.Identity?.Name;
+            if (username == null)
             {
                 UserInfoSelect = true;
                 OrderBasicInfo.User=new ApplicationUserListModel();
             }
             else
             {
+                var applicationUser = await _userFacade.GetUserByUsername(username);
+                OrderBasicInfo.User = new ApplicationUserListModel()
+                {
+                    Id = new Guid(applicationUser.Id),
+                    Email = applicationUser.Email,
+                    FirstName = applicationUser.FirstName,
+                    LastName = applicationUser.LastName,
+                    PhoneNumber = applicationUser.PhoneNumber
+                };
                 PrepareSummary();
 
                 Summary = true;

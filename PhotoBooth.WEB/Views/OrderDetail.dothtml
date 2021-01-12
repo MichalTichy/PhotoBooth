@@ -2,7 +2,62 @@
 @masterPage Views/MasterPage.dotmaster
 
 <dot:Content ContentPlaceHolderID="MainContent">
+    <div IncludeInPage="{resource: Detail==null}">
+        Neznámá objednávka
+    </div>
 
-
+    <div DataContext="{value: Detail}" class="row d-flex justify-content-center">
+        <div  class="col-sm-12 col-md-8 form-box">
+            <div class="row">
+                <div class="col-6 form-summary-info">
+                    <h4>Základné informácie</h4>
+                    <p>{{value: Customer.FirstName}} {{value: Customer.LastName}}</p>
+                    <p>{{value: Customer.Email}}</p>
+                    <p>{{value: Customer.PhoneNumber}}</p>
+                    <p>
+                        <dot:Literal Text="{value: RentalSince}" ValueType="DateTime" FormatString="g" />
+                    </p>
+                    <p>{{value: CountOfHours}}hod</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 form-summary-info">
+                    <h4>Produkty</h4>
+                </div>
+                <table class="table table-striped" style="color: white;">
+                    <tbody>
+                        <dot:Repeater RenderWrapperTag="false" DataSource="{value: RentalItems}">
+                            <tr>
+                                <th scope="row" style="padding-left: 65px;">{{value: _index + 1}}</th>
+                                <td>
+                                    {{value: Name}} - <dot:HtmlLiteral Html="{value: DescriptionHtml}" />
+                                </td>
+                                <td style="padding-right: 65px;">
+                                    {{value: PricePerHour}}€ * {{value: _parent.CountOfHours}}hod
+                                </td>
+                            </tr>
+                        </dot:Repeater>
+                        <dot:Repeater RenderWrapperTag="false" DataSource="{value: OrderItems}">
+                            <tr>
+                                <th scope="row" style="padding-left: 65px;">{{value: _index + 1 + _parent.RentalItems.Count}}</th>
+                                <td>
+                                    {{value: Name}} - <dot:HtmlLiteral Html="{value: DescriptionHtml}" />
+                                </td>
+                                <td style="padding-right: 65px;">
+                                    {{value: Price}}€
+                                </td>
+                            </tr>
+                        </dot:Repeater>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <h3 class="col-md6">Orientačná cena: {{value: FinalPrice}}€ *</h3>
+            </div>
+            <div class="col-12">
+                <p>*K cene sa individuálne pripočítava cena dopravných nákladov.</p>
+            </div>
+        </div>
+    </div>
 </dot:Content>
 

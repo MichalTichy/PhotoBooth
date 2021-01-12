@@ -80,7 +80,9 @@ namespace PhotoBooth.WEB
             services.AddDbContext<PhotoBoothContext>(builder =>
             {
 
-                builder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                builder.UseSqlServer(Configuration
+                        .GetConnectionString("DefaultConnection"))
+                    .UseLazyLoadingProxies();
             } ,ServiceLifetime.Transient, ServiceLifetime.Singleton);
 
             BlInstaller.Install(services);

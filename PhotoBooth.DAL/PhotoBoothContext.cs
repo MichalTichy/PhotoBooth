@@ -22,7 +22,6 @@ namespace PhotoBooth.DAL
         {
 
         }
-
         public PhotoBoothContext(DbContextOptions options)
             : base(options)
         {

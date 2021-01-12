@@ -240,7 +240,7 @@ namespace PhotoBooth.WEB.ViewModels
             {
                 SelectedBackground,
                 SelectedBooth,
-            }.Union(SelectedProps).ToList();
+            }.Union(SelectedProps).Where(a => a != null).ToList();
         }
 
         public async Task SendOrder()

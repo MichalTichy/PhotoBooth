@@ -36,7 +36,7 @@ namespace PhotoBooth.BL.Queries
                 availableItems = availableItems.Where(t => t.Type == RentalItemType);
             }
             return availableItems
-                .ProjectTo<RentalItemModel>(MapConfig); ;
+                .ProjectTo<RentalItemModel>(MapConfig);
         }
     }
 }

@@ -142,7 +142,7 @@
                         </div>
                         <div IncludeInPage="{value: BackgroundSelect}">
                             <p class="col-12" style="font-size:35px;">Pozadie</p>
-                            <p class="col-12"><dot:HtmlLiteral Html="{value: SelectedBooth.DescriptionHtml}"></p>
+                            <p class="col-12"><dot:HtmlLiteral Html="{value: SelectedBackground.DescriptionHtml}"></p>
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Backgrounds}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
@@ -265,7 +265,7 @@
                             <tbody>
                                 <dot:Repeater RenderWrapperTag="false" DataSource="{value: RentalItems}">
                                     <tr>
-                                        <th scope="row" style="padding-left: 65px;">{{value: _index + 1 + _parent.RentalItems.Count}}</th>
+                                        <th scope="row" style="padding-left: 65px;">{{value: _index + 1}}</th>
                                         <td>
                                             {{value: Name}} - <dot:HtmlLiteral Html="{value: DescriptionHtml}" />
                                         </td>

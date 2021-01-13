@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Models.Item.Product;
@@ -18,9 +19,10 @@ namespace PhotoBooth.Mocks
             return GenerateOrderSummary(rentalItems, products, orderMatadata); 
         }
 
-        public OrderSummaryModel SubmitOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
+        public Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
+            ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
-            return GenerateOrderSummary(rentalItems, products, orderMatadata);
+            return Task.FromResult(GenerateOrderSummary(rentalItems, products, orderMatadata));
         }
 
         private static OrderSummaryModel GenerateOrderSummary(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
@@ -31,22 +33,22 @@ namespace PhotoBooth.Mocks
                 RentalItems = rentalItems,
                 Created = DateTime.Now,
                 BannerUrl = @"https://picsum.photos/200",
-                Customer = orderMatadata.User,
+                Customer = orderMatadata?.User,
                 FinalPrice = 1234,
-                LocationAddress = orderMatadata.Address,
+                LocationAddress = orderMatadata?.Address,
                 OrderItems = products,
                 RentalSince = orderMatadata.Since,
-                RentalTill = orderMatadata.Till
+                RentalTill = orderMatadata.Since.AddHours(orderMatadata.CountOfHours)
             };
         }
 
-        public ICollection<OrderListModel> GetAllOrders()
+        public ICollection<OrderListModel> GetAllOrders(bool includeDeleted = false)
         {
             return GenerateOrderListModels();
         }
 
 
-        public ICollection<OrderListModel> GetOrdersByUser(Guid userId)
+        public ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false)
         {
             return GenerateOrderListModels();
         }

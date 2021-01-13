@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using DotVVM.Framework.ViewModel;
@@ -13,6 +14,10 @@ using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
 using PhotoBooth.DAL.Entity;
+using PhotoBooth.BL.Models;
+using DotVVM.Framework.ViewModel.Validation;
+using Microsoft.AspNetCore.Authentication;
+using PhotoBooth.BL.Models.User;
 
 namespace PhotoBooth.WEB.ViewModels
 {
@@ -20,123 +25,135 @@ namespace PhotoBooth.WEB.ViewModels
     {
         private readonly ICatalogFacade _catalogFacade;
         private readonly IOrderFacade _orderFacade;
+        private readonly UserFacade _userFacade;
 
-        public DefaultViewModel(ICatalogFacade catalogFacade,IOrderFacade orderFacade)
+        public DefaultViewModel(ICatalogFacade catalogFacade,IOrderFacade orderFacade,UserFacade userFacade)
         {
             _catalogFacade = catalogFacade;
             _orderFacade = orderFacade;
+            _userFacade = userFacade;
         }
 
+        //order stages
         public bool OrderMetadataForm { get; set; } = true;
         public bool ServiceSelect { get; set; } = false;
         public bool BoothSelect { get; set; } = false;
         public bool BackgroundSelect { get; set; } = false;
         public bool PropsSelect { get; set; } = false;
+        public bool DetailedServicesSelect { get; set; } = false;
+        public bool UserInfoSelect { get; set; } = false;
         public bool Summary { get; set; } = false;
 
         [Required]
-        public OrderMatadata OrderBasicInfo { get; set; }
+        public OrderMatadata OrderBasicInfo { get; set; } = new OrderMatadata();
         public ICollection<ItemPackageDTO> Packages { get; set; }
+        public bool CustomPackage => SelectedPackage == null;
         public ICollection<ProductModel> Products { get; set; }
-        public ICollection<RentalItemType> SelectedRentalItemTypes { get; set; } =new List<RentalItemType>();
-        public ICollection<Guid> SelectedProductIds { get; set; } =new List<Guid>();
+        public ICollection<RentalItemType> SelectedRentalItemTypes { get; set; } = new List<RentalItemType>();
+        public ICollection<Guid> SelectedProductIds { get; set; } = new List<Guid>();
+        public ICollection<RentalItemType> AvailableRentalTypes { get; set; }
+        public ICollection<RentalItemModel> AvailableRentalItems { get; set; }
 
         public ItemPackageDTO SelectedPackage { get; set; }
-        public override Task PreRender()
-        {
-            if (OrderMetadataForm)
-            {
-                LoadDataOrderMetadataFrom();
-            }
 
-            if (ServiceSelect)
-            {
-                LoadDataForServiceSelect();
-            }
-
-            if (BoothSelect)
-            {
-                LoadDataForBoothSelect();
-            }
-
-            if (BackgroundSelect)
-            {
-                LoadDataForBackgroundSelect();
-            }
-
-            if (PropsSelect)
-            {
-                LoadDataForPropsSelect();
-            }
-
-            if (Summary)
-            {
-                LoadDataForSummary();
-            }
-            return base.PreRender();
-        }
-
-        private void LoadDataForPropsSelect()
-        {
-            Props = _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Till, RentalItemType.Prop);
-
-        }
-
-        private void LoadDataForBackgroundSelect()
-        {
-            Backgrounds= _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Till, RentalItemType.Background);
-        }
-
-        private void LoadDataForSummary()
-        {
-            OrderPreview = _orderFacade.PrepareOrder(GetSelectedRentalItems(), GetSelectedProducts(),OrderBasicInfo);
-        }
-
-        public OrderSummaryModel OrderPreview { get; set; }
+        public OrderSummaryModel OrderPreview { get; set; } = new OrderSummaryModel();
 
         private List<ProductModel> GetSelectedProducts()
         {
             return Products.Where(t=>SelectedProductIds.Contains(t.Id)).ToList();
         }
 
-        private ICollection<RentalItemModel> GetSelectedRentalItems()
+        [Protect(ProtectMode.EncryptData)]
+        public string NewUserName { get; set; }
+        public async Task CreateUser()
         {
-            return new List<RentalItemModel>()
-            {
-                SelectedBackground,
-                SelectedBooth,
-            }.Union(SelectedProps).ToList();
+            await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
+            NewUserName = OrderBasicInfo.User.Email;
+            //TODO display result
+            HideAllSections();
+
+            PrepareSummary();
+
+            Summary = true;
         }
-
-        private void LoadDataOrderMetadataFrom()
-        {
-            OrderBasicInfo=new OrderMatadata();
-        }
-
-
-        private void LoadDataForServiceSelect()
-        {
-
-            Packages = _catalogFacade.GetAllPackages();
-            Products = _catalogFacade.GetAvailableProducts();
-        }
-        private void LoadDataForBoothSelect()
-        {
-            Booths=_catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since,OrderBasicInfo.Till,RentalItemType.PhotoBooth);
-        }
-
         public void HideAllSections()
         {
             OrderMetadataForm = false;
             ServiceSelect = false;
+            DetailedServicesSelect = false;
             BoothSelect = false;
             BackgroundSelect = false;
             PropsSelect = false;
+            UserInfoSelect = false;
             Summary = false;
         }
 
-        public void GoToServicesSelection()
+        private void LoadDataForServiceSelect()
         {
+            //calling DB
+            AvailableRentalItems = _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Since.AddHours(OrderBasicInfo.CountOfHours));
+            Packages = _catalogFacade.GetAllPackages();
+            Products = _catalogFacade.GetAvailableProducts();
+            
+            AvailableRentalTypes = AvailableRentalItems.Select(a => a.Type).Distinct().Where(a=>a!=RentalItemType.Employe).ToList();
+            
+            //when we do "default selection" it does not bind correctly
+            //SelectedPackage = Packages.FirstOrDefault();
+            UpdateItemsBasedOnSelectedPackage();
+        }
+
+        //whenever selection is changed, selected package is changed
+        public void DeselectPackage()
+        {
+            SelectedPackage = null;
+        }
+
+        //when custom package is selected
+        public void ClearProductSelection()
+        {
+            SelectedPackage = null;
+            SelectedProductIds.Clear();
+            SelectedRentalItemTypes.Clear();
+        }
+
+        private void LoadDataForDeatiledServicesSelect()
+        {
+            if (Booths == null)
+            {
+                Booths = AvailableRentalItems.Where(a => a.Type == RentalItemType.PhotoBooth).ToList();
+                //SelectedBooth = Booths.FirstOrDefault();
+            }
+
+            if (Backgrounds == null)
+            {
+                Backgrounds = AvailableRentalItems.Where(a => a.Type == RentalItemType.Background).ToList();
+                //SelectedBackground = Backgrounds.FirstOrDefault();
+            }
+
+            if (Props == null)
+            {
+                Props = AvailableRentalItems.Where(a => a.Type == RentalItemType.Prop).ToList();
+            }
+            
+
+            if (SelectedRentalItemTypes.Contains(RentalItemType.PhotoBooth)) {
+                BoothSelect = true;
+            }
+            if (SelectedRentalItemTypes.Contains(RentalItemType.Background)) {
+                BackgroundSelect = true;
+            }
+            if (SelectedRentalItemTypes.Contains(RentalItemType.Prop)) {
+                PropsSelect = true;
+            }
+        }
+
+
+        public void GoToServicesSelection(bool loadData = true)
+        {
+            if (loadData)
+            {
+                LoadDataForServiceSelect();
+            }
             HideAllSections();
             ServiceSelect = true;
         }
@@ -157,39 +174,12 @@ namespace PhotoBooth.WEB.ViewModels
                 t.ProductIds.Count == SelectedProductIds.Count && t.ProductIds.All(s => SelectedProductIds.Contains(s)));
         }
 
-        public void ProductsSelectionChanged()
-        {
-            SelectPackageBasedOnItemSelection();
-        }
-
-        public void RentalItemSelectionChanged()
-        {
-            SelectPackageBasedOnItemSelection();
-        }
-
-        public void GoToProductsDetailSelection()
+        public void GoToDetailServicesSelection()
         {
             ValidateProductSelection();
-            GoToBoothSelection();
-        }
-
-        public void GoToBoothSelection(bool back=false)
-        {
-            if (!SelectedRentalItemTypes.Contains(RentalItemType.PhotoBooth))
-            {
-                if (back)
-                {
-                    GoToServicesSelection();
-                }
-                else
-                {
-                    GoToBackgroundSelection();
-                }
-                return;
-            }
-
             HideAllSections();
-            BoothSelect = true;
+            LoadDataForDeatiledServicesSelect();
+            DetailedServicesSelect = true;
         }
 
         private void ValidateProductSelection()
@@ -197,63 +187,41 @@ namespace PhotoBooth.WEB.ViewModels
             //TODO
         }
 
-        public void SelectBooth(RentalItemModel booth)
+        public async Task GoToSummary()
         {
-            if (booth.Type!=RentalItemType.PhotoBooth)
-                throw new ArgumentException("Provided rental item is not booth!");
-
-            SelectedBooth = booth;
-            GoToBackgroundSelection();
-        }
-        public void SelectBackground(RentalItemModel background)
-        {
-            if (background.Type!=RentalItemType.Background)
-                throw new ArgumentException("Provided rental item is not background!");
-
-            SelectedBackground = background;
-            GoToPropsSelection();
-        }
-
-        public void GoToBackgroundSelection(bool back=false)
-        {
-            if (!SelectedRentalItemTypes.Contains(RentalItemType.Background))
+            HideAllSections();
+            var username = Context?.HttpContext?.User?.Identity?.Name;
+            if (username == null)
             {
-                if (back)
-                {
-                    GoToBoothSelection(true);
-                }
-                else
-                {
-                    GoToPropsSelection();
-                }
-                return;
+                UserInfoSelect = true;
+                OrderBasicInfo.User=new ApplicationUserListModel();
             }
-            HideAllSections();
-            BackgroundSelect = true;
-        }
-
-        public void GoToPropsSelection(bool back = false)
-        {
-            if (!SelectedRentalItemTypes.Contains(RentalItemType.Prop))
+            else
             {
-                if (back)
+                var applicationUser = await _userFacade.GetUserByUsername(username);
+                OrderBasicInfo.User = new ApplicationUserListModel()
                 {
-                    GoToBackgroundSelection(true);
-                }
-                else
-                {
-                    GoToSummary();
-                }
-                return;
+                    Id = new Guid(applicationUser.Id),
+                    Email = applicationUser.Email,
+                    FirstName = applicationUser.FirstName,
+                    LastName = applicationUser.LastName,
+                    PhoneNumber = applicationUser.PhoneNumber
+                };
+                PrepareSummary();
+
+                Summary = true;
             }
-            HideAllSections();
-            PropsSelect = true;
         }
 
-        public void GoToSummary()
+        private void PrepareSummary()
         {
-            HideAllSections();
-            Summary= true;
+            var rentalItems = new List<RentalItemModel>();
+            rentalItems.AddRange(SelectedProps);
+
+            if (SelectedBooth!=null) rentalItems.Add(SelectedBooth);
+            if (SelectedBackground!=null) rentalItems.Add(SelectedBackground);
+
+            OrderPreview = _orderFacade.PrepareOrder(rentalItems,Products.Where(t=>SelectedProductIds.Contains(t.Id)).ToList(),OrderBasicInfo);
         }
 
         public ICollection<RentalItemModel> Booths { get; set; }
@@ -266,11 +234,25 @@ namespace PhotoBooth.WEB.ViewModels
         public ICollection<RentalItemModel> Props { get; set; }
         public ICollection<RentalItemModel> SelectedProps { get; set; } = new List<RentalItemModel>();
 
-
-        public void SendOrder()
+        private ICollection<RentalItemModel> GetSelectedRentalItems()
         {
-            var id = _orderFacade.SubmitOrder(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
-            Context.RedirectToRoute($"OrderDetail/{id}");
+            return new List<RentalItemModel>()
+            {
+                SelectedBackground,
+                SelectedBooth,
+            }.Union(SelectedProps).Where(a => a != null).ToList();
+        }
+
+        public async Task SendOrder()
+        {
+            var order =await  _orderFacade.SubmitOrder(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
+            if (NewUserName!=null)
+            {
+                var user = await _userFacade.GetIdentityByUsername(NewUserName);
+                await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(user));
+            }
+
+            Context.RedirectToRoute($"OrderDetail",new {id=order.Id});
         }
     }
 }

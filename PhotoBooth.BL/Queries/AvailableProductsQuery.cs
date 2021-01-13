@@ -9,15 +9,16 @@ using AutoMapper.QueryableExtensions;
 
 namespace PhotoBooth.BL.Queries
 {
-    public class ProductsQuery : QueryBase<Product, ProductModel>
+    public class AvailableProductsQuery : QueryBase<Product, ProductModel>
     {
-        public ProductsQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
+        public AvailableProductsQuery(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
         {
         }
 
+
         protected override IQueryable<ProductModel> GetQueryable()
         {
-            return this.Context.Products
+            return this.Context.Products.Where(t=>t.AmountLeft>0)
                 .OrderBy(x => x.Name)
                 .ThenBy(x => x.Price)
                 .ProjectTo<ProductModel>(MapConfig);

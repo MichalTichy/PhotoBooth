@@ -1,22 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using AutoMapper;
+using PhotoBooth.DAL;
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore;
-using PhotoBooth.DAL;
-using AutoMapper.QueryableExtensions;
-using AutoMapper;
-using System.Linq;
+using System;
 
 namespace PhotoBooth.BL.Queries
 {
-    public abstract class QueryBase<TStart, TResult> : EntityFrameworkQuery<TResult,PhotoBoothContext>
+    public abstract class QueryBase<TStart, TResult> : EntityFrameworkQuery<TResult, PhotoBoothContext>
     {
-        protected MapperConfiguration MapConfig = new MapperConfiguration(cfg =>
-                cfg.CreateMap<TStart, TResult>());
-        public new PhotoBoothContext Context => (PhotoBoothContext)base.Context;
+        protected MapperConfiguration MapConfig => MapConfigInternal.Value;
+        protected Lazy<MapperConfiguration> MapConfigInternal;
+
+        private MapperConfiguration CreateMapper()
+        {
+            return new MapperConfiguration(cfg => CreateMap(cfg));
+        }
+
+        protected virtual void CreateMap(IMapperConfigurationExpression cfg)
+        {
+            cfg.CreateMap<TStart, TResult>();
+
+        }
+
+
         public QueryBase(IUnitOfWorkProvider unitOfWorkProvider) : base(unitOfWorkProvider)
         {
+            MapConfigInternal = new Lazy<MapperConfiguration>(CreateMapper);
         }
     }
 }

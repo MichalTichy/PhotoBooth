@@ -105,12 +105,23 @@ namespace PhotoBooth.WEB
             {
                 FileProvider = new PhysicalFileProvider(env.WebRootPath)
             });
+
+            Migrate(app);
             SeedUsers(app.ApplicationServices).Wait();
 
         }
 
+        private static void Migrate(IApplicationBuilder builder)
+        {
+            using var scope = builder.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            using var ctx = scope.ServiceProvider.GetRequiredService<PhotoBoothContext>();
+
+            ctx.Database.Migrate();
+        }
+
         private async Task SeedUsers(IServiceProvider serviceProvider)
         {
+            
             var userFacade = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<UserFacade>();
             await userFacade.CreateAdminAccount();
         }

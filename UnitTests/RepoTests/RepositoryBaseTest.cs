@@ -118,6 +118,39 @@ namespace UnitTests
             }
         }
 
+        [Test]
+        public void AddingSameProductTwice()
+        {
+            var temp = DataList.First();
+            using (var uow = (EntityFrameworkUnitOfWork<PhotoBoothContext>)UnitOfWorkProvider.Create())
+            {
+                DataRepo.Insert(temp);
+                uow.Commit();
+            }
+
+            using (var uow = (EntityFrameworkUnitOfWork<PhotoBoothContext>)UnitOfWorkProvider.Create())
+            {
+                var data = GetRepo(uow).ToList();
+                Assert.AreEqual(1, data.Count);
+            }
+
+            using (var uow = (EntityFrameworkUnitOfWork<PhotoBoothContext>)UnitOfWorkProvider.Create())
+            {
+                try
+                {
+                    DataRepo.Insert(temp);
+                    uow.Commit();
+                }
+                catch
+                {
+                    DataRepo.Delete(temp.Id);
+
+                    return;
+                }
+                throw new Exception("should have thrown");
+            }
+        }
+
         /*[Test]
         public void BasicTestUpdate()
         {
@@ -163,6 +196,7 @@ namespace UnitTests
                 Assert.IsNotNull(productFromDb);
                 Assert.AreEqual(product, productFromDb);
                 DataRepo.Delete(product.Id);
+                uow.Commit();
             }
         }
 

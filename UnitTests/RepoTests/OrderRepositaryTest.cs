@@ -10,7 +10,7 @@ namespace UnitTests
     class OrderRepositaryTest : RepositoryBaseTest<Order>
     {
         public OrderRepositaryTest() : base(DataClass.Orders) { }
-        
+
         [Test]
         public override void VirtualTestUpdate()
         {

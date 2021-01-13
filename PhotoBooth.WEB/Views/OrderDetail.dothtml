@@ -68,12 +68,12 @@
                 <p>*K cene sa individuálne pripočítava cena dopravných nákladov.</p>
             </div>
 
-            <dot:RoleView Roles="admin,administrator">
+            <dot:ClaimView Claim="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name" Values="admin" >
                 <IsMemberTemplate>
                     <dot:Button Text="Cancel" Click="{command: _root.Cancel()}" />
                     <dot:Button Text="Confirm" Click="{command: _root.Confirm()}" />
                 </IsMemberTemplate>
-            </dot:RoleView>
+            </dot:ClaimView>
         </div>
     </div>
 </dot:Content>

@@ -35,6 +35,7 @@ namespace PhotoBooth.BL.Facades
             admin = await GetUserByUsername("admin");
             await _roleManager.CreateAsync(new IdentityRole("admin"));
             await userManager.AddToRoleAsync(admin, "admin");
+            await userManager.UpdateAsync(admin);
         }
 
         public async Task<ClaimsIdentity> GetIdentityByUsername(string userName)

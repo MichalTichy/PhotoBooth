@@ -22,7 +22,7 @@ namespace PhotoBooth.WEB.ViewModels
         public override Task PreRender()
         {
             var user = Context.GetAuthentication().Context.User;
-            if (user.IsInRole("administrator") || user.IsInRole("admin"))
+            if (user.Identity.Name=="admin")
             {
                 Orders = _orderFacade.GetAllOrders(true);
 

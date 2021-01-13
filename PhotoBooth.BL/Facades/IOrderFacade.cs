@@ -11,7 +11,7 @@ namespace PhotoBooth.BL.Facades
     {
         OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata);
         Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
-            ICollection<ProductModel> products, OrderMatadata orderMatadata);
+        ICollection<ProductModel> products, OrderMatadata orderMatadata);
         ICollection<OrderListModel> GetAllOrders(bool includeDeleted=false);
         ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false);
         OrderSummaryModel GetOrderSummary(Guid id);

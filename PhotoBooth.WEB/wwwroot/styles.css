@@ -1,4 +1,66 @@
-﻿.has-error {
-    background-color: red;
+﻿html {
+    min-height: 100%;
 }
 
+body {
+    background-image: url('img/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    font-family: 'Raleway', sans-serif;
+    min-height: 100%;
+}
+
+.form-button {
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.form-red {
+    background-color: #9d0b0e;
+}
+
+.form-green {
+    background-color: #598527;
+}
+
+.form-button:hover {
+    opacity: 1;
+}
+
+.form-box {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 25px;
+    color: white;
+    padding: 25px 10px;
+    margin: 10px;
+}
+
+.form-divider {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.form-checkbox-label {
+    font-size: 25px;
+    margin-top: -10px;
+}
+
+.form-summary-info {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+    .form-summary-info p {
+        margin: 0;
+        padding-left: 50px;
+    }
+
+h4 {
+    padding-left: 50px;
+}

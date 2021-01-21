@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AutoMapper;
 
 namespace PhotoBooth.BL.Queries
 {
@@ -13,25 +14,29 @@ namespace PhotoBooth.BL.Queries
     {
         private DateTime OrderSince;
         private DateTime OrderTill;
-        public AvailableRentalItems(IUnitOfWorkProvider unitOfWorkProvider, DateTime OrderSince, DateTime OrderTill) : base(unitOfWorkProvider)
+        private RentalItemType? RentalItemType;
+
+        public AvailableRentalItems(IUnitOfWorkProvider unitOfWorkProvider, DateTime OrderSince, DateTime OrderTill,
+            RentalItemType? rentalItemType=null) : base(unitOfWorkProvider)
         {
             this.OrderSince = OrderSince;
             this.OrderTill = OrderTill;
-        }
-        protected override IQueryable<RentalItemModel> GetQueryable()
-        {
-            var temp = Context.Orders
-                .Where(x => x.RentalSince >= OrderSince && x.RentalTill <= OrderTill)
-                .Select(x => x.RentalItems);
-            return Context.RentalItems
-                .Where(x => temp.Any(y => y.Any(z => x.Id ==z.Id )))
-                .ProjectTo<RentalItemModel>(MapConfig); ;
+            RentalItemType = rentalItemType;
         }
 
-        public void setTimeCriteria(DateTime since, DateTime till)
+        protected override IQueryable<RentalItemModel> GetQueryable()
         {
-            OrderSince = since;
-            OrderTill = till;
+            var rentedItems = Context.Orders
+                .Where(x => ((OrderSince >= x.RentalSince && OrderSince <= x.RentalTill) || (OrderTill >= x.RentalSince && OrderTill <= x.RentalTill) || (OrderSince <= x.RentalSince && OrderTill >= x.RentalTill)))
+                .SelectMany(x => x.RentalItems).Select(t=>t.Item.Id).ToList();
+            var availableItems = Context.RentalItems.Where(t => !rentedItems.Contains(t.Id));
+
+            if (RentalItemType!=null)
+            {
+                availableItems = availableItems.Where(t => t.Type == RentalItemType);
+            }
+            return availableItems
+                .ProjectTo<RentalItemModel>(MapConfig);
         }
     }
 }

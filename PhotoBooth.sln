@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoBooth.WEB", "PhotoBoot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhotoBooth.Mocks", "PhotoBooth.Mocks\PhotoBooth.Mocks.csproj", "{7A15CFC5-2A2C-4653-86A4-B6DB99636138}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{795F5C94-1BB9-445E-8ED2-AAD70783B81C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{795F5C94-1BB9-445E-8ED2-AAD70783B81C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -36,14 +36,16 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
             {
                 Context.ModelState.Errors.Add(new ViewModelValidationError
                 {
-                    ErrorMessage = "Incorrect login",
+                    ErrorMessage = "Neznáme prihlasovacie údaje",
                     PropertyPath = nameof(Password)
                 });
                 Context.FailOnInvalidModelState();
             }
 			else
             {
-                await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(identity));
+                var claimsPrincipal = new ClaimsPrincipal(identity);
+                var authenticationManager = Context.GetAuthentication();
+                await authenticationManager.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
 				Context.RedirectToRoute("Default", allowSpaRedirect: false);
 			} 
         }

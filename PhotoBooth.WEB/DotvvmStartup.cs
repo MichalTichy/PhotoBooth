@@ -19,6 +19,7 @@ namespace PhotoBooth.WEB
         private void ConfigureRoutes(DotvvmConfiguration config, string applicationPath)
         {
             config.RouteTable.Add("Default", "", "Views/Default.dothtml");
+            config.RouteTable.Add("OrderDetail", "OrderDetail/{id:guid}", "Views/OrderDetail.dothtml");
             config.RouteTable.AutoDiscoverRoutes(new DefaultRouteStrategy(config));    
         }
 

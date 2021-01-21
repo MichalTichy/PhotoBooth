@@ -271,6 +271,92 @@ namespace PhotoBooth.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ItemPackages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("89a0b45a-5946-4e9b-90ef-c47b2f8b85cc"),
+                            CurrentlyAvailable = true,
+                            Name = "Balik L"
+                        },
+                        new
+                        {
+                            Id = new Guid("07c50b28-53f4-4a95-9203-9e71b37a8f9a"),
+                            CurrentlyAvailable = true,
+                            Name = "Balik M"
+                        });
+                });
+
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.ItemPackageProduct", b =>
+                {
+                    b.Property<Guid>("ItemPackageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ItemPackageId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ItemPackageProduct");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemPackageId = new Guid("89a0b45a-5946-4e9b-90ef-c47b2f8b85cc"),
+                            ProductId = new Guid("42bc60eb-baf0-4fb7-9172-126d229db4da")
+                        },
+                        new
+                        {
+                            ItemPackageId = new Guid("89a0b45a-5946-4e9b-90ef-c47b2f8b85cc"),
+                            ProductId = new Guid("5ac9f8e2-30bb-4030-8ace-5b15cdb7cbce")
+                        });
+                });
+
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.ItemPackageRentalItem", b =>
+                {
+                    b.Property<Guid>("ItemPackageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RentalItemType")
+                        .HasColumnType("int");
+
+                    b.HasKey("ItemPackageId", "RentalItemType");
+
+                    b.ToTable("ItemPackageRentalItem");
+
+                    b.HasData(
+                        new
+                        {
+                            ItemPackageId = new Guid("89a0b45a-5946-4e9b-90ef-c47b2f8b85cc"),
+                            RentalItemType = 1
+                        },
+                        new
+                        {
+                            ItemPackageId = new Guid("89a0b45a-5946-4e9b-90ef-c47b2f8b85cc"),
+                            RentalItemType = 0
+                        },
+                        new
+                        {
+                            ItemPackageId = new Guid("89a0b45a-5946-4e9b-90ef-c47b2f8b85cc"),
+                            RentalItemType = 3
+                        },
+                        new
+                        {
+                            ItemPackageId = new Guid("89a0b45a-5946-4e9b-90ef-c47b2f8b85cc"),
+                            RentalItemType = 2
+                        },
+                        new
+                        {
+                            ItemPackageId = new Guid("07c50b28-53f4-4a95-9203-9e71b37a8f9a"),
+                            RentalItemType = 0
+                        },
+                        new
+                        {
+                            ItemPackageId = new Guid("07c50b28-53f4-4a95-9203-9e71b37a8f9a"),
+                            RentalItemType = 3
+                        });
                 });
 
             modelBuilder.Entity("PhotoBooth.DAL.Entity.Order", b =>
@@ -295,9 +381,8 @@ namespace PhotoBooth.DAL.Migrations
                     b.Property<string>("CustomerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("FinalPrice")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                    b.Property<double>("FinalPrice")
+                        .HasColumnType("float");
 
                     b.Property<Guid?>("LocationAddressId")
                         .HasColumnType("uniqueidentifier");
@@ -317,6 +402,36 @@ namespace PhotoBooth.DAL.Migrations
                     b.ToTable("Orders");
                 });
 
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.OrderProduct", b =>
+                {
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("OrderId", "ItemId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("OrderProduct");
+                });
+
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.OrderRentalItem", b =>
+                {
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("OrderId", "ItemId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("OrderRentalItem");
+                });
+
             modelBuilder.Entity("PhotoBooth.DAL.Entity.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -330,30 +445,40 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<Guid?>("ItemPackageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
-
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemPackageId");
-
-                    b.HasIndex("OrderId");
-
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("42bc60eb-baf0-4fb7-9172-126d229db4da"),
+                            AmountLeft = 20L,
+                            DescriptionHtml = "Usb so zhotovenymi fotkami",
+                            Name = "USB kluc",
+                            PictureUrl = "https://photos.smileshoot.sk/usb.jpg",
+                            Price = 5.0
+                        },
+                        new
+                        {
+                            Id = new Guid("5ac9f8e2-30bb-4030-8ace-5b15cdb7cbce"),
+                            AmountLeft = 10L,
+                            DescriptionHtml = "Fotokniha s drevenou prednou stranou + gravirovanie",
+                            Name = "Fotokniha",
+                            PictureUrl = "https://photos.smileshoot.sk/fotokiha.jpg",
+                            Price = 10.0
+                        });
                 });
 
             modelBuilder.Entity("PhotoBooth.DAL.Entity.RentalItem", b =>
@@ -366,33 +491,122 @@ namespace PhotoBooth.DAL.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<Guid?>("ItemPackageId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
-
-                    b.Property<Guid?>("OrderId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<decimal>("PricePerHour")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("PricePerHour")
+                        .HasColumnType("float");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemPackageId");
-
-                    b.HasIndex("OrderId");
-
                     b.ToTable("RentalItems");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1d06696b-4dff-4faf-a8a8-f5cc100d5a71"),
+                            DescriptionHtml = "Unikátna, skvele vyzerajúca fotobúdka s neobmedzenou možnosťou tlače v krásnom retro dizajne.",
+                            Name = "Retro fotobudka",
+                            PictureUrl = "https://photos.smileshoot.sk/photobooth.jpg",
+                            PricePerHour = 80.0,
+                            Type = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("aac48b3f-5cdb-49e2-92e0-24864c1a5c65"),
+                            DescriptionHtml = "Najlepsi zamestnanec roka",
+                            Name = "Dominik",
+                            PricePerHour = 10.0,
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = new Guid("4996090c-da51-4435-8e15-88a87767bb05"),
+                            DescriptionHtml = "2. najlepsi zamestnanec roka",
+                            Name = "Milos",
+                            PricePerHour = 10.0,
+                            Type = 3
+                        },
+                        new
+                        {
+                            Id = new Guid("31545f44-9a49-4df2-993b-5b420754ea7c"),
+                            DescriptionHtml = "Zlate pozadie s gulickami",
+                            Name = "Pozadie A",
+                            PictureUrl = "https://photos.smileshoot.sk/pozadie-A.jpg",
+                            PricePerHour = 10.0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("4e33b967-31c0-49c3-896c-2ab2ea257a7b"),
+                            DescriptionHtml = "Kvetinove pozadie",
+                            Name = "Pozadie B",
+                            PictureUrl = "https://photos.smileshoot.sk/pozadie-B.jpg",
+                            PricePerHour = 10.0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("ca8209a8-e046-4509-ade0-aef8359baae9"),
+                            DescriptionHtml = "Vintage pozadie",
+                            Name = "Pozadie C",
+                            PictureUrl = "https://photos.smileshoot.sk/pozadie-C.jpg",
+                            PricePerHour = 10.0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("c1f18413-3665-4f00-87a7-f1f39393e395"),
+                            DescriptionHtml = "Vianocne pozadie s vlockami",
+                            Name = "Pozadie D",
+                            PictureUrl = "https://photos.smileshoot.sk/pozadie-D.jpg",
+                            PricePerHour = 10.0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("0d4c06ca-f53e-4d8f-8fa4-4bb42f88821b"),
+                            DescriptionHtml = "Svieze modre pozadie",
+                            Name = "Pozadie E",
+                            PictureUrl = "https://photos.smileshoot.sk/pozadie-E.jpg",
+                            PricePerHour = 10.0,
+                            Type = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("414fbd63-a7ee-480e-b2bc-2ea3c5d9e41c"),
+                            DescriptionHtml = "Santa claus ciapky, vianocne okuliare...",
+                            Name = "Vianocne rekvizity",
+                            PictureUrl = "https://photos.smileshoot.sk/props1.jpg",
+                            PricePerHour = 10.0,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("57efe2f1-a48e-48a5-9287-042a16ca3cdf"),
+                            DescriptionHtml = "Tabulky 'nabuduce sa vydavam ja', 'parketovy lev', parochne, klobuky...",
+                            Name = "Svadobne rekvizity",
+                            PictureUrl = "https://photos.smileshoot.sk/props2.jpg",
+                            PricePerHour = 10.0,
+                            Type = 2
+                        },
+                        new
+                        {
+                            Id = new Guid("889084ca-450a-425e-8323-32bdae035862"),
+                            DescriptionHtml = "Smiesne parochne, okuliare...",
+                            Name = "Party mix rekvizity",
+                            PictureUrl = "https://photos.smileshoot.sk/props3.jpg",
+                            PricePerHour = 10.0,
+                            Type = 2
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -453,6 +667,30 @@ namespace PhotoBooth.DAL.Migrations
                         .HasForeignKey("CustomerAddressId");
                 });
 
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.ItemPackageProduct", b =>
+                {
+                    b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", "ItemPackage")
+                        .WithMany("Products")
+                        .HasForeignKey("ItemPackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PhotoBooth.DAL.Entity.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.ItemPackageRentalItem", b =>
+                {
+                    b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", "ItemPackage")
+                        .WithMany("RentalItems")
+                        .HasForeignKey("ItemPackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PhotoBooth.DAL.Entity.Order", b =>
                 {
                     b.HasOne("PhotoBooth.DAL.Entity.ApplicationUser", "Customer")
@@ -464,26 +702,34 @@ namespace PhotoBooth.DAL.Migrations
                         .HasForeignKey("LocationAddressId");
                 });
 
-            modelBuilder.Entity("PhotoBooth.DAL.Entity.Product", b =>
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.OrderProduct", b =>
                 {
-                    b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", null)
-                        .WithMany("Products")
-                        .HasForeignKey("ItemPackageId");
+                    b.HasOne("PhotoBooth.DAL.Entity.Product", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("PhotoBooth.DAL.Entity.Order", null)
+                    b.HasOne("PhotoBooth.DAL.Entity.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("PhotoBooth.DAL.Entity.RentalItem", b =>
+            modelBuilder.Entity("PhotoBooth.DAL.Entity.OrderRentalItem", b =>
                 {
-                    b.HasOne("PhotoBooth.DAL.Entity.ItemPackage", null)
-                        .WithMany("RentalItems")
-                        .HasForeignKey("ItemPackageId");
+                    b.HasOne("PhotoBooth.DAL.Entity.RentalItem", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("PhotoBooth.DAL.Entity.Order", null)
+                    b.HasOne("PhotoBooth.DAL.Entity.Order", "Order")
                         .WithMany("RentalItems")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

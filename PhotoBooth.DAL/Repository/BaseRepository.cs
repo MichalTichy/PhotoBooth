@@ -17,5 +17,6 @@ namespace PhotoBooth.DAL.Repository
         {
             
         }
+
     }
 }

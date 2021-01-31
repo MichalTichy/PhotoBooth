@@ -31,13 +31,20 @@ namespace PhotoBooth.BL.Facades
             this.dateTimeProvider = dateTimeProvider;
             _userFacade = userFacade;
         }
-        public void CancelOrder(Guid orderId)
+        public bool CancelOrder(Guid orderId)
         {
-            using (var uow = UnitOfWorkFactory.Create())
+            try
             {
-                var order = _repository.GetById(orderId);
-                order.CancellationDate = dateTimeProvider.Now;
-                uow.Commit();
+                using (var uow = UnitOfWorkFactory.Create())
+                {
+                    var order = _repository.GetById(orderId);
+                    order.CancellationDate = dateTimeProvider.Now;
+                    uow.Commit();
+                    return true;
+                }
+            } catch
+            {
+                return false;
             }
         }
 
@@ -53,14 +60,21 @@ namespace PhotoBooth.BL.Facades
             return GetOrderSummary(id);
         }
 
-        public void ConfirmOrder(Guid orderId)
+        public bool ConfirmOrder(Guid orderId)
         {
-            using (var uow = UnitOfWorkFactory.Create())
+            try
             {
-                var order = _repository.GetById(orderId);
-                order.ConfirmationDate = dateTimeProvider.Now;
-                _repository.Update(order);
-                uow.Commit();
+                using (var uow = UnitOfWorkFactory.Create())
+                {
+                    var order = _repository.GetById(orderId);
+                    order.ConfirmationDate = dateTimeProvider.Now;
+                    _repository.Update(order);
+                    uow.Commit();
+                    return true;
+                }
+            } catch
+            {
+                return false;
             }
         }
 
@@ -204,6 +218,26 @@ namespace PhotoBooth.BL.Facades
                     Price = i.Item.Price
                 });
             });
+        }
+
+        public bool UpdateOrder(OrderSummaryModel order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeleteOrder(Guid orderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OrderSummaryModel GetOrderById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public OrderSummaryModel CreateOrder(OrderSummaryModel order)
+        {
+            throw new NotImplementedException();
         }
     }
 }

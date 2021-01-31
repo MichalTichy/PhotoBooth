@@ -63,7 +63,7 @@ namespace PhotoBooth.Mocks
 
         public ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false)
         {
-            if (userId == Guid.Parse("df88b24e-84c0-4758-8fdd-61b176563b23"))
+            if (username != null)
             {
                 return new List<OrderListModel>(){ GenerateOrderListModels().First() };
             }

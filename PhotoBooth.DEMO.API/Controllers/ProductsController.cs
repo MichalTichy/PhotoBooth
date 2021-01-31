@@ -5,15 +5,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Item.Product;
+using PhotoBooth.DEMO.API.Filters;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PhotoBooth.DEMO.API.Controllers
 {
+    [QueryFilter]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductFacade _productFacade;
+
+        public ProductsController(IProductFacade productFacade)
+        {
+            _productFacade = productFacade;
+        }
 
         // GET: api/<ProductsController>
         [HttpGet]
@@ -60,14 +67,14 @@ namespace PhotoBooth.DEMO.API.Controllers
         }
 
         [HttpPost("delete")]
-        public async Task<ActionResult<Guid>> EditProduct(Guid id)
+        public async Task<ActionResult<Guid>> DeleteProduct(ProductModel product)
         {
-            var success = await _productFacade.DeleteProductAsync(id);
+            var success = await _productFacade.DeleteProductAsync(product.Id);
             if (success)
             {
-                return Ok(id);
+                return Ok(product);
             }
-            return BadRequest(id);
+            return BadRequest(product);
         }
     }
 }

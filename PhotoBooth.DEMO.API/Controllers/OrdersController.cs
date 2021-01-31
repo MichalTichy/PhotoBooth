@@ -42,10 +42,10 @@ namespace PhotoBooth.DEMO.API.Controllers
             return Ok(order);
         }
 
-        [HttpGet("user/{id}")]
-        public async Task<ActionResult<OrderSummaryModel>> GetOrdersByUser(Guid id)
+        [HttpGet("user/{name}")]
+        public async Task<ActionResult<OrderSummaryModel>> GetOrdersByUser(string name)
         {
-            var orders = await Task.Run(() => _orderFacade.GetOrdersByUser(id));
+            var orders = await Task.Run(() => _orderFacade.GetOrdersByUser(name));
             return Ok(orders);
         }
 

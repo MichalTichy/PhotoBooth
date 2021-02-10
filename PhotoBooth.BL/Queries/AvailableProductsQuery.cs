@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PhotoBooth.DAL.Entity;
+﻿using AutoMapper.QueryableExtensions;
 using PhotoBooth.BL.Models.Item.Product;
+using PhotoBooth.DAL.Entity;
 using Riganti.Utils.Infrastructure.Core;
-using AutoMapper.QueryableExtensions;
+using System.Linq;
 
 namespace PhotoBooth.BL.Queries
 {
@@ -15,10 +12,9 @@ namespace PhotoBooth.BL.Queries
         {
         }
 
-
         protected override IQueryable<ProductModel> GetQueryable()
         {
-            return this.Context.Products.Where(t=>t.AmountLeft>0)
+            return this.Context.Products.Where(t => t.AmountLeft > 0)
                 .OrderBy(x => x.Name)
                 .ThenBy(x => x.Price)
                 .ProjectTo<ProductModel>(MapConfig);

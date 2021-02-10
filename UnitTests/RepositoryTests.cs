@@ -20,6 +20,7 @@ namespace UnitTests
             UnitOfWorkProvider = new TestUnitOfWorkProvider();
             ProductsRepository = new BaseRepository<Product>(UnitOfWorkProvider, new LocalDateTimeProvider());
         }
+
         [Test]
         public void TestInsert()
         {
@@ -34,13 +35,14 @@ namespace UnitTests
                 Assert.AreEqual(products.Single().Id, id);
             }
         }
+
         [Test]
         public void TestUpdate()
         {
             using (var uow = (EntityFrameworkUnitOfWork<PhotoBoothContext>)UnitOfWorkProvider.Create())
             {
                 var context = GetBoothContext(uow);
-                
+
                 var product = new Product() { Id = Guid.NewGuid(), Name = "name", PictureUrl = "fffffff", DescriptionHtml = "fasdjfklajsdf", };
                 context.Products.Add(product);
                 uow.Commit();
@@ -51,16 +53,17 @@ namespace UnitTests
 
                 var productFromDb = context.Products.Find(product.Id);
                 Assert.NotNull(productFromDb);
-                Assert.AreEqual("name2",productFromDb.Name);
+                Assert.AreEqual("name2", productFromDb.Name);
             }
         }
+
         [Test]
         public void TestDelete()
         {
             using (var uow = (EntityFrameworkUnitOfWork<PhotoBoothContext>)UnitOfWorkProvider.Create())
             {
                 var context = GetBoothContext(uow);
-                
+
                 var product = new Product() { Id = Guid.NewGuid(), Name = "name", PictureUrl = "fffffff", DescriptionHtml = "fasdjfklajsdf", };
                 context.Products.Add(product);
                 uow.Commit();
@@ -73,13 +76,14 @@ namespace UnitTests
                 CollectionAssert.IsEmpty(productsFromDb);
             }
         }
+
         [Test]
         public void TestGet()
         {
             using (var uow = (EntityFrameworkUnitOfWork<PhotoBoothContext>)UnitOfWorkProvider.Create())
             {
                 var context = GetBoothContext(uow);
-                
+
                 var product = new Product() { Id = Guid.NewGuid(), Name = "name", PictureUrl = "fffffff", DescriptionHtml = "fasdjfklajsdf", };
                 context.Products.Add(product);
                 uow.Commit();
@@ -87,7 +91,7 @@ namespace UnitTests
                 var productFromDb = ProductsRepository.GetById(product.Id);
 
                 Assert.IsNotNull(productFromDb);
-                Assert.AreEqual(product,productFromDb);
+                Assert.AreEqual(product, productFromDb);
             }
         }
 

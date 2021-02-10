@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using PhotoBooth.BL.Models.Address;
+﻿using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.User;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PhotoBooth.BL.Models.Order
 {
@@ -19,8 +18,10 @@ namespace PhotoBooth.BL.Models.Order
         public int CountOfHours => (int)Math.Ceiling((RentalTill - RentalSince).TotalHours);
 
         public AddressModel LocationAddress { get; set; }
+
         [Required]
         public ApplicationUserListModel Customer { get; set; }
+
         public ICollection<RentalItemModel> RentalItems { get; set; }
         public ICollection<ProductModel> OrderItems { get; set; }
         public string BannerUrl { get; set; }

@@ -3,7 +3,6 @@ using AutoMapper.QueryableExtensions;
 using NUnit.Framework;
 using PhotoBooth.BL.Models.Order;
 using PhotoBooth.BL.Queries;
-using NUnit.Framework;
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
 using PhotoBooth.DAL.Repository;
@@ -13,14 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-
 namespace UnitTests
 {
     public class MappingTests
     {
         private EntityFrameworkUnitOfWorkProvider<PhotoBoothContext> UnitOfWorkProvider;
         private BaseRepository<Order> OrdersRepository;
-        
+
         [SetUp]
         public void SetupDatabase()
         {
@@ -61,21 +59,19 @@ namespace UnitTests
                 Customer = new ApplicationUser("Marta Jurčíková")
             };
             IQueryable<Order> orders = new List<Order>() { order }.AsQueryable();
-            
+
             Assert.DoesNotThrow(() =>
             {
                 orders.ProjectTo<OrderListModel>(MapConfig);
             });
-
-        } 
-    
+        }
 
         [Test]
         public void QueryTest()
         {
             using (UnitOfWorkProvider.Create())
             {
-                OrderListQuery q = new OrderListQuery(UnitOfWorkProvider,true);
+                OrderListQuery q = new OrderListQuery(UnitOfWorkProvider, true);
                 Assert.DoesNotThrow(() =>
                 {
                     q.Execute();
@@ -112,16 +108,16 @@ namespace UnitTests
                 RentalTill = new DateTime(2020, 12, 8, 23, 0, 0),
                 Created = new DateTime(2020, 11, 3, 16, 0, 0),
                 ConfirmationDate = new DateTime(2020, 11, 3, 16, 0, 0),
-                FinalPrice =4321,
+                FinalPrice = 4321,
                 Customer = new ApplicationUser("Marta Jurčíková")
             };
             IQueryable<Order> orders = new List<Order>() { order }.AsQueryable();
-            
+
             Assert.DoesNotThrow(() =>
             {
                 orders.ProjectTo<OrderListModel>(MapConfig);
             });
-        } 
+        }
 
         protected PhotoBoothContext GetBoothContext(EntityFrameworkUnitOfWork<PhotoBoothContext> unitOfWork)
         {

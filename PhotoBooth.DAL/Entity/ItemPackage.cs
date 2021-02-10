@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using PhotoBooth.DAL.Entity;
 
 namespace PhotoBooth.DAL.Entity
 {
@@ -9,6 +8,7 @@ namespace PhotoBooth.DAL.Entity
     {
         [MaxLength(100)]
         public string Name { get; set; }
+
         public virtual ICollection<ItemPackageRentalItem> RentalItems { get; set; }
         public virtual ICollection<ItemPackageProduct> Products { get; set; }
         public bool CurrentlyAvailable { get; set; }

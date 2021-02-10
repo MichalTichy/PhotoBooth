@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PhotoBooth.BL.Facades;
+﻿using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Address;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
 using PhotoBooth.BL.Models.User;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.Mocks
 {
@@ -16,7 +15,7 @@ namespace PhotoBooth.Mocks
         public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems,
             ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
-            return GenerateOrderSummary(rentalItems, products, orderMatadata); 
+            return GenerateOrderSummary(rentalItems, products, orderMatadata);
         }
 
         public Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
@@ -47,7 +46,6 @@ namespace PhotoBooth.Mocks
             return GenerateOrderListModels();
         }
 
-
         public ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false)
         {
             return GenerateOrderListModels();
@@ -62,8 +60,6 @@ namespace PhotoBooth.Mocks
         {
             return GenerateOrderSummary();
         }
-
-
 
         public void ConfirmOrder(Guid orderId)
         {
@@ -102,6 +98,7 @@ namespace PhotoBooth.Mocks
                 }
             };
         }
+
         public static ICollection<OrderListModel> GenerateOrderListModels()
         {
             return new List<OrderListModel>()

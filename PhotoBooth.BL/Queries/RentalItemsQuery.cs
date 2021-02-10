@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PhotoBooth.DAL.Entity;
+﻿using AutoMapper.QueryableExtensions;
 using PhotoBooth.BL.Models.Item.RentalItem;
+using PhotoBooth.DAL.Entity;
 using Riganti.Utils.Infrastructure.Core;
-using AutoMapper.QueryableExtensions;
+using System.Linq;
 
 namespace PhotoBooth.BL.Queries
 {
@@ -22,6 +19,5 @@ namespace PhotoBooth.BL.Queries
                 .ThenBy(x => x.Price)
                 .ProjectTo<RentalItemModel>(MapConfig);
         }
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using PhotoBooth.DAL.Entity;
 
 namespace PhotoBooth.DAL.Migrations
 {

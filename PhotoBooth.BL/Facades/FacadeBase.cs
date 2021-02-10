@@ -1,7 +1,6 @@
-﻿using System;
-using PhotoBooth.DAL.Repository;
+﻿using PhotoBooth.DAL.Repository;
 using Riganti.Utils.Infrastructure.Core;
-using Riganti.Utils.Infrastructure;
+using System;
 
 namespace PhotoBooth.BL.Facades
 {
@@ -9,6 +8,7 @@ namespace PhotoBooth.BL.Facades
     {
         protected readonly BaseRepository<TEntity> _repository;
         protected readonly IUnitOfWorkProvider UnitOfWorkFactory;
+
         public FacadeBase(BaseRepository<TEntity> repository, IUnitOfWorkProvider uow)
         {
             _repository = repository;

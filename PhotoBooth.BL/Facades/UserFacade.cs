@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using PhotoBooth.BL.Models.User;
 using PhotoBooth.DAL.Entity;
+using System;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using PhotoBooth.BL.Models.User;
 
 namespace PhotoBooth.BL.Facades
 {
@@ -19,7 +17,7 @@ namespace PhotoBooth.BL.Facades
         private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UserFacade(UserManager<ApplicationUser> userManager,RoleManager<IdentityRole> roleManager)
+        public UserFacade(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
             _roleManager = roleManager;
@@ -28,7 +26,7 @@ namespace PhotoBooth.BL.Facades
         public async Task CreateAdminAccount()
         {
             var admin = await GetUserByUsername("admin");
-            if (admin!=null)
+            if (admin != null)
                 return;
 
             var userInfo = await RegisterAsync("admin", "Password1*");
@@ -43,10 +41,12 @@ namespace PhotoBooth.BL.Facades
             var user = await userManager.FindByNameAsync(userName);
             return CreateIdentity(user);
         }
+
         public async Task<ApplicationUser> GetUserByUsername(string userName)
         {
             return await userManager.FindByNameAsync(userName);
         }
+
         public async Task<ClaimsIdentity> SignInAsync(string userName, string password)
         {
             var user = await userManager.FindByNameAsync(userName);
@@ -66,7 +66,9 @@ namespace PhotoBooth.BL.Facades
             var user = new ApplicationUser(email);
             return await userManager.CreateAsync(user, password);
         }
-        static Random rnd = new Random();
+
+        private static Random rnd = new Random();
+
         private static string CreatePassword(int length)
         {
             const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -85,15 +87,15 @@ namespace PhotoBooth.BL.Facades
         {
             var password = CreatePassword(15);
             //TODO send user the temporary password
-            var userEntity=new ApplicationUser(user.Email)
+            var userEntity = new ApplicationUser(user.Email)
             {
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 PhoneNumber = user.PhoneNumber
             };
-            var result =  await userManager.CreateAsync(userEntity, password);
-            
+            var result = await userManager.CreateAsync(userEntity, password);
+
             return result;
         }
 
@@ -108,6 +110,5 @@ namespace PhotoBooth.BL.Facades
                 }, "Cookie");
             return identity;
         }
-
     }
 }

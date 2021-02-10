@@ -20,7 +20,7 @@ namespace PhotoBooth.WEB
         {
             config.RouteTable.Add("Default", "", "Views/Default.dothtml");
             config.RouteTable.Add("OrderDetail", "OrderDetail/{id:guid}", "Views/OrderDetail.dothtml");
-            config.RouteTable.AutoDiscoverRoutes(new DefaultRouteStrategy(config));    
+            config.RouteTable.AutoDiscoverRoutes(new DefaultRouteStrategy(config));
         }
 
         private void ConfigureControls(DotvvmConfiguration config, string applicationPath)
@@ -31,15 +31,15 @@ namespace PhotoBooth.WEB
         private void ConfigureResources(DotvvmConfiguration config, string applicationPath)
         {
             // register custom resources and adjust paths to the built-in resources
-			config.Resources.Register("Styles", new StylesheetResource()
+            config.Resources.Register("Styles", new StylesheetResource()
             {
                 Location = new UrlResourceLocation("~/styles.css")
             });
         }
 
-		public void ConfigureServices(IDotvvmServiceCollection options)
+        public void ConfigureServices(IDotvvmServiceCollection options)
         {
             options.AddDefaultTempStorages("temp");
-		}
+        }
     }
 }

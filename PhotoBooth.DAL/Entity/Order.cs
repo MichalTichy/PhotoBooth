@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
 namespace PhotoBooth.DAL.Entity
 {
     public class Order : EntityBase
@@ -15,8 +16,10 @@ namespace PhotoBooth.DAL.Entity
         public string CustomerId { get; set; }
         public virtual ICollection<OrderRentalItem> RentalItems { get; set; }
         public virtual ICollection<OrderProduct> OrderItems { get; set; }
+
         [MaxLength(100)]
         public string BannerUrl { get; set; }
+
         public double FinalPrice { get; set; }
     }
 
@@ -27,6 +30,7 @@ namespace PhotoBooth.DAL.Entity
         public Guid OrderId { get; set; }
         public virtual Order Order { get; set; }
     }
+
     public class OrderProduct
     {
         public Guid ItemId { get; set; }

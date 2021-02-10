@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using PhotoBooth.BL.Facades;
+﻿using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.DAL.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PhotoBooth.Mocks
 {
     public class CatalogFacadeMock : ICatalogFacade
     {
-        public ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType? type=null)
+        public ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType? type = null)
         {
             var availableRentalItems = GenerateRentalItems();
 
-            return type == null ? availableRentalItems : availableRentalItems.Where(t=>t.Type==type).ToList();
+            return type == null ? availableRentalItems : availableRentalItems.Where(t => t.Type == type).ToList();
         }
+
         public ICollection<ProductModel> GetAvailableProducts()
         {
             return GenerateProducts();
         }
-        
+
         public bool AreAllRentalItemsAvailable(ICollection<RentalItemModel> items, DateTime since, DateTime till)
         {
             return true;
@@ -32,7 +32,6 @@ namespace PhotoBooth.Mocks
         {
             return GeneratePackages();
         }
-
 
         public static ICollection<ItemPackageDTO> GeneratePackages()
         {
@@ -155,7 +154,6 @@ namespace PhotoBooth.Mocks
             };
         }
 
-
         public static ICollection<ProductModel> GenerateProducts()
         {
             return new List<ProductModel>()
@@ -188,6 +186,5 @@ namespace PhotoBooth.Mocks
                 }
             };
         }
-
     }
 }

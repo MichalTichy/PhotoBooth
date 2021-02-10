@@ -6,7 +6,7 @@ namespace PhotoBooth.BL.Models.User
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        
+
         public AddressModel CustomerAddress { get; set; }
     }
 }

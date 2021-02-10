@@ -8,7 +8,7 @@ namespace PhotoBooth.Mocks
         public static void Install(IServiceCollection serviceCollection)
         {
             //serviceCollection.AddTransient<IOrderFacade, OrderFacadeMock>();
-            serviceCollection.AddTransient<ICatalogFacade,CatalogFacadeMock>();
+            serviceCollection.AddTransient<ICatalogFacade, CatalogFacadeMock>();
         }
     }
 }

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DotVVM.Framework.ViewModel;
+﻿using DotVVM.Framework.ViewModel;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Order;
+using System;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.WEB.ViewModels
 {
@@ -16,6 +13,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         [FromRoute("id")]
         public Guid OrderId { get; set; }
+
         public OrderDetailViewModel(IOrderFacade orderFacade)
         {
             _orderFacade = orderFacade;
@@ -39,4 +37,3 @@ namespace PhotoBooth.WEB.ViewModels
         }
     }
 }
-

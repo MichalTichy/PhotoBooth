@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DotVVM.Framework.Hosting;
 using DotVVM.Framework.ViewModel;
-using DotVVM.Framework.Hosting;
 using Microsoft.AspNetCore.Identity;
 using PhotoBooth.BL.Facades;
+using PhotoBooth.BL.Models;
 using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.BL.Models.Order;
-using PhotoBooth.DAL.Entity;
-using PhotoBooth.BL.Models;
-using DotVVM.Framework.ViewModel.Validation;
-using Microsoft.AspNetCore.Authentication;
 using PhotoBooth.BL.Models.User;
+using PhotoBooth.DAL.Entity;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.WEB.ViewModels
 {
@@ -27,7 +23,7 @@ namespace PhotoBooth.WEB.ViewModels
         private readonly IOrderFacade _orderFacade;
         private readonly UserFacade _userFacade;
 
-        public DefaultViewModel(ICatalogFacade catalogFacade,IOrderFacade orderFacade,UserFacade userFacade)
+        public DefaultViewModel(ICatalogFacade catalogFacade, IOrderFacade orderFacade, UserFacade userFacade)
         {
             _catalogFacade = catalogFacade;
             _orderFacade = orderFacade;
@@ -36,6 +32,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         //order stages
         public bool OrderMetadataForm { get; set; } = true;
+
         public bool ServiceSelect { get; set; } = false;
         public bool BoothSelect { get; set; } = false;
         public bool BackgroundSelect { get; set; } = false;
@@ -46,6 +43,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         [Required]
         public OrderMatadata OrderBasicInfo { get; set; } = new OrderMatadata();
+
         public ICollection<ItemPackageDTO> Packages { get; set; }
         public bool CustomPackage => SelectedPackage == null;
         public ICollection<ProductModel> Products { get; set; }
@@ -60,11 +58,12 @@ namespace PhotoBooth.WEB.ViewModels
 
         private List<ProductModel> GetSelectedProducts()
         {
-            return Products.Where(t=>SelectedProductIds.Contains(t.Id)).ToList();
+            return Products.Where(t => SelectedProductIds.Contains(t.Id)).ToList();
         }
 
         [Protect(ProtectMode.EncryptData)]
         public string NewUserName { get; set; }
+
         public async Task CreateUser()
         {
             await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
@@ -76,6 +75,7 @@ namespace PhotoBooth.WEB.ViewModels
 
             Summary = true;
         }
+
         public void HideAllSections()
         {
             OrderMetadataForm = false;
@@ -94,9 +94,9 @@ namespace PhotoBooth.WEB.ViewModels
             AvailableRentalItems = _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Since.AddHours(OrderBasicInfo.CountOfHours));
             Packages = _catalogFacade.GetAllPackages();
             Products = _catalogFacade.GetAvailableProducts();
-            
-            AvailableRentalTypes = AvailableRentalItems.Select(a => a.Type).Distinct().Where(a=>a!=RentalItemType.Employe).ToList();
-            
+
+            AvailableRentalTypes = AvailableRentalItems.Select(a => a.Type).Distinct().Where(a => a != RentalItemType.Employe).ToList();
+
             //when we do "default selection" it does not bind correctly
             //SelectedPackage = Packages.FirstOrDefault();
             UpdateItemsBasedOnSelectedPackage();
@@ -134,19 +134,20 @@ namespace PhotoBooth.WEB.ViewModels
             {
                 Props = AvailableRentalItems.Where(a => a.Type == RentalItemType.Prop).ToList();
             }
-            
 
-            if (SelectedRentalItemTypes.Contains(RentalItemType.PhotoBooth)) {
+            if (SelectedRentalItemTypes.Contains(RentalItemType.PhotoBooth))
+            {
                 BoothSelect = true;
             }
-            if (SelectedRentalItemTypes.Contains(RentalItemType.Background)) {
+            if (SelectedRentalItemTypes.Contains(RentalItemType.Background))
+            {
                 BackgroundSelect = true;
             }
-            if (SelectedRentalItemTypes.Contains(RentalItemType.Prop)) {
+            if (SelectedRentalItemTypes.Contains(RentalItemType.Prop))
+            {
                 PropsSelect = true;
             }
         }
-
 
         public void GoToServicesSelection(bool loadData = true)
         {
@@ -160,7 +161,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         public void UpdateItemsBasedOnSelectedPackage()
         {
-            if (SelectedPackage==null)
+            if (SelectedPackage == null)
                 return;
 
             SelectedRentalItemTypes = SelectedPackage.RentalItemTypes;
@@ -194,7 +195,7 @@ namespace PhotoBooth.WEB.ViewModels
             if (username == null)
             {
                 UserInfoSelect = true;
-                OrderBasicInfo.User=new ApplicationUserListModel();
+                OrderBasicInfo.User = new ApplicationUserListModel();
             }
             else
             {
@@ -218,15 +219,14 @@ namespace PhotoBooth.WEB.ViewModels
             var rentalItems = new List<RentalItemModel>();
             rentalItems.AddRange(SelectedProps);
 
-            if (SelectedBooth!=null) rentalItems.Add(SelectedBooth);
-            if (SelectedBackground!=null) rentalItems.Add(SelectedBackground);
+            if (SelectedBooth != null) rentalItems.Add(SelectedBooth);
+            if (SelectedBackground != null) rentalItems.Add(SelectedBackground);
 
-            OrderPreview = _orderFacade.PrepareOrder(rentalItems,Products.Where(t=>SelectedProductIds.Contains(t.Id)).ToList(),OrderBasicInfo);
+            OrderPreview = _orderFacade.PrepareOrder(rentalItems, Products.Where(t => SelectedProductIds.Contains(t.Id)).ToList(), OrderBasicInfo);
         }
 
         public ICollection<RentalItemModel> Booths { get; set; }
         public RentalItemModel SelectedBooth { get; set; }
-
 
         public ICollection<RentalItemModel> Backgrounds { get; set; }
         public RentalItemModel SelectedBackground { get; set; }
@@ -245,14 +245,14 @@ namespace PhotoBooth.WEB.ViewModels
 
         public async Task SendOrder()
         {
-            var order =await  _orderFacade.SubmitOrder(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
-            if (NewUserName!=null)
+            var order = await _orderFacade.SubmitOrder(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
+            if (NewUserName != null)
             {
                 var user = await _userFacade.GetIdentityByUsername(NewUserName);
                 await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(user));
             }
 
-            Context.RedirectToRoute($"OrderDetail",new {id=order.Id});
+            Context.RedirectToRoute($"OrderDetail", new { id = order.Id });
         }
     }
 }

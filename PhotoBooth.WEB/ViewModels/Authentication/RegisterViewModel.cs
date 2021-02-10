@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using System.Security.Claims;
-using DotVVM.Framework.ViewModel;
-using DotVVM.Framework.Hosting;
+﻿using DotVVM.Framework.Hosting;
 using DotVVM.Framework.ViewModel.Validation;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using PhotoBooth.BL;
 using PhotoBooth.BL.Facades;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
 namespace PhotoBooth.WEB.ViewModels.Authentication
 {
-   public class RegisterViewModel : MasterPageViewModel, IValidatableObject
+    public class RegisterViewModel : MasterPageViewModel, IValidatableObject
     {
         private readonly UserFacade _userFacade;
-
 
         [Required]
         public string UserName { get; set; }
 
         [Required]
         public string Password { get; set; }
+
         [Required]
         public string ConfirmPassword { get; set; }
 
@@ -33,10 +28,8 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
             this._userFacade = userFacade;
         }
 
-
         public async Task Register()
         {
-
             var identityResult = await _userFacade.RegisterAsync(UserName, Password);
             if (identityResult.Succeeded)
             {
@@ -51,7 +44,7 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
 
             Context.RedirectToRoute("Default", allowSpaRedirect: false);
         }
-        
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (Password != ConfirmPassword)
@@ -63,7 +56,7 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
         private async Task SignIn()
         {
             var claimsIdentity = await _userFacade.SignInAsync(UserName, Password);
-			await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity));
+            await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(claimsIdentity));
         }
 
         private IEnumerable<ViewModelValidationError> ConvertIdentityErrorsToModelErrors(IdentityResult identityResult)

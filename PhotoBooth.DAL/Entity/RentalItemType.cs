@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-namespace PhotoBooth.DAL.Entity
+﻿namespace PhotoBooth.DAL.Entity
 {
     public enum RentalItemType
     {

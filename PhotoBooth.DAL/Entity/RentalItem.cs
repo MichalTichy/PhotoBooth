@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PhotoBooth.DAL.Entity
+﻿namespace PhotoBooth.DAL.Entity
 {
     public class RentalItem : ItemBase
     {

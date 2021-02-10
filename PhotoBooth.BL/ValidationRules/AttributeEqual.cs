@@ -7,7 +7,11 @@ namespace PhotoBooth.BL.ValidationRules
     public class AttributeEqual : ValidationAttribute
     {
         private readonly string _comparisonProperty;
-        public AttributeEqual(string comparisonProperty) { _comparisonProperty = comparisonProperty; }
+
+        public AttributeEqual(string comparisonProperty)
+        {
+            _comparisonProperty = comparisonProperty;
+        }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

@@ -7,8 +7,8 @@ namespace PhotoBooth.BL.ValidationRules
     {
         public InTheFuture(string errorMessage) : base(errorMessage)
         {
-            
         }
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             DateTime dt = (DateTime)value;
@@ -19,6 +19,5 @@ namespace PhotoBooth.BL.ValidationRules
 
             return new ValidationResult(ErrorMessage);
         }
-
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PhotoBooth.DAL.Entity;
+using System;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.DAL
 {
@@ -21,12 +20,11 @@ namespace PhotoBooth.DAL
 
         public PhotoBoothContext()
         {
-
         }
+
         public PhotoBoothContext(DbContextOptions options)
             : base(options)
         {
-
         }
 
         public DbSet<RentalItem> RentalItems { get; set; }
@@ -38,12 +36,13 @@ namespace PhotoBooth.DAL
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<ItemPackage> ItemPackages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<OrderProduct>().HasKey(item => new {item.OrderId, item.ItemId});
+            builder.Entity<OrderProduct>().HasKey(item => new { item.OrderId, item.ItemId });
             builder.Entity<OrderProduct>().HasOne<Order>(item => item.Order).WithMany(order => order.OrderItems);
 
-            builder.Entity<OrderRentalItem>().HasKey(item => new {item.OrderId, item.ItemId});
+            builder.Entity<OrderRentalItem>().HasKey(item => new { item.OrderId, item.ItemId });
             builder.Entity<OrderRentalItem>().HasOne<Order>(item => item.Order).WithMany(order => order.RentalItems);
 
             builder.Entity<ItemPackageProduct>().HasKey(item => new { item.ItemPackageId, item.ProductId });
@@ -53,6 +52,7 @@ namespace PhotoBooth.DAL
             builder.Entity<ItemPackageRentalItem>().HasOne<ItemPackage>(product => product.ItemPackage).WithMany(package => package.RentalItems);
 
             #region seeding
+
             //seeding rentalItems
             builder.Entity<RentalItem>().HasData(new RentalItem { Id = Guid.NewGuid(), Name = "Retro fotobudka", DescriptionHtml = "Unikátna, skvele vyzerajúca fotobúdka s neobmedzenou možnosťou tlače v krásnom retro dizajne.", PricePerHour = 80, Type = RentalItemType.PhotoBooth, PictureUrl = "https://photos.smileshoot.sk/photobooth.jpg" });
             //employees
@@ -91,9 +91,9 @@ namespace PhotoBooth.DAL
             builder.Entity<ItemPackageRentalItem>().HasData(new ItemPackageRentalItem { RentalItemType = RentalItemType.Employe, ItemPackageId = packageM.Id });
             builder.Entity<ItemPackage>().HasData(packageM);
 
-            #endregion
+            #endregion seeding
+
             base.OnModelCreating(builder);
         }
     }
-
 }

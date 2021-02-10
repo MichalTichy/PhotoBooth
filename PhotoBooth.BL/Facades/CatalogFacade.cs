@@ -26,7 +26,6 @@ namespace PhotoBooth.BL.Facades
             }
         }
 
-
         public ICollection<ItemPackageDTO> GetAllPackages()
         {
             using (UnitOfWorkFactory.Create())
@@ -39,7 +38,6 @@ namespace PhotoBooth.BL.Facades
         {
             using (var uow = UnitOfWorkFactory.Create())
             {
-                
                 var query = new AvailableProductsQuery(UnitOfWorkFactory);
                 return query.Execute();
             }

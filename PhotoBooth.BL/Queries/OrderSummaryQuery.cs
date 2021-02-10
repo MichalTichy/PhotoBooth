@@ -1,9 +1,8 @@
-﻿using Riganti.Utils.Infrastructure.Core;
-using System.Linq;
+﻿using AutoMapper.QueryableExtensions;
 using PhotoBooth.BL.Models.Order;
 using PhotoBooth.DAL.Entity;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
+using Riganti.Utils.Infrastructure.Core;
+using System.Linq;
 
 namespace PhotoBooth.BL.Queries
 {

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.DAL;
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore;
+using System;
 
 namespace PhotoBooth.BL
 {
@@ -27,13 +24,13 @@ namespace PhotoBooth.BL
                     .AddClasses(classes => classes.AssignableTo(typeof(QueryBase<>)))
                     .AsSelf()
                     .WithTransientLifetime());
-            
-            serviceCollection.AddSingleton<IUnitOfWorkRegistry,AsyncLocalUnitOfWorkRegistry>();
-            
+
+            serviceCollection.AddSingleton<IUnitOfWorkRegistry, AsyncLocalUnitOfWorkRegistry>();
+
             serviceCollection.AddSingleton<IUnitOfWorkProvider, AppUnitOfWorkProvider>();
         }
-
     }
+
     public class AppUnitOfWorkProvider : EntityFrameworkUnitOfWorkProvider<PhotoBoothContext>
     {
         public AppUnitOfWorkProvider(

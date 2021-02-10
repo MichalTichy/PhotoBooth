@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using PhotoBooth.BL.Models.Address;
@@ -16,6 +12,10 @@ using PhotoBooth.DAL.Entity;
 using PhotoBooth.DAL.Repository;
 using Riganti.Utils.Infrastructure.Core;
 using Riganti.Utils.Infrastructure.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.BL.Facades
 {
@@ -25,12 +25,13 @@ namespace PhotoBooth.BL.Facades
         private readonly IDateTimeProvider dateTimeProvider;
         private readonly UserFacade _userFacade;
 
-        public OrderFacade(BaseRepository<Order> repository, ICatalogFacade catalogFacade, IUnitOfWorkProvider uow, IDateTimeProvider dateTimeProvider,UserFacade userFacade) : base(repository, uow)
+        public OrderFacade(BaseRepository<Order> repository, ICatalogFacade catalogFacade, IUnitOfWorkProvider uow, IDateTimeProvider dateTimeProvider, UserFacade userFacade) : base(repository, uow)
         {
             _catalogFacade = catalogFacade;
             this.dateTimeProvider = dateTimeProvider;
             _userFacade = userFacade;
         }
+
         public void CancelOrder(Guid orderId)
         {
             using (var uow = UnitOfWorkFactory.Create())
@@ -72,7 +73,7 @@ namespace PhotoBooth.BL.Facades
             }
         }
 
-        public ICollection<OrderListModel> GetOrdersByUser(string username,bool includeDeleted = false)
+        public ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false)
         {
             using (UnitOfWorkFactory.Create())
             {
@@ -88,12 +89,11 @@ namespace PhotoBooth.BL.Facades
             {
                 var context = (uow as EntityFrameworkUnitOfWork<PhotoBoothContext>)?.Context;
                 var order = context.Orders.Include(t => t.OrderItems).ThenInclude(t => t.Item).Include(o => o.RentalItems)
-                    .ThenInclude(s => s.Item).FirstOrDefault(t=>t.Id==id);
-                
+                    .ThenInclude(s => s.Item).FirstOrDefault(t => t.Id == id);
 
                 //sorry for a shitcode :(
                 var mapperConfiguration = createMapper();
-                var mapper= new Mapper(mapperConfiguration);
+                var mapper = new Mapper(mapperConfiguration);
                 var orderSummaryModel = mapper.Map<OrderSummaryModel>(order);
                 return orderSummaryModel;
             }
@@ -116,9 +116,9 @@ namespace PhotoBooth.BL.Facades
             };
         }
 
-        private double GetFinalPrice(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products,int countOfHours )
+        private double GetFinalPrice(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, int countOfHours)
         {
-            return rentalItems.Sum(t=>t.PricePerHour)*countOfHours + products.Sum(t=>t.Price);
+            return rentalItems.Sum(t => t.PricePerHour) * countOfHours + products.Sum(t => t.Price);
         }
 
         public async Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
@@ -132,7 +132,7 @@ namespace PhotoBooth.BL.Facades
                 var model = new Order()
                 {
                     Id = orderId,
-                    RentalItems = rentalItems?.AsQueryable().ProjectTo<RentalItem>(mapperConfiguration).Select(t=>new OrderRentalItem(){ItemId = t.Id,OrderId = orderId}).ToList()
+                    RentalItems = rentalItems?.AsQueryable().ProjectTo<RentalItem>(mapperConfiguration).Select(t => new OrderRentalItem() { ItemId = t.Id, OrderId = orderId }).ToList()
                     ,
                     OrderItems = products?.AsQueryable().ProjectTo<Product>(mapperConfiguration).Select(t => new OrderProduct() { ItemId = t.Id, OrderId = orderId }).ToList()
                     ,
@@ -155,13 +155,13 @@ namespace PhotoBooth.BL.Facades
                     ,
                     CustomerId = user.Id,
                     Created = dateTimeProvider.Now,
-                    FinalPrice = GetFinalPrice(rentalItems,products,orderMatadata.CountOfHours)
+                    FinalPrice = GetFinalPrice(rentalItems, products, orderMatadata.CountOfHours)
                 };
 
                 _repository.Insert(model);
 
                 var context = (uow as EntityFrameworkUnitOfWork<PhotoBoothContext>)?.Context;
-                if (context!=null && products!=null)
+                if (context != null && products != null)
                 {
                     foreach (var product in products)
                     {
@@ -172,7 +172,6 @@ namespace PhotoBooth.BL.Facades
                 await uow.CommitAsync();
                 return GetOrderSummary(model.Id);
             }
-
         }
 
         private static MapperConfiguration createMapper()

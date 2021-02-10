@@ -7,7 +7,11 @@ namespace PhotoBooth.BL.ValidationRules
     public class AttributeGreaterThanOrEqual : ValidationAttribute
     {
         private readonly string _comparisonProperty;
-        public AttributeGreaterThanOrEqual(string comparisonProperty) { _comparisonProperty = comparisonProperty; }
+
+        public AttributeGreaterThanOrEqual(string comparisonProperty)
+        {
+            _comparisonProperty = comparisonProperty;
+        }
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -25,7 +29,6 @@ namespace PhotoBooth.BL.ValidationRules
                 throw new ArgumentException("The types of the fields to compare are not the same.");
 
             return currentValue.CompareTo((IComparable)comparisonValue) >= 0 ? ValidationResult.Success : new ValidationResult(ErrorMessage);
-
         }
     }
 }

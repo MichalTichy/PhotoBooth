@@ -2,7 +2,7 @@
 
 [&#x1F534;] INFORMATION FOR THE FINAL DEADLINE:
 
-Please check "API_MOCK" branch to see implemented API project. We do not want to use API in our final DotVVM app, so API isn't inculded in our master branch. Mock are used, because of not fully implemented BL.
+Please check "API" branch to see implemented API project. We do not want to use API in our final DotVVM app, so API isn't inculded in our master branch.
 
 ## Repository of school project for subject PV179
 

@@ -4,17 +4,18 @@ using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.DAL.Entity;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.BL.Facades
 {
     public interface ICatalogFacade
     {
-        ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType? type = null);
+        Task<ICollection<RentalItemModel>> GetAvailableRentalItemsAsync(DateTime since, DateTime till, RentalItemType? type = null);
 
-        ICollection<ProductModel> GetAvailableProducts();
+        Task<ICollection<ProductModel>> GetAvailableProductsAsync();
 
-        bool AreAllRentalItemsAvailable(ICollection<RentalItemModel> items, DateTime since, DateTime till);
+        Task<bool> AreAllRentalItemsAvailableAsync(ICollection<RentalItemModel> items, DateTime since, DateTime till);
 
-        ICollection<ItemPackageDTO> GetAllPackages();
+        Task<ICollection<ItemPackageDTO>> GetAllPackagesAsync();
     }
 }

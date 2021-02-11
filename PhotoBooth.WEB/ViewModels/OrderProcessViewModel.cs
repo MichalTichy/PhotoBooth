@@ -91,9 +91,9 @@ namespace PhotoBooth.WEB.ViewModels
         private void LoadDataForServiceSelect()
         {
             //calling DB
-            AvailableRentalItems = _catalogFacade.GetAvailableRentalItems(OrderBasicInfo.Since, OrderBasicInfo.Since.AddHours(OrderBasicInfo.CountOfHours));
-            Packages = _catalogFacade.GetAllPackages();
-            Products = _catalogFacade.GetAvailableProducts();
+            AvailableRentalItems = _catalogFacade.GetAvailableRentalItemsAsync(OrderBasicInfo.Since, OrderBasicInfo.Since.AddHours(OrderBasicInfo.CountOfHours)).Result;
+            Packages = _catalogFacade.GetAllPackagesAsync().Result;
+            Products = _catalogFacade.GetAvailableProductsAsync().Result;
 
             AvailableRentalTypes = AvailableRentalItems.Select(a => a.Type).Distinct().Where(a => a != RentalItemType.Employe).ToList();
 

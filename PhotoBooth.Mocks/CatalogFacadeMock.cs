@@ -6,31 +6,38 @@ using PhotoBooth.DAL.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.Mocks
 {
     public class CatalogFacadeMock : ICatalogFacade
     {
-        public ICollection<RentalItemModel> GetAvailableRentalItems(DateTime since, DateTime till, RentalItemType? type = null)
+        public async Task<ICollection<RentalItemModel>> GetAvailableRentalItemsAsync(DateTime since, DateTime till, RentalItemType? type = null)
         {
-            var availableRentalItems = GenerateRentalItems();
+            return await Task.Run(() =>
+            {
+                var availableRentalItems = GenerateRentalItems();
 
-            return type == null ? availableRentalItems : availableRentalItems.Where(t => t.Type == type).ToList();
+                return type == null ? availableRentalItems : availableRentalItems.Where(t => t.Type == type).ToList();
+            });
         }
 
-        public ICollection<ProductModel> GetAvailableProducts()
+        public async Task<ICollection<ProductModel>> GetAvailableProductsAsync()
         {
-            return GenerateProducts();
+            return await Task.Run(() =>
+            {
+                return GenerateProducts();
+            });
         }
 
-        public bool AreAllRentalItemsAvailable(ICollection<RentalItemModel> items, DateTime since, DateTime till)
+        public async Task<bool> AreAllRentalItemsAvailableAsync(ICollection<RentalItemModel> items, DateTime since, DateTime till)
         {
-            return true;
+            return await Task.Run(() => true);
         }
 
-        public ICollection<ItemPackageDTO> GetAllPackages()
+        public async Task<ICollection<ItemPackageDTO>> GetAllPackagesAsync()
         {
-            return GeneratePackages();
+            return await Task.Run(() => GeneratePackages());
         }
 
         public static ICollection<ItemPackageDTO> GeneratePackages()

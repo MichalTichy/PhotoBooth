@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using PhotoBooth.BL;
 using PhotoBooth.DAL;
 using PhotoBooth.DAL.Entity;
+using PhotoBooth.DEMO.API.Filters;
 using PhotoBooth.Mocks;
 
 [assembly: ApiController]
@@ -44,13 +45,14 @@ namespace PhotoBooth.DEMO.API
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<PhotoBoothContext>()
                 .AddDefaultTokenProviders();
-
+            services.AddControllersWithViews(options =>
+                options.Filters.Add(typeof(MyExceptionFilterAttribute))
+                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -75,9 +77,9 @@ namespace PhotoBooth.DEMO.API
 
         private void Install(IServiceCollection services)
         {
-            MockInstaller.Install(services);
-            //BlInstaller.Install(services);
-            //DALInstaller.Install(services);
+            //MockInstaller.Install(services);
+            BlInstaller.Install(services);
+            DALInstaller.Install(services);
         }
     }
 }

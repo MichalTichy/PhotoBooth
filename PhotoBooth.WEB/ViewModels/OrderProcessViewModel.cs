@@ -69,14 +69,22 @@ namespace PhotoBooth.WEB.ViewModels
 
         public async Task CreateUser()
         {
-            await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
-            NewUserName = OrderBasicInfo.User.Email;
-            //TODO display result
-            HideAllSections();
+            var userInfo = await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
+            if (userInfo.Succeeded)
+            {
+                NewUserName = OrderBasicInfo.User.Email;
+                //TODO display result
+                HideAllSections();
 
-            PrepareSummary();
+                PrepareSummary();
 
-            Summary = true;
+                Summary = true;
+            }
+            else
+            {
+                this.Context.ModelState.Errors.Add(new DotVVM.Framework.ViewModel.Validation.ViewModelValidationError() { PropertyPath = nameof(OrderBasicInfo.User.Email), ErrorMessage = "Ucet so zadanym e-mailom uz existuje!" });
+                Context.FailOnInvalidModelState();
+            }
         }
 
         public void HideAllSections()

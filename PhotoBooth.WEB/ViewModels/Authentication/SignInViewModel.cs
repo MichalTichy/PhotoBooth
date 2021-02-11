@@ -39,7 +39,7 @@ namespace PhotoBooth.WEB.ViewModels.Authentication
                 var claimsPrincipal = new ClaimsPrincipal(identity);
                 var authenticationManager = Context.GetAuthentication();
                 await authenticationManager.SignInAsync(IdentityConstants.ApplicationScheme, claimsPrincipal);
-                Context.RedirectToRoute("Default", allowSpaRedirect: false);
+                Context.RedirectToRoute("OrderList", allowSpaRedirect: false);
             }
         }
     }

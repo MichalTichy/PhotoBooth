@@ -10,7 +10,8 @@
                 <dot:GridViewTextColumn HeaderText="Datum" ValueType="DateTime" ValueBinding="{value: RentalSince}" FormatString="g" />
                 <dot:GridViewTextColumn HeaderText="Adresa" ValueBinding="{value: Address}" />
                 <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: FinalPrice}" />
-                <dot:GridViewCheckBoxColumn HeaderText="Potvrzeno" ValueBinding="{value: IsConfirmed}"/>
+                <dot:GridViewCheckBoxColumn HeaderText="Potvrdene" ValueBinding="{value: IsConfirmed}" />
+                <dot:GridViewCheckBoxColumn HeaderText="Zrusene" ValueBinding="{value: IsCancelled}" />
                 <dot:GridViewTemplateColumn>
                     <dot:RouteLink RouteName="OrderDetail" Param-id="{value: Id}" Text="Detail" />
                 </dot:GridViewTemplateColumn>

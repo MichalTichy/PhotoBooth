@@ -25,7 +25,7 @@ namespace PhotoBooth.WEB.ViewModels
             }
             else
             {
-                Orders = _orderFacade.GetOrdersByUserAsync(user.Identity.Name).Result;
+                Orders = _orderFacade.GetOrdersByUserAsync(user.Identity.Name, true).Result;
             }
             return base.PreRender();
         }

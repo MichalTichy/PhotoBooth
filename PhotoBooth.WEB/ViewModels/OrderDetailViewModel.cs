@@ -26,12 +26,12 @@ namespace PhotoBooth.WEB.ViewModels
             return base.PreRender();
         }
 
-        public void Cancel()
+        public void CancelOrder()
         {
             _orderFacade.CancelOrder(Detail.Id);
         }
 
-        public void Confirm()
+        public void ConfirmOrder()
         {
             _orderFacade.ConfirmOrder(Detail.Id);
         }

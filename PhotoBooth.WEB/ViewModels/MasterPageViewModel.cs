@@ -10,7 +10,7 @@ namespace PhotoBooth.WEB.ViewModels
         public async Task SignOut()
         {
             await Context.GetAuthentication().SignOutAsync(IdentityConstants.ApplicationScheme);
-            Context.RedirectToRoute("Default", null, false, false);
+            Context.RedirectToRoute("OrderProcess", null, false, false);
         }
     }
 }

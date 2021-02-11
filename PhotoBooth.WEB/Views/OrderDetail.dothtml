@@ -9,11 +9,11 @@
     <div DataContext="{value: Detail}" class="row d-flex justify-content-center">
 
         <div class="col-sm-12 col-md-8 form-box">
-            <h1 IncludeInPage="{value: ConfirmationDate!=null && CancellationDate==null}">
-                Objednávka potvrzená
-            </h1>
             <h1 IncludeInPage="{value: ConfirmationDate==null && CancellationDate==null}">
                 Objednávka čeká na potvrzení
+            </h1>
+            <h1 IncludeInPage="{value: ConfirmationDate!=null && CancellationDate==null}">
+                Objednávka potvrzená
             </h1>
             <h1 IncludeInPage="{value: CancellationDate!=null}">
                 Objednávka zrušená
@@ -45,6 +45,9 @@
                                 <td style="padding-right: 65px;">
                                     {{value: PricePerHour}}€ * {{value: _parent.CountOfHours}}hod
                                 </td>
+                                <td>
+                                    <dot:Button Text="Remove"/>
+                                </td>
                             </tr>
                         </dot:Repeater>
                         <dot:Repeater RenderWrapperTag="false" DataSource="{value: OrderItems}">
@@ -55,6 +58,9 @@
                                 </td>
                                 <td style="padding-right: 65px;">
                                     {{value: Price}}€
+                                </td>
+                                <td>
+                                    <dot:Button Text="Remove" />
                                 </td>
                             </tr>
                         </dot:Repeater>
@@ -70,8 +76,8 @@
 
             <dot:ClaimView Claim="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name" Values="admin" >
                 <IsMemberTemplate>
-                    <dot:Button Text="Cancel" Click="{command: _root.Cancel()}" />
-                    <dot:Button Text="Confirm" Click="{command: _root.Confirm()}" />
+                    <dot:Button Text="Cancel" Click="{command: _root.CancelOrder()}" Enabled="{value:  CancellationDate==null}"/>
+                    <dot:Button Text="Confirm" Click="{command: _root.ConfirmOrder()}" Enabled="{value:  ConfirmationDate==null}" />
                 </IsMemberTemplate>
             </dot:ClaimView>
         </div>

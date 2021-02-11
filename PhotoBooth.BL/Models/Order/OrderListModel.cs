@@ -6,7 +6,7 @@ namespace PhotoBooth.BL.Models.Order
     {
         public DateTime Created { get; set; }
         public bool IsConfirmed { get; set; }
-        public bool IsCanceled { get; set; }
+        public bool IsCancelled { get; set; }
         public DateTime RentalSince { get; set; }
         public DateTime RentalTill { get; set; }
         public string CustomerFullName { get; set; }

@@ -9,18 +9,18 @@ namespace PhotoBooth.BL.Facades
 {
     public interface IOrderFacade
     {
-        OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata);
+        Task<OrderSummaryModel> PrepareOrderAsync(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata);
 
-        Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
+        Task<OrderSummaryModel> SubmitOrderAsync(ICollection<RentalItemModel> rentalItems,
         ICollection<ProductModel> products, OrderMatadata orderMatadata);
 
-        ICollection<OrderListModel> GetAllOrders(bool includeDeleted = false);
+        Task<ICollection<OrderListModel>> GetAllOrdersAsync(bool includeDeleted = false);
 
-        ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false);
+        Task<ICollection<OrderListModel>> GetOrdersByUserAsync(string username, bool includeDeleted = false);
 
-        OrderSummaryModel GetOrderSummary(Guid id);
+        Task<OrderSummaryModel> GetOrderSummaryAsync(Guid id);
 
-        OrderSummaryModel ChangeOrderPrice(Guid id, double newPrice);
+        Task<OrderSummaryModel> ChangeOrderPriceAsync(Guid id, double newPrice);
 
         void ConfirmOrder(Guid orderId);
 

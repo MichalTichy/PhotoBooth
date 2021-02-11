@@ -21,11 +21,11 @@ namespace PhotoBooth.WEB.ViewModels
             var user = Context.GetAuthentication().Context.User;
             if (user.Identity.Name == "admin")
             {
-                Orders = _orderFacade.GetAllOrders(true);
+                Orders = _orderFacade.GetAllOrdersAsync(true).Result;
             }
             else
             {
-                Orders = _orderFacade.GetOrdersByUser(user.Identity.Name);
+                Orders = _orderFacade.GetOrdersByUserAsync(user.Identity.Name).Result;
             }
             return base.PreRender();
         }

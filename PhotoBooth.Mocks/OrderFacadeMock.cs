@@ -12,16 +12,16 @@ namespace PhotoBooth.Mocks
 {
     public class OrderFacadeMock : IOrderFacade
     {
-        public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems,
+        public async Task<OrderSummaryModel> PrepareOrderAsync(ICollection<RentalItemModel> rentalItems,
             ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
-            return GenerateOrderSummary(rentalItems, products, orderMatadata);
+            return await Task.Run(() => GenerateOrderSummary(rentalItems, products, orderMatadata));
         }
 
-        public Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
+        public async Task<OrderSummaryModel> SubmitOrderAsync(ICollection<RentalItemModel> rentalItems,
             ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
-            return Task.FromResult(GenerateOrderSummary(rentalItems, products, orderMatadata));
+            return await Task.FromResult(GenerateOrderSummary(rentalItems, products, orderMatadata));
         }
 
         private static OrderSummaryModel GenerateOrderSummary(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
@@ -41,24 +41,24 @@ namespace PhotoBooth.Mocks
             };
         }
 
-        public ICollection<OrderListModel> GetAllOrders(bool includeDeleted = false)
+        public async Task<ICollection<OrderListModel>> GetAllOrdersAsync(bool includeDeleted = false)
         {
-            return GenerateOrderListModels();
+            return await Task.Run(() => GenerateOrderListModels());
         }
 
-        public ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false)
+        public async Task<ICollection<OrderListModel>> GetOrdersByUserAsync(string username, bool includeDeleted = false)
         {
-            return GenerateOrderListModels();
+            return await Task.Run(() => GenerateOrderListModels());
         }
 
-        public OrderSummaryModel GetOrderSummary(Guid id)
+        public async Task<OrderSummaryModel> GetOrderSummaryAsync(Guid id)
         {
-            return GenerateOrderSummary();
+            return await Task.Run(() => GenerateOrderSummary());
         }
 
-        public OrderSummaryModel ChangeOrderPrice(Guid id, double newPrice)
+        public async Task<OrderSummaryModel> ChangeOrderPriceAsync(Guid id, double newPrice)
         {
-            return GenerateOrderSummary();
+            return await Task.Run(() => GenerateOrderSummary());
         }
 
         public void ConfirmOrder(Guid orderId)

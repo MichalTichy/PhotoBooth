@@ -222,7 +222,7 @@ namespace PhotoBooth.WEB.ViewModels
             if (SelectedBooth != null) rentalItems.Add(SelectedBooth);
             if (SelectedBackground != null) rentalItems.Add(SelectedBackground);
 
-            OrderPreview = _orderFacade.PrepareOrder(rentalItems, Products.Where(t => SelectedProductIds.Contains(t.Id)).ToList(), OrderBasicInfo);
+            OrderPreview = _orderFacade.PrepareOrderAsync(rentalItems, Products.Where(t => SelectedProductIds.Contains(t.Id)).ToList(), OrderBasicInfo).Result;
         }
 
         public ICollection<RentalItemModel> Booths { get; set; }
@@ -245,7 +245,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         public async Task SendOrder()
         {
-            var order = await _orderFacade.SubmitOrder(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
+            var order = await _orderFacade.SubmitOrderAsync(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
             if (NewUserName != null)
             {
                 var user = await _userFacade.GetIdentityByUsername(NewUserName);

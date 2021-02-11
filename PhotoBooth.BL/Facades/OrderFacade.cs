@@ -42,7 +42,7 @@ namespace PhotoBooth.BL.Facades
             }
         }
 
-        public OrderSummaryModel ChangeOrderPrice(Guid id, double newPrice)
+        public async Task<OrderSummaryModel> ChangeOrderPriceAsync(Guid id, double newPrice)
         {
             using (var uow = UnitOfWorkFactory.Create())
             {
@@ -51,7 +51,7 @@ namespace PhotoBooth.BL.Facades
                 _repository.Update(order);
                 uow.Commit();
             }
-            return GetOrderSummary(id);
+            return await GetOrderSummaryAsync(id);
         }
 
         public void ConfirmOrder(Guid orderId)
@@ -65,28 +65,29 @@ namespace PhotoBooth.BL.Facades
             }
         }
 
-        public ICollection<OrderListModel> GetAllOrders(bool includeDeleted = false)
+        public async Task<ICollection<OrderListModel>> GetAllOrdersAsync(bool includeDeleted = false)
         {
             using (UnitOfWorkFactory.Create())
             {
-                return new OrderListQuery(UnitOfWorkFactory, includeDeleted).Execute();
+                return await new OrderListQuery(UnitOfWorkFactory, includeDeleted).ExecuteAsync();
             }
         }
 
-        public ICollection<OrderListModel> GetOrdersByUser(string username, bool includeDeleted = false)
+        public async Task<ICollection<OrderListModel>> GetOrdersByUserAsync(string username, bool includeDeleted = false)
         {
             using (UnitOfWorkFactory.Create())
             {
                 var query = new OrderListQuery(UnitOfWorkFactory, includeDeleted);
                 query.IncludeOnlyOrdersBySpecificUser(username);
-                return query.Execute();
+                return await query.ExecuteAsync();
             }
         }
 
-        public OrderSummaryModel GetOrderSummary(Guid id)
+        public async Task<OrderSummaryModel> GetOrderSummaryAsync(Guid id)
         {
-            using (var uow = UnitOfWorkFactory.Create())
+            return await Task.Run(() =>
             {
+                using var uow = UnitOfWorkFactory.Create();
                 var context = (uow as EntityFrameworkUnitOfWork<PhotoBoothContext>)?.Context;
                 var order = context.Orders.Include(t => t.OrderItems).ThenInclude(t => t.Item).Include(o => o.RentalItems)
                     .ThenInclude(s => s.Item).FirstOrDefault(t => t.Id == id);
@@ -96,24 +97,26 @@ namespace PhotoBooth.BL.Facades
                 var mapper = new Mapper(mapperConfiguration);
                 var orderSummaryModel = mapper.Map<OrderSummaryModel>(order);
                 return orderSummaryModel;
-            }
+            });
         }
 
-        public OrderSummaryModel PrepareOrder(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
+        public async Task<OrderSummaryModel> PrepareOrderAsync(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
             var rentalTill = orderMatadata.Since.AddHours(orderMatadata.CountOfHours);
-
-            return new OrderSummaryModel()
+            return await Task.Run(() =>
             {
-                RentalItems = rentalItems,
-                OrderItems = products,
-                RentalSince = orderMatadata.Since,
-                RentalTill = rentalTill,
-                LocationAddress = orderMatadata.Address,
-                Customer = orderMatadata.User,
-                Created = dateTimeProvider.Now,
-                FinalPrice = GetFinalPrice(rentalItems, products, orderMatadata.CountOfHours)
-            };
+                return new OrderSummaryModel()
+                {
+                    RentalItems = rentalItems,
+                    OrderItems = products,
+                    RentalSince = orderMatadata.Since,
+                    RentalTill = rentalTill,
+                    LocationAddress = orderMatadata.Address,
+                    Customer = orderMatadata.User,
+                    Created = dateTimeProvider.Now,
+                    FinalPrice = GetFinalPrice(rentalItems, products, orderMatadata.CountOfHours)
+                };
+            });
         }
 
         private double GetFinalPrice(ICollection<RentalItemModel> rentalItems, ICollection<ProductModel> products, int countOfHours)
@@ -121,7 +124,7 @@ namespace PhotoBooth.BL.Facades
             return rentalItems.Sum(t => t.PricePerHour) * countOfHours + products.Sum(t => t.Price);
         }
 
-        public async Task<OrderSummaryModel> SubmitOrder(ICollection<RentalItemModel> rentalItems,
+        public async Task<OrderSummaryModel> SubmitOrderAsync(ICollection<RentalItemModel> rentalItems,
             ICollection<ProductModel> products, OrderMatadata orderMatadata)
         {
             using (var uow = UnitOfWorkFactory.Create())
@@ -170,7 +173,7 @@ namespace PhotoBooth.BL.Facades
                     }
                 }
                 await uow.CommitAsync();
-                return GetOrderSummary(model.Id);
+                return await GetOrderSummaryAsync(model.Id);
             }
         }
 

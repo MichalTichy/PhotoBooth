@@ -21,7 +21,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         public override Task PreRender()
         {
-            Detail = _orderFacade.GetOrderSummary(OrderId);
+            Detail = _orderFacade.GetOrderSummaryAsync(OrderId).Result;
 
             return base.PreRender();
         }

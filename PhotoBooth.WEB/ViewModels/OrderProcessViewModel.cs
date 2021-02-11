@@ -49,7 +49,10 @@ namespace PhotoBooth.WEB.ViewModels
         public ICollection<ProductModel> Products { get; set; }
         public ICollection<RentalItemType> SelectedRentalItemTypes { get; set; } = new List<RentalItemType>();
         public ICollection<Guid> SelectedProductIds { get; set; } = new List<Guid>();
-        public ICollection<RentalItemType> AvailableRentalTypes { get; set; }
+        public ICollection<RentalItemType> AvailableRentalTypes { get; set; } = new List<RentalItemType>();
+        public bool PropsAvailable => AvailableRentalTypes.Contains(RentalItemType.Prop);
+        public bool BackgroundAvailable => AvailableRentalTypes.Contains(RentalItemType.Background);
+        public bool PhotoBoothAvailable => AvailableRentalTypes.Contains(RentalItemType.PhotoBooth);
         public ICollection<RentalItemModel> AvailableRentalItems { get; set; }
 
         public ItemPackageDTO SelectedPackage { get; set; }

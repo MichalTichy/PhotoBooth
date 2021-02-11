@@ -79,14 +79,28 @@
                         <img class="col form-divider" src="img/divider.png" />
                         <div class="row" style="padding: 0px 50px;">
                             <div class="col-sm-12 col-md-6">
-                                <dot:Repeater DataSource="{value: AvailableRentalTypes}">
-                                    <div class="form-check" style="margin-bottom:20px">
-                                        <dot:CheckBox class="form-check-input" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:_this}" Changed="{command: _parent.DeselectPackage()}">
-                                            <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">{{value: _this}}</p>
+                                <div style="padding:15px 0px 0px 10px;">
+                                    <div class="form-check" style="padding:0;">
+                                        <dot:CheckBox class="" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:RentalItemType.PhotoBooth}" Changed="{command: _root.DeselectPackage()}" Enabled="{value: PhotoBoothAvailable}">
+                                            <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">Fotobudka</p>
                                         </dot:checkbox>
-                                        <div style="padding-top:25px;"></div>
+                                        <p visible="{value: !PhotoBoothAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
                                     </div>
-                                </dot:repeater>
+
+                                    <div class="form-check" style="padding:0;">
+                                        <dot:CheckBox class="" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:RentalItemType.Background}" Changed="{command: _root.DeselectPackage()}" Enabled="{value: BackgroundAvailable}">
+                                            <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">Pozadie</p>
+                                        </dot:checkbox>
+                                        <p visible="{value: !BackgroundAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
+                                    </div>
+
+                                    <div class="form-check" style="padding:0;">
+                                        <dot:CheckBox class="" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:RentalItemType.Prop}" Changed="{command: _root.DeselectPackage()}" Enabled="{value: PropsAvailable}">
+                                            <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">Rekvizity</p>
+                                        </dot:checkbox>
+                                        <p visible="{value: !PropsAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-sm-12 col-md-6">
                                 <dot:Repeater DataSource="{value: Products}">

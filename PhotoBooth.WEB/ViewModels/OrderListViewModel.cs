@@ -19,7 +19,7 @@ namespace PhotoBooth.WEB.ViewModels
         public override Task PreRender()
         {
             var user = Context.GetAuthentication().Context.User;
-            if (user.Identity.Name == "admin")
+            if (user.Identity.Name == "admin@smileshoot.sk")
             {
                 Orders = _orderFacade.GetAllOrdersAsync(true).Result;
             }

@@ -74,7 +74,7 @@
                 <p>*K cene sa individuálne pripočítava cena dopravných nákladov.</p>
             </div>
 
-            <dot:ClaimView Claim="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name" Values="admin" >
+            <dot:ClaimView Claim="http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name" Values="admin@smileshoot.sk" >
                 <IsMemberTemplate>
                     <dot:Button Text="Cancel" Click="{command: _root.CancelOrder()}" Enabled="{value:  CancellationDate==null}"/>
                     <dot:Button Text="Confirm" Click="{command: _root.ConfirmOrder()}" Enabled="{value:  ConfirmationDate==null}" />

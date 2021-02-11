@@ -25,12 +25,19 @@ namespace PhotoBooth.BL.Facades
 
         public async Task CreateAdminAccount()
         {
-            var admin = await GetUserByUsername("admin");
+            var admin = await GetUserByUsername("admin@smileshoot.sk");
             if (admin != null)
                 return;
 
-            var userInfo = await RegisterAsync("admin", "Password1*");
-            admin = await GetUserByUsername("admin");
+            var adminUser = new ApplicationUser("admin@smileshoot.sk")
+            {
+                Email = "admin@smileshoot.sk",
+                FirstName = "Administrator",
+                LastName = "SmileShoot",
+                PhoneNumber = "+4210910512175"
+            };
+            var userInfo = await userManager.CreateAsync(adminUser, "Password1*");
+            admin = await GetUserByUsername("admin@smileshoot.sk");
             await _roleManager.CreateAsync(new IdentityRole("admin"));
             await userManager.AddToRoleAsync(admin, "admin");
             await userManager.UpdateAsync(admin);
@@ -87,6 +94,8 @@ namespace PhotoBooth.BL.Facades
         {
             var password = CreatePassword(15);
             //TODO send user the temporary password
+            Console.WriteLine("new user: " + user.Email);
+            Console.WriteLine("new password: " + password);
             var userEntity = new ApplicationUser(user.Email)
             {
                 Email = user.Email,

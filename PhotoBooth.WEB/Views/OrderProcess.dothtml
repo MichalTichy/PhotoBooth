@@ -1,4 +1,4 @@
-﻿@viewModel PhotoBooth.WEB.ViewModels.DefaultViewModel, PhotoBooth.WEB
+﻿@viewModel PhotoBooth.WEB.ViewModels.OrderProcessViewModel, PhotoBooth.WEB
 @masterPage Views/MasterPage.dotmaster
 @import RentalItemType =  PhotoBooth.DAL.Entity.RentalItemType
 <dot:Content ContentPlaceHolderID="MainContent">

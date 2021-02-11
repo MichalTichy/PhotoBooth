@@ -17,13 +17,13 @@ using System.Threading.Tasks;
 
 namespace PhotoBooth.WEB.ViewModels
 {
-    public class DefaultViewModel : MasterPageViewModel
+    public class OrderProcessViewModel : MasterPageViewModel
     {
         private readonly ICatalogFacade _catalogFacade;
         private readonly IOrderFacade _orderFacade;
         private readonly UserFacade _userFacade;
 
-        public DefaultViewModel(ICatalogFacade catalogFacade, IOrderFacade orderFacade, UserFacade userFacade)
+        public OrderProcessViewModel(ICatalogFacade catalogFacade, IOrderFacade orderFacade, UserFacade userFacade)
         {
             _catalogFacade = catalogFacade;
             _orderFacade = orderFacade;

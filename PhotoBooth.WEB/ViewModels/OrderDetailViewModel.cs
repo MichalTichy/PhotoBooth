@@ -28,7 +28,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         public void CancelOrder()
         {
-            _orderFacade.CancelOrder(Detail.Id);
+            _orderFacade.CancelOrderAsync(Detail.Id);
         }
 
         public void ConfirmOrder()

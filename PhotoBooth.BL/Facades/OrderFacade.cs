@@ -32,13 +32,18 @@ namespace PhotoBooth.BL.Facades
             _userFacade = userFacade;
         }
 
-        public void CancelOrder(Guid orderId)
+        public async Task CancelOrderAsync(Guid orderId)
         {
-            using (var uow = UnitOfWorkFactory.Create())
+            using (var uow = (EntityFrameworkUnitOfWork<PhotoBoothContext>)UnitOfWorkFactory.Create())
             {
                 var order = _repository.GetById(orderId);
                 order.CancellationDate = dateTimeProvider.Now;
-                uow.Commit();
+                foreach (var item in order.OrderItems)
+                {
+                    item.Item.AmountLeft++;
+                    uow.Context.Products.Update(item.Item);
+                }
+                await uow.CommitAsync();
             }
         }
 

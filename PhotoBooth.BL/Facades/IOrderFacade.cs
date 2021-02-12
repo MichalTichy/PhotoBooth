@@ -24,6 +24,6 @@ namespace PhotoBooth.BL.Facades
 
         void ConfirmOrder(Guid orderId);
 
-        void CancelOrder(Guid orderId);
+        Task CancelOrderAsync(Guid orderId);
     }
 }

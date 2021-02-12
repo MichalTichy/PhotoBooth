@@ -1,0 +1,24 @@
+﻿@viewModel PhotoBooth.WEB.ViewModels.ProductsManagerViewModel, PhotoBooth.WEB
+@masterPage Views/MasterPage.dotmaster
+
+<dot:Content ContentPlaceHolderID="MainContent">
+    <dot:GridView DataSource="{value: Products}" InlineEditing="true">
+        <Columns>
+            <dot:GridViewTextColumn ValueBinding="{value: Name}" HeaderText="Name" />
+            <dot:GridViewTextColumn ValueBinding="{value: DescriptionHtml}" HeaderText="Description" />
+            <dot:GridViewTextColumn ValueBinding="{value: PictureUrl}" HeaderText="URL obrazku" />
+            <dot:GridViewTextColumn ValueBinding="{value: Price}" HeaderText="Price" />
+            <dot:GridViewTextColumn ValueBinding="{value: AmountLeft}" HeaderText="Amount" />
+            <dot:GridViewTemplateColumn AllowSorting="false">
+                <ContentTemplate>
+                    <dot:Button Text="Edit" Click="{command: _parent.Edit(_this)}" />
+                </ContentTemplate>
+                <EditTemplate>
+                    <dot:Button Text="Save" Click="{command: _parent.Update(_this)}" />
+                    <dot:Button Text="Cancel" Click="{command: _parent.CancelEdit()}" />
+                </EditTemplate>
+            </dot:GridViewTemplateColumn>
+        </Columns>
+    </dot:GridView>
+</dot:Content>
+

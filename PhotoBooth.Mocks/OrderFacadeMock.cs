@@ -65,7 +65,7 @@ namespace PhotoBooth.Mocks
         {
         }
 
-        public void CancelOrder(Guid orderId)
+        public async Task CancelOrderAsync(Guid orderId)
         {
         }
 

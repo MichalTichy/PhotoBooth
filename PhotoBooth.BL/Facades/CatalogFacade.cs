@@ -35,6 +35,15 @@ namespace PhotoBooth.BL.Facades
             }
         }
 
+        public async Task<ICollection<ProductModel>> GetAllProductsAsync()
+        {
+            using (var uow = UnitOfWorkFactory.Create())
+            {
+                var query = new AllProductsQuery(UnitOfWorkFactory);
+                return await query.ExecuteAsync();
+            }
+        }
+
         public async Task<ICollection<ProductModel>> GetAvailableProductsAsync()
         {
             using (var uow = UnitOfWorkFactory.Create())
@@ -50,6 +59,24 @@ namespace PhotoBooth.BL.Facades
             {
                 var query = new AvailableRentalItems(UnitOfWorkFactory, since, till, type);
                 return await query.ExecuteAsync();
+            }
+        }
+
+        public async Task UpdateProductAsync(ProductModel product)
+        {
+            Product p = new Product()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                AmountLeft = product.AmountLeft,
+                DescriptionHtml = product.DescriptionHtml,
+                PictureUrl = product.PictureUrl,
+                Price = product.Price
+            };
+            using (var uow = UnitOfWorkFactory.Create())
+            {
+                _repository.Update(p);
+                await uow.CommitAsync();
             }
         }
     }

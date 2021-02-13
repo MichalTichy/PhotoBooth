@@ -7,11 +7,11 @@
 
         <div class="col-sm-12 col-md-8 form-box">
             <dot:GridView DataSource="{value: Orders}">
-                <dot:GridViewTextColumn HeaderText="Datum" ValueType="DateTime" ValueBinding="{value: RentalSince}" FormatString="g" />
-                <dot:GridViewTextColumn HeaderText="Adresa" ValueBinding="{value: Address}" />
-                <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: FinalPrice}" />
-                <dot:GridViewCheckBoxColumn HeaderText="Potvrdene" ValueBinding="{value: IsConfirmed}" />
-                <dot:GridViewCheckBoxColumn HeaderText="Zrusene" ValueBinding="{value: IsCancelled}" />
+                <dot:GridViewTextColumn HeaderText="Datum" ValueType="DateTime" ValueBinding="{value: RentalSince}" FormatString="g" CssClass="table-column" HeaderCssClass="table-column" />
+                <dot:GridViewTextColumn HeaderText="Adresa" ValueBinding="{value: Address}" CssClass="table-column" HeaderCssClass="table-column" />
+                <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: FinalPrice}" CssClass="table-column" HeaderCssClass="table-column" />
+                <dot:GridViewCheckBoxColumn HeaderText="Potvrdene" ValueBinding="{value: IsConfirmed}" CssClass="table-column" HeaderCssClass="table-column" />
+                <dot:GridViewCheckBoxColumn HeaderText="Zrusene" ValueBinding="{value: IsCancelled}" CssClass="table-column" HeaderCssClass="table-column" />
                 <dot:GridViewTemplateColumn>
                     <dot:RouteLink RouteName="OrderDetail" Param-id="{value: Id}" Text="Detail" />
                 </dot:GridViewTemplateColumn>

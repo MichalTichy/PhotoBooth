@@ -10,7 +10,8 @@
                 <dot:ClaimView Claim="http://schemas.microsoft.com/ws/2008/06/identity/claims/role" Values="admin">
                     <HasClaimTemplate>
                         <dot:GridView DataSource="{value: Orders}">
-                            <dot:GridViewTextColumn HeaderText="Datum" ValueType="DateTime" AllowSorting="true" ValueBinding="{value: RentalSince}" FormatString="g" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTextColumn HeaderText="Datum vytvorenia" ValueType="DateTime" ValueBinding="{value: Created}" AllowSorting="true" FormatString="g" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTextColumn HeaderText="Datum konania" ValueType="DateTime" ValueBinding="{value: RentalSince}" AllowSorting="true" FormatString="g" CssClass="table-column" HeaderCssClass="table-column" />
                             <dot:GridViewTextColumn HeaderText="Adresa" ValueBinding="{value: Address}" AllowSorting="true" CssClass="table-column" HeaderCssClass="table-column" />
                             <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: FinalPrice}" AllowSorting="true" CssClass="table-column" HeaderCssClass="table-column" />
                             <dot:GridViewTextColumn HeaderText="Stav" ValueBinding="{value: State}" CssClass="table-column" HeaderCssClass="table-column" AllowSorting="true" />
@@ -31,6 +32,9 @@
                         </dot:GridView>
                     </HasNotClaimTemplate>
                 </dot:ClaimView>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <dot:DataPager class="my-pagination" DataSet="{value: Orders}" />
             </div>
         </div>
     </div>

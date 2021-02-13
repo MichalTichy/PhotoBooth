@@ -102,3 +102,28 @@ h4 {
     visibility: visible;
 }
 
+.my-pagination {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: .25rem;
+    margin-top: 20px;
+}
+
+.my-pagination li {
+    border: 1px solid white;
+    border-radius: 5px;
+    margin: 0px 2px;
+}
+
+.my-pagination li a {
+    padding: 0px 15px;
+    font-size: 20px;
+}
+
+.my-pagination li span {
+    padding: 0px 15px;
+    font-size: 20px;
+}

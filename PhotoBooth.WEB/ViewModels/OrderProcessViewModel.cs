@@ -64,15 +64,13 @@ namespace PhotoBooth.WEB.ViewModels
             return Products.Where(t => SelectedProductIds.Contains(t.Id)).ToList();
         }
 
-        [Protect(ProtectMode.EncryptData)]
-        public string NewUserName { get; set; }
-
         public async Task CreateUser()
         {
             var userInfo = await _userFacade.RegisterSendTemporaryPasswordAsync(OrderBasicInfo.User);
             if (userInfo.Succeeded)
             {
-                NewUserName = OrderBasicInfo.User.Email;
+                var user = await _userFacade.GetIdentityByUsername(OrderBasicInfo.User.Email);
+                await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(user));
                 //TODO display result
                 HideAllSections();
 
@@ -257,11 +255,6 @@ namespace PhotoBooth.WEB.ViewModels
         public async Task SendOrder()
         {
             var order = await _orderFacade.SubmitOrderAsync(GetSelectedRentalItems(), GetSelectedProducts(), OrderBasicInfo);
-            if (NewUserName != null)
-            {
-                var user = await _userFacade.GetIdentityByUsername(NewUserName);
-                await Context.GetAuthentication().SignInAsync(IdentityConstants.ApplicationScheme, new ClaimsPrincipal(user));
-            }
 
             Context.RedirectToRoute($"OrderDetail", new { id = order.Id });
         }

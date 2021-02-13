@@ -47,7 +47,7 @@
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <dot:RouteLink Text="Moje objednávky" class="col form-green form-button" style="text-decoration:none; color:black" Validation.Enabled="false" RouteName="Authentication_SignIn" />
+                        <dot:RouteLink Text="Moje objednávky" class="col form-green form-button" style="text-decoration:none; color:black" Validation.Enabled="false" RouteName="OrderList" />
                         <dot:Button class="col form-green form-button" Click="{command: GoToServicesSelection()}" Text="ĎALEJ &rarr;" Validation.Target="{value: OrderBasicInfo}" />
                     </div>
                 </div>

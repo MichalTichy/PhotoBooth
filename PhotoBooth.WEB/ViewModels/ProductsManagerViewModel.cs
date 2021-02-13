@@ -12,7 +12,7 @@ using PhotoBooth.BL.Models.Item.RentalItem;
 
 namespace PhotoBooth.WEB.ViewModels
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public class ProductsManagerViewModel : MasterPageViewModel
     {
         private readonly ICatalogFacade _catalogFacade;

@@ -1,0 +1,51 @@
+﻿@viewModel PhotoBooth.WEB.ViewModels.ProductsManagerViewModel, PhotoBooth.WEB
+@masterPage Views/MasterPage.dotmaster
+
+<dot:Content ContentPlaceHolderID="MainContent">
+    <div class="row d-flex justify-content-center">
+        <div class="col-sm-12 form-box">
+            <div class="row d-flex justify-content-center">
+                <dot:GridView DataSource="{value: Products}" InlineEditing="true">
+                    <Columns>
+                        <dot:GridViewTextColumn ValueBinding="{value: Name}" HeaderText="Name" AllowSorting="true" CssClass="table-column" HeaderCssClass="table-column"/>
+                        <dot:GridViewTextColumn ValueBinding="{value: DescriptionHtml}" HeaderText="Description" CssClass="table-column-short" HeaderCssClass="table-column-short" />
+                        <dot:GridViewTextColumn ValueBinding="{value: PictureUrl}" HeaderText="URL obrazku" CssClass="table-column-short" HeaderCssClass="table-column-short" />
+                        <dot:GridViewTextColumn ValueBinding="{value: Price}" HeaderText="Price" AllowSorting="true" CssClass="table-column" HeaderCssClass="table-column" />
+                        <dot:GridViewTextColumn ValueBinding="{value: AmountLeft}" HeaderText="Amount" AllowSorting="true" CssClass="table-column" HeaderCssClass="table-column" />
+                        <dot:GridViewTemplateColumn AllowSorting="false">
+                            <ContentTemplate>
+                                <dot:Button Text="Edit" Click="{command: _parent.Edit(_this)}" />
+                            </ContentTemplate>
+                            <EditTemplate>
+                                <dot:Button Text="Save" Click="{command: _parent.Update(_this)}" />
+                                <dot:Button Text="Cancel" Click="{command: _parent.CancelEdit()}" />
+                            </EditTemplate>
+                        </dot:GridViewTemplateColumn>
+                        <dot:GridViewTemplateColumn AllowSorting="false">
+                            <ContentTemplate>
+                                <dot:Button Text="Delete" Click="{command: _parent.Delete(_this)}" />
+                            </ContentTemplate>
+                            <EditTemplate>
+                            </EditTemplate>
+                        </dot:GridViewTemplateColumn>
+                    </Columns>
+                </dot:GridView>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <table Style="margin-top:30px">
+                    <tbody>
+                        <tr>
+                            <td><dot:TextBox Text="{value: NewProduct.Name}" /></td>
+                            <td><dot:TextBox Text="{value: NewProduct.DescriptionHtml}" /></td>
+                            <td><dot:TextBox Text="{value: NewProduct.PictureUrl}" /></td>
+                            <td><dot:TextBox Text="{value: NewProduct.Price}" /></td>
+                            <td><dot:TextBox Text="{value: NewProduct.AmountLeft}" /></td>
+                            <td><dot:Button Text="Add" Click="{command: AddNew()}" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</dot:Content>
+

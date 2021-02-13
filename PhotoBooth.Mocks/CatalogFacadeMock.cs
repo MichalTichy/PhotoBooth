@@ -193,5 +193,45 @@ namespace PhotoBooth.Mocks
                 }
             };
         }
+
+        public Task UpdateProductAsync(ProductModel product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ICollection<ProductModel>> GetAllProductsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateProductAsync(ProductModel newProduct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteProductAsync(ProductModel product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CreateRentalItemAsync(RentalItemModel newItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteRentalItemAsync(RentalItemModel rentalItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateRentalItemAsync(RentalItemModel rentalItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ICollection<RentalItemModel>> GetAllRentalItemsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

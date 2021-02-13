@@ -24,6 +24,8 @@ namespace PhotoBooth.BL.Facades
         
         Task<ICollection<ProductModel>> GetAllProductsAsync();
 
+        Task<ICollection<RentalItemModel>> GetAllRentalItemsAsync();
+
         Task<bool> AreAllRentalItemsAvailableAsync(ICollection<RentalItemModel> items, DateTime since, DateTime till);
 
         Task<ICollection<ItemPackageDTO>> GetAllPackagesAsync();

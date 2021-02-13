@@ -28,7 +28,7 @@ namespace PhotoBooth.WEB.ViewModels
 
         public async override Task PreRender()
         {
-            var t1 = _catalogFacade.GetAvailableRentalItemsAsync(DateTime.Now, DateTime.Now);
+            var t1 = _catalogFacade.GetAllRentalItemsAsync();
             await base.PreRender();
 
             RentalItems.LoadFromQueryable((await t1).AsQueryable());

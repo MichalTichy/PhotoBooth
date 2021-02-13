@@ -114,6 +114,15 @@ namespace PhotoBooth.BL.Facades
             }
         }
 
+        public async Task<ICollection<RentalItemModel>> GetAllRentalItemsAsync()
+        {
+            using (var uow = UnitOfWorkFactory.Create())
+            {
+                var query = new AllRentalItemsQuery(UnitOfWorkFactory);
+                return await query.ExecuteAsync();
+            }
+        }
+
         public async Task<ICollection<ProductModel>> GetAvailableProductsAsync()
         {
             using (var uow = UnitOfWorkFactory.Create())

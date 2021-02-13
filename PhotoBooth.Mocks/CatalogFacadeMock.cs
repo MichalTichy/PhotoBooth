@@ -228,5 +228,10 @@ namespace PhotoBooth.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public Task<ICollection<RentalItemModel>> GetAllRentalItemsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

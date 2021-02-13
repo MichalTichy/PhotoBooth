@@ -3,17 +3,17 @@
 
 <dot:Content ContentPlaceHolderID="MainContent">
     <div IncludeInPage="{resource: Detail==null}">
-        Neznámá objednávka
+        Neznáma objednávka
     </div>
 
     <div DataContext="{value: Detail}" class="row d-flex justify-content-center">
 
         <div class="col-sm-12 col-md-8 form-box">
             <h1 IncludeInPage="{value: ConfirmationDate==null && CancellationDate==null}">
-                Objednávka čeká na potvrzení
+                Objednávka caka na potvrdenie
             </h1>
             <h1 IncludeInPage="{value: ConfirmationDate!=null && CancellationDate==null}">
-                Objednávka potvrzená
+                Objednávka potvrdena
             </h1>
             <h1 IncludeInPage="{value: CancellationDate!=null}">
                 Objednávka zrušená

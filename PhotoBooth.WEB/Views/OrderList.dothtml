@@ -6,16 +6,32 @@
     <div class="row d-flex justify-content-center">
 
         <div class="col-sm-12 col-md-8 form-box">
-            <dot:GridView DataSource="{value: Orders}">
-                <dot:GridViewTextColumn HeaderText="Datum" ValueType="DateTime" ValueBinding="{value: RentalSince}" FormatString="g" CssClass="table-column" HeaderCssClass="table-column" />
-                <dot:GridViewTextColumn HeaderText="Adresa" ValueBinding="{value: Address}" CssClass="table-column" HeaderCssClass="table-column" />
-                <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: FinalPrice}" CssClass="table-column" HeaderCssClass="table-column" />
-                <dot:GridViewCheckBoxColumn HeaderText="Potvrdene" ValueBinding="{value: IsConfirmed}" CssClass="table-column" HeaderCssClass="table-column" />
-                <dot:GridViewCheckBoxColumn HeaderText="Zrusene" ValueBinding="{value: IsCancelled}" CssClass="table-column" HeaderCssClass="table-column" />
-                <dot:GridViewTemplateColumn>
-                    <dot:RouteLink RouteName="OrderDetail" Param-id="{value: Id}" Text="Detail" />
-                </dot:GridViewTemplateColumn>
-            </dot:GridView>
+            <div class="row d-flex justify-content-center">
+                <dot:ClaimView Claim="http://schemas.microsoft.com/ws/2008/06/identity/claims/role" Values="admin">
+                    <HasClaimTemplate>
+                        <dot:GridView DataSource="{value: Orders}">
+                            <dot:GridViewTextColumn HeaderText="Datum" ValueType="DateTime" AllowSorting="true" ValueBinding="{value: RentalSince}" FormatString="g" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTextColumn HeaderText="Adresa" ValueBinding="{value: Address}" AllowSorting="true" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: FinalPrice}" AllowSorting="true" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTextColumn HeaderText="Stav" ValueBinding="{value: State}" CssClass="table-column" HeaderCssClass="table-column" AllowSorting="true" />
+                            <dot:GridViewTemplateColumn>
+                                <dot:RouteLink RouteName="OrderDetail" Param-id="{value: Id}" Text="Detail" />
+                            </dot:GridViewTemplateColumn>
+                        </dot:GridView>
+                    </HasClaimTemplate>
+                    <HasNotClaimTemplate>
+                        <dot:GridView DataSource="{value: Orders}">
+                            <dot:GridViewTextColumn HeaderText="Datum" ValueType="DateTime" ValueBinding="{value: RentalSince}" FormatString="g" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTextColumn HeaderText="Adresa" ValueBinding="{value: Address}" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTextColumn HeaderText="Cena" ValueBinding="{value: FinalPrice}" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTextColumn HeaderText="Stav" ValueBinding="{value: State}" CssClass="table-column" HeaderCssClass="table-column" />
+                            <dot:GridViewTemplateColumn>
+                                <dot:RouteLink RouteName="OrderDetail" Param-id="{value: Id}" Text="Detail" />
+                            </dot:GridViewTemplateColumn>
+                        </dot:GridView>
+                    </HasNotClaimTemplate>
+                </dot:ClaimView>
+            </div>
         </div>
     </div>
 </dot:Content>

@@ -1,8 +1,10 @@
-﻿using DotVVM.Framework.Hosting;
+﻿using DotVVM.Framework.Controls;
+using DotVVM.Framework.Hosting;
 using DotVVM.Framework.Runtime.Filters;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Order;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PhotoBooth.WEB.ViewModels
@@ -11,7 +13,8 @@ namespace PhotoBooth.WEB.ViewModels
     public class OrderListViewModel : MasterPageViewModel
     {
         private readonly IOrderFacade _orderFacade;
-        public ICollection<OrderListModel> Orders { get; set; }
+        private ICollection<OrderListModel> _orders { get; set; }
+        public GridViewDataSet<OrderListModel> Orders { get; set; } = new GridViewDataSet<OrderListModel>();
 
         public OrderListViewModel(IOrderFacade orderFacade)
         {
@@ -23,12 +26,13 @@ namespace PhotoBooth.WEB.ViewModels
             var user = Context.GetAuthentication().Context.User;
             if (user.IsInRole("admin"))
             {
-                Orders = _orderFacade.GetAllOrdersAsync(true).Result;
+                _orders = _orderFacade.GetAllOrdersAsync(true).Result.OrderBy(order => order.State).ToList();
             }
             else
             {
-                Orders = _orderFacade.GetOrdersByUserAsync(user.Identity.Name, true).Result;
+                _orders = _orderFacade.GetOrdersByUserAsync(user.Identity.Name, true).Result;
             }
+            Orders.LoadFromQueryable(_orders.AsQueryable());
             return base.PreRender();
         }
     }

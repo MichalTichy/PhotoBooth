@@ -14,39 +14,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway&display=swap" rel="stylesheet">
 </head>
 <body>
-	<nav class="row" style="padding:10px 20px">
-		<dot:AuthenticatedView>
-			<AuthenticatedTemplate>
-				<div class="col-s-12 col-md-1">
-					<dot:RouteLink RouteName="OrderProcess" Text="Domov" Validation.Enabled="false" />
-				</div>
-				<div class="col-s-12 col-md-2">
-					<dot:RouteLink RouteName="OrderList" Text="Zoznam objednavok" Validation.Enabled="false" />
-				</div>
-				<dot:ClaimView Claim="http://schemas.microsoft.com/ws/2008/06/identity/claims/role" Values="admin">
-					<HasClaimTemplate>
-						<div class="col-s-12 col-md-2">
-							<dot:RouteLink RouteName="RentalItemsManager" Text="Sprava poloziek na prenajom" Validation.Enabled="false" />
-						</div>
-						<div class="col-s-12 col-md-2">
-								<dot:RouteLink RouteName="ProductsManager" Text="Sprava produktov" Validation.Enabled="false" />
-						</div>
-					</HasClaimTemplate>
-				</dot:ClaimView>
-				<div class="col-s-12 col-md-1">
-					<dot:LinkButton Text="Odhlásit se" Click="{command: SignOut()}" Validation.Enabled="false" />
-				</div>
-			</AuthenticatedTemplate>
-			<NotAuthenticatedTemplate>
-				<div class="col-s-12 col-md-1">
-					<dot:RouteLink RouteName="OrderProcess" Text="Domov" Validation.Enabled="false" />
-				</div>
-				<div class="col-s-12 col-md-1">
-					<dot:RouteLink Text="Přihlásit se" Validation.Enabled="false" RouteName="Authentication_SignIn" />
-				</div>
-			</NotAuthenticatedTemplate>
-		</dot:AuthenticatedView>
-	</nav>
+	<div class="container" style="margin:0;">
+		<nav class="row" style="padding:10px 0px;">
+			<dot:AuthenticatedView>
+				<AuthenticatedTemplate>
+					<div class="col-s-12 col-md-1">
+						<dot:RouteLink RouteName="OrderProcess" Text="Domov" Validation.Enabled="false" />
+					</div>
+					<div class="col-s-12 col-md-2">
+						<dot:RouteLink RouteName="OrderList" Text="Zoznam objednavok" Validation.Enabled="false" />
+					</div>
+					<dot:ClaimView Claim="http://schemas.microsoft.com/ws/2008/06/identity/claims/role" Values="admin">
+						<HasClaimTemplate>
+							<div class="col-s-12 col-md-2">
+								<dot:RouteLink RouteName="RentalItemsManager" Text="Sprava poloziek na prenajom" Validation.Enabled="false" />
+							</div>
+							<div class="col-s-12 col-md-2">
+									<dot:RouteLink RouteName="ProductsManager" Text="Sprava produktov" Validation.Enabled="false" />
+							</div>
+						</HasClaimTemplate>
+					</dot:ClaimView>
+					<div class="col-s-12 col-md-2">
+						<dot:LinkButton Text="Odhlásit se" Click="{command: SignOut()}" Validation.Enabled="false" />
+					</div>
+				</AuthenticatedTemplate>
+				<NotAuthenticatedTemplate>
+					<div class="col-s-12 col-md-1">
+						<dot:RouteLink RouteName="OrderProcess" Text="Domov" Validation.Enabled="false" />
+					</div>
+					<div class="col-s-12 col-md-2">
+						<dot:RouteLink Text="Přihlásit se" Validation.Enabled="false" RouteName="Authentication_SignIn" />
+					</div>
+				</NotAuthenticatedTemplate>
+			</dot:AuthenticatedView>
+		</nav>
+	</div>
 	<dot:ContentPlaceHolder ID="MainContent" />
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

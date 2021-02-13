@@ -25,8 +25,10 @@ namespace PhotoBooth.BL.Queries
 
         protected override void CreateMap(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<Order, OrderListModel>().ForMember(model => model.IsCancelled, expression => expression.MapFrom(order => order.CancellationDate.HasValue));
-            cfg.CreateMap<Order, OrderListModel>().ForMember(model => model.IsConfirmed, expression => expression.MapFrom(order => order.ConfirmationDate.HasValue));
+            cfg.CreateMap<Order, OrderListModel>()
+                .ForMember(model => model.IsCancelled, expression => expression.MapFrom(order => order.CancellationDate.HasValue))
+                .ForMember(model => model.IsConfirmed, expression => expression.MapFrom(order => order.ConfirmationDate.HasValue))
+                .ForMember(model => model.Address, expression => expression.MapFrom(order => order.LocationAddress.City));
         }
 
         protected override IQueryable<OrderListModel> GetQueryable()

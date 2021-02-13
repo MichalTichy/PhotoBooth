@@ -12,8 +12,12 @@ namespace PhotoBooth.BL.Facades
     {
         Task CreateProductAsync(ProductModel newProduct);
         
+        Task CreateRentalItemAsync(RentalItemModel newItem);
+        
         Task DeleteProductAsync(ProductModel product);
         
+        Task DeleteRentalItemAsync(RentalItemModel rentalItem);
+
         Task<ICollection<RentalItemModel>> GetAvailableRentalItemsAsync(DateTime since, DateTime till, RentalItemType? type = null);
 
         Task<ICollection<ProductModel>> GetAvailableProductsAsync();
@@ -25,5 +29,7 @@ namespace PhotoBooth.BL.Facades
         Task<ICollection<ItemPackageDTO>> GetAllPackagesAsync();
 
         Task UpdateProductAsync(ProductModel product);
+        
+        Task UpdateRentalItemAsync(RentalItemModel rentalItem);
     }
 }

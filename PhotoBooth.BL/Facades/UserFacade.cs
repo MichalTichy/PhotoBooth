@@ -46,7 +46,7 @@ namespace PhotoBooth.BL.Facades
         public async Task<ClaimsIdentity> GetIdentityByUsername(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
-            return CreateIdentity(user);
+            return await CreateIdentityAsync(user);
         }
 
         public async Task<ApplicationUser> GetUserByUsername(string userName)
@@ -57,12 +57,13 @@ namespace PhotoBooth.BL.Facades
         public async Task<ClaimsIdentity> SignInAsync(string userName, string password)
         {
             var user = await userManager.FindByNameAsync(userName);
+            
             if (user != null)
             {
                 var result = await userManager.CheckPasswordAsync(user, password);
                 if (result)
                 {
-                    return CreateIdentity(user);
+                    return await CreateIdentityAsync(user);
                 }
             }
             return null;
@@ -108,15 +109,23 @@ namespace PhotoBooth.BL.Facades
             return result;
         }
 
-        private ClaimsIdentity CreateIdentity(ApplicationUser user)
+        private async Task<ClaimsIdentity> CreateIdentityAsync(ApplicationUser user)
         {
+
             var identity = new ClaimsIdentity(
                 new[]
                 {
                     new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.NameIdentifier, user.Id),
-                    new Claim(ClaimTypes.Role, "administrator"),
                 }, "Cookie");
+            if (await userManager.IsInRoleAsync(user, "admin"))
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, "admin"));
+            }
+            else
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
+            }
             return identity;
         }
     }

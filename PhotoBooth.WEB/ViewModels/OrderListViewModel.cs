@@ -1,4 +1,5 @@
 ﻿using DotVVM.Framework.Hosting;
+using DotVVM.Framework.Runtime.Filters;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Order;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace PhotoBooth.WEB.ViewModels
 {
+    [Authorize]
     public class OrderListViewModel : MasterPageViewModel
     {
         private readonly IOrderFacade _orderFacade;

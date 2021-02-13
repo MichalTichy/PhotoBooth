@@ -10,6 +10,10 @@ namespace PhotoBooth.BL.Facades
 {
     public interface ICatalogFacade
     {
+        Task CreateProductAsync(ProductModel newProduct);
+        
+        Task DeleteProductAsync(ProductModel product);
+        
         Task<ICollection<RentalItemModel>> GetAvailableRentalItemsAsync(DateTime since, DateTime till, RentalItemType? type = null);
 
         Task<ICollection<ProductModel>> GetAvailableProductsAsync();

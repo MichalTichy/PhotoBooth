@@ -18,6 +18,7 @@ namespace PhotoBooth.WEB.ViewModels
         private readonly ICatalogFacade _catalogFacade;
 
         public GridViewDataSet<ProductModel> Products { get; set; } = new GridViewDataSet<ProductModel>() { RowEditOptions = { PrimaryKeyPropertyName = "Id" } };
+        public ProductModel NewProduct { get; set; } = new ProductModel() { Name = "new name", Price = 5, AmountLeft = 1, DescriptionHtml = "desc", PictureUrl = "https://nieco" };
 
         public ProductsManagerViewModel(ICatalogFacade catalogFacade)
         {
@@ -41,6 +42,18 @@ namespace PhotoBooth.WEB.ViewModels
         {
             Products.RowEditOptions.EditRowId = null;
             await _catalogFacade.UpdateProductAsync(product);
+            Products.RequestRefresh();
+        }
+
+        public async void AddNew()
+        {
+            await _catalogFacade.CreateProductAsync(NewProduct);
+            Products.RequestRefresh();
+        }
+
+        public async void Delete(ProductModel product)
+        {
+            await _catalogFacade.DeleteProductAsync(product);
             Products.RequestRefresh();
         }
 

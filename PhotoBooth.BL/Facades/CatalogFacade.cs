@@ -27,6 +27,42 @@ namespace PhotoBooth.BL.Facades
             }
         }
 
+        public async Task CreateProductAsync(ProductModel newProduct)
+        {
+            Product p = new Product()
+            {
+                Id = newProduct.Id,
+                Name = newProduct.Name,
+                AmountLeft = newProduct.AmountLeft,
+                DescriptionHtml = newProduct.DescriptionHtml,
+                PictureUrl = newProduct.PictureUrl,
+                Price = newProduct.Price
+            };
+            using (var uow = UnitOfWorkFactory.Create())
+            {
+                _repository.Insert(p);
+                await uow.CommitAsync();
+            }
+        }
+
+        public async Task DeleteProductAsync(ProductModel product)
+        {
+            Product p = new Product()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                AmountLeft = product.AmountLeft,
+                DescriptionHtml = product.DescriptionHtml,
+                PictureUrl = product.PictureUrl,
+                Price = product.Price
+            };
+            using (var uow = UnitOfWorkFactory.Create())
+            {
+                _repository.Delete(p);
+                await uow.CommitAsync();
+            }
+        }
+
         public async Task<ICollection<ItemPackageDTO>> GetAllPackagesAsync()
         {
             using (UnitOfWorkFactory.Create())

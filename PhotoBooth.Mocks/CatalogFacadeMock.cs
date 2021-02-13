@@ -203,5 +203,15 @@ namespace PhotoBooth.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public Task CreateProductAsync(ProductModel newProduct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteProductAsync(ProductModel product)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

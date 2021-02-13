@@ -94,7 +94,9 @@ namespace PhotoBooth.BL.Facades
         public async Task<IdentityResult> RegisterSendTemporaryPasswordAsync(ApplicationUserListModel user)
         {
             var password = CreatePassword(15);
-            //TODO send user the temporary password
+            
+            EmailFacade.SendEmail(user.Email, password);
+            
             Console.WriteLine("new user: " + user.Email);
             Console.WriteLine("new password: " + password);
             var userEntity = new ApplicationUser(user.Email)

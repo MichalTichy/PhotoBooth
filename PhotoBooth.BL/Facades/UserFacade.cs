@@ -95,7 +95,7 @@ namespace PhotoBooth.BL.Facades
         {
             var password = CreatePassword(15);
 
-            EmailFacade.SendEmail(user.Email, password);
+            //EmailFacade.SendEmail(user.Email, password);
 
             Console.WriteLine("new user: " + user.Email);
             Console.WriteLine("new password: " + password);

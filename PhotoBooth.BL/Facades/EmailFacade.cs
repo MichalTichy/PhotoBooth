@@ -11,7 +11,8 @@ namespace PhotoBooth.BL.Facades
             {
                 Port = 25,
                 Credentials = new NetworkCredential("webapp@smileshoot.sk", "Password1*"),
-                EnableSsl = false
+                EnableSsl = false,
+                Timeout = 10000
             };
 
             smtpClient.Send("webapp@smileshoot.sk", recipient, "Account registration", "Credentials:\nname: " + recipient + "\npassword: " + password);

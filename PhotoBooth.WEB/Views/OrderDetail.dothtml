@@ -46,7 +46,7 @@
                                     {{value: PricePerHour}}€ * {{value: _parent.CountOfHours}}hod
                                 </td>
                                 <td>
-                                    <dot:Button Text="Remove"/>
+                                    <dot:Button Text="Remove" />
                                 </td>
                             </tr>
                         </dot:Repeater>
@@ -74,13 +74,12 @@
                 <p>*K cene sa individuálne pripočítava cena dopravných nákladov.</p>
             </div>
 
-            <dot:ClaimView Claim="http://schemas.microsoft.com/ws/2008/06/identity/claims/role" Values="admin" >
+            <dot:ClaimView Claim="http://schemas.microsoft.com/ws/2008/06/identity/claims/role" Values="admin">
                 <IsMemberTemplate>
-                    <dot:Button Text="Cancel" Click="{command: _root.CancelOrder()}" Enabled="{value:  CancellationDate==null}"/>
+                    <dot:Button Text="Cancel" Click="{command: _root.CancelOrder()}" Enabled="{value:  CancellationDate==null}" />
                     <dot:Button Text="Confirm" Click="{command: _root.ConfirmOrder()}" Enabled="{value:  ConfirmationDate==null}" />
                 </IsMemberTemplate>
             </dot:ClaimView>
         </div>
     </div>
 </dot:Content>
-

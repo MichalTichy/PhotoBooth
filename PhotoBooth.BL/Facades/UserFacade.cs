@@ -57,7 +57,7 @@ namespace PhotoBooth.BL.Facades
         public async Task<ClaimsIdentity> SignInAsync(string userName, string password)
         {
             var user = await userManager.FindByNameAsync(userName);
-            
+
             if (user != null)
             {
                 var result = await userManager.CheckPasswordAsync(user, password);
@@ -94,9 +94,9 @@ namespace PhotoBooth.BL.Facades
         public async Task<IdentityResult> RegisterSendTemporaryPasswordAsync(ApplicationUserListModel user)
         {
             var password = CreatePassword(15);
-            
+
             EmailFacade.SendEmail(user.Email, password);
-            
+
             Console.WriteLine("new user: " + user.Email);
             Console.WriteLine("new password: " + password);
             var userEntity = new ApplicationUser(user.Email)
@@ -113,7 +113,6 @@ namespace PhotoBooth.BL.Facades
 
         private async Task<ClaimsIdentity> CreateIdentityAsync(ApplicationUser user)
         {
-
             var identity = new ClaimsIdentity(
                 new[]
                 {

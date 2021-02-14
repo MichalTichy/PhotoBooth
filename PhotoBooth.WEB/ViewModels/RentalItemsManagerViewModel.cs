@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DotVVM.Framework.Controls;
+﻿using DotVVM.Framework.Controls;
 using DotVVM.Framework.Runtime.Filters;
-using DotVVM.Framework.ViewModel;
 using PhotoBooth.BL.Facades;
-using PhotoBooth.BL.Models.Item.Product;
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.DAL.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.WEB.ViewModels
 {
@@ -19,7 +14,7 @@ namespace PhotoBooth.WEB.ViewModels
         private readonly ICatalogFacade _catalogFacade;
 
         public GridViewDataSet<RentalItemModel> RentalItems { get; set; } = new GridViewDataSet<RentalItemModel>() { RowEditOptions = { PrimaryKeyPropertyName = "Id" } };
-        public RentalItemModel NewItem { get; set; } = new RentalItemModel() { Name = "new name", PricePerHour = 20, Type=RentalItemType.PhotoBooth, DescriptionHtml = "desc", PictureUrl = "https://nieco" };
+        public RentalItemModel NewItem { get; set; } = new RentalItemModel() { Name = "new name", PricePerHour = 20, Type = RentalItemType.PhotoBooth, DescriptionHtml = "desc", PictureUrl = "https://nieco" };
 
         public RentalItemsManagerViewModel(ICatalogFacade catalogFacade)
         {
@@ -67,4 +62,3 @@ namespace PhotoBooth.WEB.ViewModels
         }
     }
 }
-

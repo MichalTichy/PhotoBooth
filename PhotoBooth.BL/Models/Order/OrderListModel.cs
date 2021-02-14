@@ -7,7 +7,11 @@ namespace PhotoBooth.BL.Models.Order
         public DateTime Created { get; set; }
         public bool IsConfirmed { get; set; }
         public bool IsCancelled { get; set; }
-        public string State { get {
+
+        public string State
+        {
+            get
+            {
                 if (!IsConfirmed && !IsCancelled)
                 {
                     return "Cakajuca";
@@ -21,7 +25,9 @@ namespace PhotoBooth.BL.Models.Order
                     return "Potvrdena";
                 }
                 return "Neznamy";
-            } }
+            }
+        }
+
         public DateTime RentalSince { get; set; }
         public DateTime RentalTill { get; set; }
         public string CustomerFullName { get; set; }

@@ -85,22 +85,22 @@ h4 {
     border-bottom: 1px dotted black;
 }
 
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-}
+    .tooltip .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+    }
 
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-}
+    .tooltip:hover .tooltiptext {
+        visibility: visible;
+    }
 
 .my-pagination {
     display: -webkit-box;
@@ -112,18 +112,18 @@ h4 {
     margin-top: 20px;
 }
 
-.my-pagination li {
-    border: 1px solid white;
-    border-radius: 5px;
-    margin: 0px 2px;
-}
+    .my-pagination li {
+        border: 1px solid white;
+        border-radius: 5px;
+        margin: 0px 2px;
+    }
 
-.my-pagination li a {
-    padding: 0px 15px;
-    font-size: 20px;
-}
+        .my-pagination li a {
+            padding: 0px 15px;
+            font-size: 20px;
+        }
 
-.my-pagination li span {
-    padding: 0px 15px;
-    font-size: 20px;
-}
+        .my-pagination li span {
+            padding: 0px 15px;
+            font-size: 20px;
+        }

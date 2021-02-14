@@ -2,10 +2,7 @@
 using PhotoBooth.BL.Models.Item.RentalItem;
 using PhotoBooth.DAL.Entity;
 using Riganti.Utils.Infrastructure.Core;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PhotoBooth.BL.Queries
 {

@@ -7,7 +7,10 @@
 
         <div class="col-sm-12 col-md-8 form-box">
             <div class="row d-flex justify-content-center">
-                <dot:ClaimView Claim="http://schemas.microsoft.com/ws/2008/06/identity/claims/role" Values="admin">
+                <p IncludeInPage="{value: Orders.Items.Count == 0}">
+                    Nemáte žiadnu objednávku.
+                </p>
+                <dot:ClaimView Claim="http://schemas.microsoft.com/ws/2008/06/identity/claims/role" Values="admin" IncludeInPage="{value: Orders.Items.Count > 0}">
                     <HasClaimTemplate>
                         <dot:GridView DataSource="{value: Orders}">
                             <dot:GridViewTextColumn HeaderText="Datum vytvorenia" ValueType="DateTime" ValueBinding="{value: Created}" AllowSorting="true" FormatString="g" CssClass="table-column" HeaderCssClass="table-column" />
@@ -39,4 +42,3 @@
         </div>
     </div>
 </dot:Content>
-

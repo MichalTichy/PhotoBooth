@@ -1,12 +1,11 @@
 ﻿@viewModel PhotoBooth.WEB.ViewModels.Authentication.SignInViewModel, PhotoBooth.WEB
 @masterPage Views/MasterPage.dotmaster
 
-
 <dot:Content ContentPlaceHolderID="MainContent">
     <div class="container">
         <div class="row">
             <a href="/" class="row d-flex justify-content-center">
-                <img class="col-6 col-md-3" src="../../img/logo.png"/>
+                <img class="col-6 col-md-3" src="../../img/logo.png" />
             </a>
         </div>
         <h1 class="text-center" style="margin:20px; font-weight: 700;">Prihlásenie</h1>
@@ -17,13 +16,13 @@
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-8" Validator.Value="{value: UserName}" Validator.InvalidCssClass="has-error" Validator.SetToolTipText="true">
                                 <label for="inputName">Prihlasovacie meno (e-mail)</label>
-                               <dot:TextBox Text="{value: UserName}" class="form-control form-control-lg" id="inputName"/>
+                                <dot:TextBox Text="{value: UserName}" class="form-control form-control-lg" ID="inputName" />
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-8" Validator.Value="{value: Password}" Validator.InvalidCssClass="has-error" Validator.SetToolTipText="true">
                                 <label for="inputName">Heslo</label>
-                                <dot:TextBox Text="{value: Password}" Type="Password" class="form-control form-control-lg" id="inputName"/>
+                                <dot:TextBox Text="{value: Password}" Type="Password" class="form-control form-control-lg" ID="inputName" />
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
@@ -38,4 +37,3 @@
         </div>
     </div>
 </dot:Content>
-

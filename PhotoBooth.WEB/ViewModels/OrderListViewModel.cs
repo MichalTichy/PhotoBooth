@@ -14,7 +14,7 @@ namespace PhotoBooth.WEB.ViewModels
     {
         private readonly IOrderFacade _orderFacade;
         private ICollection<OrderListModel> _orders { get; set; }
-        public GridViewDataSet<OrderListModel> Orders { get; set; } = new GridViewDataSet<OrderListModel>() {PagingOptions = { PageSize = 15}};
+        public GridViewDataSet<OrderListModel> Orders { get; set; } = new GridViewDataSet<OrderListModel>() { PagingOptions = { PageSize = 15 } };
 
         public OrderListViewModel(IOrderFacade orderFacade)
         {

@@ -2,7 +2,7 @@
 @masterPage Views/MasterPage.dotmaster
 @import RentalItemType =  PhotoBooth.DAL.Entity.RentalItemType
 <dot:Content ContentPlaceHolderID="MainContent">
-    
+
     <div class="container" IncludeInPage="{value: OrderMetadataForm}" Validation.Enabled="true">
         <div>
             <a href="/" class="d-flex justify-content-center">
@@ -17,27 +17,27 @@
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-6">
                                 <label for="inputDate">Dátum a čas</label>
-                                <dot:TextBox class="form-control form-control-lg" id="inputDate" Text="{value: OrderBasicInfo.Since}" Type="DateTimeLocal" Validator.Value="{value: OrderBasicInfo.Since}" Validator.InvalidCssClass="is-invalid"/>
+                                <dot:TextBox class="form-control form-control-lg" ID="inputDate" step="3600" Text="{value: OrderBasicInfo.Since}" Type="DateTimeLocal" Validator.Value="{value: OrderBasicInfo.Since}" Validator.InvalidCssClass="is-invalid" />
                                 <div class="invalid-feedback">
-                                  Dátum a čas sú zadané nesprávne. Rezervácia do minulosti sa nedá uskutočniť.
+                                    Dátum a čas sú zadané nesprávne. Rezervácia do minulosti sa nedá uskutočniť.
                                 </div>
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
                             <div RenderSettings.Mode="Server" class="form-group col-sm-6">
                                 <label for="inputDuration">Doba prenájmu (hodiny)</label>
-                                <dot:TextBox min="2" max="5" value="2" class="form-control form-control-lg" id="inputDuration" Text="{value: OrderBasicInfo.CountOfHours}" Type="Number" Validator.InvalidCssClass="is-invalid" Validator.Value="{value: OrderBasicInfo.CountOfHours}"/>
+                                <dot:TextBox min="2" max="5" value="2" class="form-control form-control-lg" ID="inputDuration" Text="{value: OrderBasicInfo.CountOfHours}" Type="Number" Validator.InvalidCssClass="is-invalid" Validator.Value="{value: OrderBasicInfo.CountOfHours}" />
                                 <div class="invalid-feedback">
-                                  Zadaná doba prenájmu nie je platná.
+                                    Zadaná doba prenájmu nie je platná.
                                 </div>
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-6">
                                 <label for="inputAddress">Miesto konania</label>
-                                <dot:TextBox class="form-control form-control-lg" id="inputAddress" Text="{value: OrderBasicInfo.Address.City}" Validator.InvalidCssClass="is-invalid" Validator.Value="{value: OrderBasicInfo.Address.City}" placeholder="Napr.: Hotel Lev, Levice"/>
+                                <dot:TextBox class="form-control form-control-lg" ID="inputAddress" Text="{value: OrderBasicInfo.Address.City}" Validator.InvalidCssClass="is-invalid" Validator.Value="{value: OrderBasicInfo.Address.City}" placeholder="Napr.: Hotel Lev, Levice" />
                                 <div class="invalid-feedback">
-                                  Zadajte miesto konania udalosti dlhšie ako 4 znaky.
+                                    Zadajte miesto konania udalosti dlhšie ako 4 znaky.
                                 </div>
                             </div>
                         </div>
@@ -69,11 +69,11 @@
                         <div class="form-row justify-content-center" style="font-size: 30px;">
                             <dot:Repeater DataSource="{value: Packages}">
                                 <div class="form-check form-check-inline" style="margin-right: 20px;">
-                                    <dot:RadioButton class="form-check-input" GroupName="packages" CheckedItem="{value: _parent.SelectedPackage}" CheckedValue="{value: _this}" Text="{value: Name}" Changed="{command: _parent.UpdateItemsBasedOnSelectedPackage()}"/>
+                                    <dot:RadioButton class="form-check-input" GroupName="packages" CheckedItem="{value: _parent.SelectedPackage}" CheckedValue="{value: _this}" Text="{value: Name}" Changed="{command: _parent.UpdateItemsBasedOnSelectedPackage()}" />
                                 </div>
                             </dot:Repeater>
                             <div class="form-check form-check-inline" style="margin-right: 20px;">
-                                <dot:RadioButton class="form-check-input" type="radio" GroupName="packages" CheckedItem="{value: CustomPackage}" CheckedValue="{value: true}" Text="Vlastný balík" Changed="{command ClearProductSelection()}"/>
+                                <dot:RadioButton class="form-check-input" type="radio" GroupName="packages" CheckedItem="{value: CustomPackage}" CheckedValue="{value: true}" Text="Vlastný balík" Changed="{command ClearProductSelection()}" />
                             </div>
                         </div>
                         <img class="col form-divider" src="img/divider.png" />
@@ -83,22 +83,22 @@
                                     <div class="form-check" style="padding:0;">
                                         <dot:CheckBox class="" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:RentalItemType.PhotoBooth}" Changed="{command: _root.DeselectPackage()}" Enabled="{value: PhotoBoothAvailable}">
                                             <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">Fotobudka</p>
-                                        </dot:checkbox>
-                                        <p visible="{value: !PhotoBoothAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
+                                        </dot:CheckBox>
+                                        <p Visible="{value: !PhotoBoothAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
                                     </div>
 
                                     <div class="form-check" style="padding:0;">
                                         <dot:CheckBox class="" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:RentalItemType.Background}" Changed="{command: _root.DeselectPackage()}" Enabled="{value: BackgroundAvailable}">
                                             <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">Pozadie</p>
-                                        </dot:checkbox>
-                                        <p visible="{value: !BackgroundAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
+                                        </dot:CheckBox>
+                                        <p Visible="{value: !BackgroundAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
                                     </div>
 
                                     <div class="form-check" style="padding:0;">
                                         <dot:CheckBox class="" GroupName="RentalItems" CheckedItems="{value: _root.SelectedRentalItemTypes}" CheckedValue="{value:RentalItemType.Prop}" Changed="{command: _root.DeselectPackage()}" Enabled="{value: PropsAvailable}">
                                             <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">Rekvizity</p>
-                                        </dot:checkbox>
-                                        <p visible="{value: !PropsAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
+                                        </dot:CheckBox>
+                                        <p Visible="{value: !PropsAvailable}" style="margin-top:-10px;">V zadanom termine tato polozka nie je dostupna.</p>
                                     </div>
                                 </div>
                             </div>
@@ -109,8 +109,8 @@
                                             <p class="form-check-label form-checkbox-label" style="margin-left:20px; margin-top:-35px;">{{value: _this.Name}} - {{value: _this.Price}}€</p>
                                         </dot:CheckBox>
                                     </div>
-                                    <br/>
-                                </dot:repeater>
+                                    <br />
+                                </dot:Repeater>
                             </div>
                         </div>
                     </form>
@@ -119,7 +119,7 @@
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <dot:Button class="col form-green form-button" Click="{command: GoToDetailServicesSelection()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
+                        <dot:Button class="col form-green form-button" Click="{command: GoToDetailServicesSelection()}" Text="ĎALEJ &rarr;" Validation.Enabled="false" />
                     </div>
                 </div>
             </div>
@@ -137,25 +137,25 @@
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-8 form-box">
                     <form>
-                        <div IncludeInPage="{value: BoothSelect}" >
+                        <div IncludeInPage="{value: BoothSelect}">
                             <p class="col-12" style="font-size:35px;">Budka</p>
-                            <dot:HtmlLiteral class="col-12" Html="{value: SelectedBooth.DescriptionHtml}"/>
+                            <dot:HtmlLiteral class="col-12" Html="{value: SelectedBooth.DescriptionHtml}" />
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Booths}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
-                                    <dot:RadioButton class="form-check-input" GroupName="Booths" CheckedItem="{value: _parent.SelectedBooth}" CheckedValue="{value: _this}"/>
+                                    <dot:RadioButton class="form-check-input" GroupName="Booths" CheckedItem="{value: _parent.SelectedBooth}" CheckedValue="{value: _this}" />
                                     <div class="col-12" style="border: none; border-radius: 20px; padding:0; z-index: 1; overflow-wrap: break-word;">
-                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;"/>
-                                                    <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
-                                                    <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour * _parent.OrderBasicInfo.CountOfHours}}€</p>
-                                                    <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour}}€ * {{value: _parent.OrderBasicInfo.CountOfHours}}hod</p>
+                                        <img class="col-12" src="{value: PictureUrl}" style="padding:0; z-index: 2; border-radius: 20px;" />
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: Name}}</p>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour * _parent.OrderBasicInfo.CountOfHours}}€</p>
+                                        <p style="text-align: center; font-weight: 700; font-size: 15px; margin: 0px;">{{value: PricePerHour}}€ * {{value: _parent.OrderBasicInfo.CountOfHours}}hod</p>
                                     </div>
                                 </label>
                             </dot:Repeater>
                         </div>
                         <div IncludeInPage="{value: BackgroundSelect}">
                             <p class="col-12" style="font-size:35px;">Pozadie</p>
-                            <dot:HtmlLiteral  class="col-12" Html="{value: SelectedBackground.DescriptionHtml}"/>
+                            <dot:HtmlLiteral class="col-12" Html="{value: SelectedBackground.DescriptionHtml}" />
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Backgrounds}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
                                 <label class="col-6 col-md-3 d-flex">
@@ -172,7 +172,7 @@
                         <div IncludeInPage="{value: PropsSelect}">
                             <p class="col-12" style="font-size:35px;">Rekvizity</p>
                             <dot:Repeater DataSource="{value: SelectedProps}">
-                                <dot:HtmlLiteral class="col-12" Html="{value: _this.DescriptionHtml}"/>
+                                <dot:HtmlLiteral class="col-12" Html="{value: _this.DescriptionHtml}" />
                             </dot:Repeater>
                             <img class="col form-divider" src="img/divider.png" />
                             <dot:Repeater DataSource="{value: Props}" Class="row justify-content-center form-check-input-image" style="padding:0px 20px ;">
@@ -195,8 +195,8 @@
             <div class="d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <dot:Button class="col form-red form-button" Click="{command: GoToServicesSelection(false)}" Text="&larr; SP&#196;Ť" Validation.Enabled="false"/>
-                        <dot:Button class="col form-green form-button" Click="{command: GoToSummary()}" Text="ĎALEJ &rarr;" Validation.Enabled="false"/>
+                        <dot:Button class="col form-red form-button" Click="{command: GoToServicesSelection(false)}" Text="&larr; SP&#196;Ť" Validation.Enabled="false" />
+                        <dot:Button class="col form-green form-button" Click="{command: GoToSummary()}" Text="ĎALEJ &rarr;" Validation.Enabled="false" />
                     </div>
                 </div>
             </div>
@@ -206,7 +206,7 @@
     <div class="container" IncludeInPage="{value: UserInfoSelect}">
         <div class="row">
             <div class="row d-flex justify-content-center">
-                <img class="col-6 col-md-3" src="img/logo.png"/>
+                <img class="col-6 col-md-3" src="img/logo.png" />
             </div>
         </div>
         <h1 class="text-center" style="margin:20px; font-weight: 700;">Kontaktné údaje</h1>
@@ -217,24 +217,24 @@
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-4">
                                 <label for="inputName">Meno</label>
-                                <dot:TextBox Text="{value: OrderBasicInfo.User.FirstName}" class="form-control form-control-lg" id="inputName" placeholder="Katka"/>
+                                <dot:TextBox Text="{value: OrderBasicInfo.User.FirstName}" class="form-control form-control-lg" ID="inputName" placeholder="Katka" />
                             </div>
                             <div class="form-group col-sm-4">
                                 <label for="inputSurname">Priezvisko</label>
-                                <dot:TextBox Text="{value: OrderBasicInfo.User.LastName}" class="form-control form-control-lg" id="inputSurname" placeholder="Krasnová"/>
+                                <dot:TextBox Text="{value: OrderBasicInfo.User.LastName}" class="form-control form-control-lg" ID="inputSurname" placeholder="Krasnová" />
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-8">
                                 <label for="inputEmail">E-mailová adresa</label>
-                                <dot:TextBox Text="{value: OrderBasicInfo.User.Email}" Type="Email" class="form-control form-control-lg" id="inputEmail" placeholder="@"/>
+                                <dot:TextBox Text="{value: OrderBasicInfo.User.Email}" Type="Email" class="form-control form-control-lg" ID="inputEmail" placeholder="@" />
                             </div>
                         </div>
                         <div class="form-row justify-content-center">
                             <div class="form-group col-sm-8">
                                 <label for="inputTel">Telefónne číslo</label>
-                                <dot:TextBox Text="{value: OrderBasicInfo.User.PhoneNumber}" Type="Telephone" class="form-control form-control-lg" id="inputTel" placeholder="+421 9XX XXX XXX"/>
-                                <dot:ValidationSummary IncludeErrorsFromChildren="true"/>
+                                <dot:TextBox Text="{value: OrderBasicInfo.User.PhoneNumber}" Type="Telephone" class="form-control form-control-lg" ID="inputTel" placeholder="+421 9XX XXX XXX" />
+                                <dot:ValidationSummary IncludeErrorsFromChildren="true" />
                             </div>
                         </div>
                     </form>
@@ -244,7 +244,7 @@
                 <div class="col-12 col-md-6">
                     <div class="row">
                         <dot:Button class="col form-red form-button" Click="{command: GoToServicesSelection(false)}" Text="&larr; SP&#196;Ť" Validation.Enabled="false" />
-                        <dot:Button class="col form-green form-button" Click="{command: CreateUser()}" Text="ĎALEJ &rarr;" Validation.Enabled="true" Validation.Target="{value: OrderBasicInfo.User}"/>
+                        <dot:Button class="col form-green form-button" Click="{command: CreateUser()}" Text="ĎALEJ &rarr;" Validation.Enabled="true" Validation.Target="{value: OrderBasicInfo.User}" />
                     </div>
                 </div>
             </div>
@@ -267,7 +267,8 @@
                             <p>{{value: Customer.FirstName}} {{value: Customer.LastName}}</p>
                             <p>{{value: Customer.Email}}</p>
                             <p>{{value: Customer.PhoneNumber}}</p>
-                            <p><dot:Literal Text="{value: RentalSince}" ValueType="DateTime" FormatString="g" /></p>
+                            <p>
+                            <dot:Literal Text="{value: RentalSince}" ValueType="DateTime" FormatString="g" /></p>
                             <p>{{value: CountOfHours}}hod</p>
                         </div>
                     </div>
@@ -314,12 +315,23 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-12 col-md-6">
                     <div class="row">
-                        <dot:Button Click="{command: _root.GoToServicesSelection(false)}" class="col form-red form-button" Text="&larr; SP&#196;Ť"/>
-                        <dot:Button Click="{command: _root.SendOrder()}" class="col form-green form-button" Text="ODOSLAŤ OBJEDNÁVKU &rarr;"/>
+                        <dot:Button Click="{command: _root.GoToServicesSelection(false)}" class="col form-red form-button" Text="&larr; SP&#196;Ť" />
+                        <dot:Button Click="{command: _root.SendOrder()}" class="col form-green form-button" Text="ODOSLAŤ OBJEDNÁVKU &rarr;" />
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('input.timepicker').timepicker({
+                timeFormat: 'HH:mm:ss',
+                minTime: '11:45:00' // 11:45:00 AM,
+                maxHour: 20,
+                maxMinutes: 30,
+                startTime: new Date(0,0,0,15,0,0) // 3:00:00 PM - noon
+                interval: 15 // 15 minutes
+            });
+        });
+    </script>
 </dot:Content>

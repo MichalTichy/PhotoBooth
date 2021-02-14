@@ -1,5 +1,4 @@
 ﻿using DotVVM.Framework.Hosting;
-using DotVVM.Framework.ViewModel;
 using Microsoft.AspNetCore.Identity;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models;

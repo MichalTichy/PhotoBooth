@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DotVVM.Framework.Controls;
+﻿using DotVVM.Framework.Controls;
 using DotVVM.Framework.Runtime.Filters;
-using DotVVM.Framework.ViewModel;
 using PhotoBooth.BL.Facades;
 using PhotoBooth.BL.Models.Item.Product;
-using PhotoBooth.BL.Models.Item.RentalItem;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PhotoBooth.WEB.ViewModels
 {
@@ -29,7 +24,7 @@ namespace PhotoBooth.WEB.ViewModels
         {
             var t1 = _catalogFacade.GetAllProductsAsync();
             await base.PreRender();
-            
+
             Products.LoadFromQueryable((await t1).AsQueryable());
         }
 
@@ -64,7 +59,5 @@ namespace PhotoBooth.WEB.ViewModels
             // Refresh GridView items
             Products.RequestRefresh();
         }
-
     }
 }
-
